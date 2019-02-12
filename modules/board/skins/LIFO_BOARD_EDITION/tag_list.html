@@ -1,0 +1,34 @@
+<include target="_header.html" />
+<div class="area p-2 mb-2">
+	<div class="tagList m-0 p-4 border border-secondary text-justify">
+		<!--@foreach($tag_list as $val)-->
+			<!--@if($val->count>5)-->
+				{@ $tag_class = "badge badge-primary rank1" }
+			<!--@elseif($val->count>3)-->
+				{@ $tag_class = "badge badge-success rank2" }
+			<!--@elseif($val->count>2)-->
+				{@ $tag_class = "badge badge-info rank3" }
+			<!--@elseif($val->count>1)-->
+				{@ $tag_class = "badge badge-secondary  rank4" }
+			<!--@else-->
+				{@ $tag_class = "badge badge-dark rank5" }
+			<!--@end-->
+
+			<!--@if($layout_info->mid)-->
+				<a class="{$tag_class}"|cond="$tag_class" href="{getUrl('','mid',$layout_info->mid,'search_target','tag','search_keyword',$val->tag)}">{$val->tag|autoescape}</a>
+			<!--@else-->
+				<a class="{$tag_class}"|cond="$tag_class" href="{getUrl('','mid',$mid,'search_target','tag','search_keyword',$val->tag)}">{$val->tag|autoescape}</a>
+			<!--@end-->
+
+		<!--@end-->
+		<!--@if(!$tag_list)-->
+			<p class="text-center mb-0">
+				{$lang->no_tags}
+			</p>
+		<!--@end-->
+	</div>
+	<div class="tagFooter">
+	    <a href="{getUrl('act','')}" class="btn btn-warning">{$lang->cmd_back}</a>
+	</div>
+</div>
+<include target="_footer.html" />

@@ -1,0 +1,43 @@
+<header class="main-banner"id="main-banner">
+    <nav class="nav justify-content-end nav-style nav-banner">
+    <!--@if($is_logged)-->
+      <!--%import("./filter/logout.xml")-->
+        <a cond="$logged_info->is_admin == 'Y'" class="nav-link nav-info p-2" href="{getUrl('', 'module', 'admin')}" target="_blank" rel="nofollow"><i class="xi-cog"></i></a>
+        <a href="{getUrl('act','dispMemberInfo')}" class="nav-link nav-info p-2" >{$logged_info->nick_name}</a>
+        <a href="{getUrl('act','dispMemberLogout')}" class="nav-link nav-info p-2" >{$lang->cmd_logout}</a>
+    <!--@else-->
+        <a class="nav-link nav-info p-2" href="#" data-toggle="modal" data-target="#Modal-login">{$lang->cmd_login}</a>
+        <a class="nav-link nav-info p-2" href="{getUrl('act','dispMemberSignUpForm')}">{$lang->cmd_signup}</a>
+    <!--@end-->
+    </nav>
+    <a class="nav-sidebar-btn" onclick="openAside()" height="40px">&#9776;</a>
+    <div class="nav header-style justify-content-center ">
+      <!--@if($layout_info->layout_type == "main")-->
+        <!--@if($layout_info->logo_img)-->
+          <a href ="{getUrl()}">
+              <img class="logo_link" src="{$layout_info->logo_img}" alt="Robotics">
+          </a>
+        <!--@end-->
+      <!--@elseif($layout_info->layout_type == "sub")-->
+        <!--@if($layout_info->logo_img_sub)-->
+          <a href ="{getUrl()}">
+              <img class="logo_link" src="{$layout_info->logo_img_sub}" alt="Robotics">
+          </a>
+        <!--@end-->
+      <!--@end-->
+    </div>
+    <nav class="nav-style nav-banner sidebar-scroll nav-middle">
+      <ul class="nav nav-screen justify-content-center">
+        <li loop="$main_menu->list=>$key1,$val1" class="nav-item nav-banner-item nav-text">
+          <a class="nav-link nav-banner-link" href="{$val1['href']}"|cond="!$val1['list']">{$val1['link']}</a>
+          <ul cond="$val1['list']" class= "nav-submenu">
+            <li loop="$val1['list']=>$key2,$val2" class="nav-item nav-banner-item submenu-text">
+              <a class="submenu-link" href="{$val2['href']}">{$val2['link']}</a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+</header>
+<!--#include("html/aside.html")-->
+<!--#include("html/modal-login.html")-->

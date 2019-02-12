@@ -1,0 +1,73 @@
+<!--%import("filter/login.xml")-->
+<load target="filter/openid_login.xml" />
+<!-- Modal login -->
+<div class="modal fade modal-width-restrict" id="Modal-login" tabindex="-1" role="dialog" >
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{$lang->cmd_login}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form ruleset="@login" action="{getUrl('', 'act', 'procMemberLogin')}" method="post" id="fo_member_login">
+            <input type="hidden" name="act" value="procMemberLogin" />
+            <input type="hidden" name="success_return_url" value="{htmlspecialchars(getRequestUriByServerEnviroment(), ENT_COMPAT | ENT_HTML401, 'UTF-8', false)}" />
+		    <input type="hidden" name="xe_validator_id" value="layouts/robotics_layout/html/modal-login/1" />
+
+            <!-- 인증 처리 후 메시지가 있으면 메시지 표시 -->
+            <div cond="$XE_VALIDATOR_MESSAGE  && $XE_VALIDATOR_ID == 'layouts/robotics_layout/html/modal-login/1'" class="message {$XE_VALIDATOR_MESSAGE_TYPE}">
+                <div class="alert alert-danger mx-auto text-center">{$XE_VALIDATOR_MESSAGE}</div>
+                <script>
+                    $('#Modal-login').modal('show');
+                </script>
+            </div>
+            <p></p>
+            <div class="form-group">
+                <label>{$lang->user_id}</label>
+                <input type="text" class="form-control" id="login-id" name="user_id" placeholder="{$lang->user_id}">
+                <div class="invalid-feedback">
+                    Please provide a valid ID.
+                </div>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+            </div>
+            <label>{$lang->password}</label>
+            <div class="form-row">
+                <div class="col mb-2">
+                    <input type="password" class="form-control" id="login-password" name="password" placeholder="{$lang->password}">
+                    <div class="invalid-feedback">
+                        Please provide a valid password.
+                    </div>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                </div>
+                <div class="col-auto mb-2">
+                    <button type=submit class="btn btn-primary w-100">{$lang->cmd_login}</button>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col" >
+                  <div class="custom-control custom-checkbox">
+                    <input class="custom-control-input" type="checkbox" name="keep_signed" id="id-save">
+                    <label class="custom-control-label" for="id-save">
+                        {$lang->keep_signed}
+                    </label>
+                  </div>
+                </div>
+            </div>
+        </form>
+      </div>
+        <div class="modal-footer justify-content-between">
+            <label  class="col-form-label float-left">Forgot?</label>
+            <div class="align-middle">
+                <a class="btn btn-dark" href="{getUrl('', 'mid','find_password', 'act','dispMemberFindAccount')}" >{$lang->cmd_find_member_account}</a>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+<!-- <% include ./feedback.ejs %> -->

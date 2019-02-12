@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<lang>
+	<item name="no_tags">
+		<value xml:lang="ko"><![CDATA[등록된 태그가 없습니다.]]></value>
+		<value xml:lang="en"><![CDATA[No Tags]]></value>
+  </item>
+	<item name="point_delete_comment">
+		<value xml:lang="ko"><![CDATA[댓글 삭제]]></value>
+		<value xml:lang="en"><![CDATA[On Deleting Comments]]></value>
+		<value xml:lang="jp"><![CDATA[コメント削除]]></value>
+		<value xml:lang="zh-CN"><![CDATA[删除评论]]></value>
+		<value xml:lang="zh-TW"><![CDATA[刪除評論]]></value>
+		<value xml:lang="fr"><![CDATA[Supprimer un Commentaire]]></value>
+		<value xml:lang="ru"><![CDATA[При удалении комментариев]]></value>
+		<value xml:lang="es"><![CDATA[Al eliminar comentarios]]></value>
+		<value xml:lang="tr"><![CDATA[Yorum Silmeye]]></value>
+		<value xml:lang="vi"><![CDATA[Khi xóa bình luận]]></value>
+	</item>
+</lang>

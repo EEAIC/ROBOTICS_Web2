@@ -1,0 +1,76 @@
+<include target="./common_header.html" />
+<div class="area p-2 mb-2">
+	<h3>{$member_title = $lang->cmd_view_scrapped_document}</h3>
+	<table class="table table-hover">
+		<caption class="text-right">Total: {number_format($total_count)}, Page: {number_format($page)} / {number_format($total_page)}</caption>
+		<thead>
+			<tr>
+				<th class="d-none d-sm-table-cell" style="width:1px; white-space:nowrap;">{$lang->no}</th>
+				<th>{$lang->title}</th>
+				<th class="d-none d-sm-table-cell" style="width:1px; white-space:nowrap;">{$lang->writer}</th>
+				<th class="d-none d-sm-table-cell">{$lang->date}</th>
+				<th>{$lang->cmd_delete}</th>
+			</tr>
+		</thead>
+		<tbody>
+			<block cond="$document_list">
+				<block loop="$document_list=>$no,$val">
+				<tr>
+					<td class="align-middle d-none d-sm-table-cell text-nowrap">{$no} </td>
+					<td class="align-middle cursor-pointer title w-100" onclick="window.open('{getUrl('','document_srl',$val->document_srl)}', '_blank')">
+						{htmlspecialchars($val->title, ENT_COMPAT | ENT_HTML401, 'UTF-8', false)}
+						<div class="d-block d-sm-none">
+							<small>
+								<i class="xi-user"></i>
+								{$val->nick_name}
+							</small>
+							&nbsp;
+							<small>
+								<i class="xi-calendar"></i>
+								{zdate($val->regdate, "y.m.d")}
+							</small>
+						</div>
+					</td>
+					<td class="align-middle d-none d-sm-table-cell text-nowrap">
+						{@
+							$oMemberModel = &getModel('member');
+							$target_member_info=$oMemberModel->getMemberInfoByMemberSrl($val->target_member_srl);
+						}
+						<div class="dropdown">
+							<a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#" class="dropdown-toggle member_{$val->target_srl}">{$val->nick_name}</a>
+							<div class="dropdown-menu">
+								<a cond="$is_logged" class="dropdown-item" href="{getUrl('act','dispCommunicationSendMessage', 'receiver_srl', $val->target_member_srl)}" onclick="popopen(this.href, 'popup'); return false;" target="_blank">{$lang->cmd_send_message}</a>
+								<a cond="$is_logged" class="dropdown-item" href="{getUrl('act','dispMemberInfo','member_srl', $val->target_member_srl)}" target="_blank">{$lang->cmd_view_member_info}</a>
+								<a cond="$is_logged && $logged_info->is_admin == 'Y'" class="dropdown-item" href="mailto:{$target_member_info->email_address}">{$lang->cmd_send_email}</a>
+								<a class="dropdown-item" href="{getUrl('', 'mid', $mid, 'search_target','nick_name','search_keyword', $val->nick_name)}" target="_blank">{$lang->cmd_view_own_document}</a>
+								<a cond="$is_logged && $logged_info->is_admin == 'Y'" class="dropdown-item" href="{getUrl('act', 'dispMemberAdminInsert', 'member_srl', $val->target_member_srl)}" target="_blank">{$lang->cmd_manage_member_info}</a>
+								<a cond="$is_logged && $logged_info->is_admin == 'Y'" class="dropdown-item" href="{getUrl('', 'module', 'admin', 'act','dispDocumentAdminList', 'search_target', 'member_srl', 'search_keyword', $val->target_member_srl)}" target="_blank">{$lang->cmd_trace_document}</a>
+								<a cond="$is_logged && $logged_info->is_admin == 'Y'" class="dropdown-item" href="{getUrl('', 'module', 'admin', 'act','dispCommentAdminList', 'search_target', 'member_srl', 'search_keyword', $val->target_member_srl)}" target="_blank">{$lang->cmd_trace_comment}</a>
+							</div>
+						</div>
+					</td>
+					<td class="align-middle d-none d-sm-table-cell text-nowrap">{zdate($val->regdate, "Y-m-d")}</td>
+					<td class="align-middle"><button class="btn btn-danger btn-sm text-nowrap" type="button" onclick="doDeleteScrap({$val->document_srl});">{$lang->cmd_delete}</button></td>
+				</tr>
+				</block>
+			</block>
+			<block cond="!$document_list">
+				<tr class="no_article">
+					<td colspan="5">
+						<p class="text-center m-0">{$lang->no_documents}</p>
+					</td>
+				</tr>
+			</block>
+		</tbody>
+	</table>
+	<nav>
+		<ul class="pagination justify-content-center">
+			<li class="page-item"><a class="page-link" href="{getUrl('page','','module_srl','')}">&laquo; {$lang->first_page}</a></li>
+			<!--@while($page_no = $page_navigation->getNextPage())-->
+			<li class="page-item active"|cond="$page == $page_no" class="page-item"|cond="$page != $page_no" ><a class="page-link" href="{getUrl('page',$page_no,'module_srl','')}">{$page_no}</a></li>
+			<!--@end-->
+			<li class="page-item"><a class="page-link" href="{getUrl('page',$page_navigation->last_page,'module_srl','')}">{$lang->last_page} &raquo;</a></li>
+		</ul>
+	</nav>
+</div>
+<include target="./common_footer.html" />

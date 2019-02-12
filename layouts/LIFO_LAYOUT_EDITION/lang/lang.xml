@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<lang>
+	<item name="membership">
+		<value xml:lang="ko"><![CDATA[맴버십]]></value>
+		<value xml:lang="en"><![CDATA[Membership]]></value>
+		
+	</item>
+</lang>

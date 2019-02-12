@@ -1,0 +1,15 @@
+<!--// META -->
+{Context::setBrowserTitle($lang->member)}
+
+<load target="css/member.css" />
+<load target="js/member.js" />
+
+
+<section class="xe">
+	<div class="area p-2 mb-2" cond="$is_logged && $logged_info->menu_list && (!$member_srl || $member_srl == $logged_info->member_srl)">
+		<ul class="nav nav-pills" >
+			<li loop="$logged_info->menu_list=>$key,$val" class="nav-item" >
+				<a class="nav-link active"|cond="$key==$act" class="nav-link"|cond="$key!=$act" href="{getUrl('', 'act',$key, 'mid', $mid, 'vid', $vid)}">{Context::getLang($val)}</a>
+			</li>
+		</ul>
+</div>

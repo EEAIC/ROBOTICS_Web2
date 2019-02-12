@@ -1,0 +1,152 @@
+<include target="./common_header.html" />
+<load target="../../tpl/js/signup_check.js" />
+<!--// datepicker javascript plugin load -->
+<!--%load_js_plugin("ui")-->
+<!--%load_js_plugin("ui.datepicker")-->
+
+<div class="area p-2 mb-2 mx-auto col-md-7 col-lg-5">
+	<h3>{$lang->msg_update_member}</h3>
+	<div cond="$XE_VALIDATOR_MESSAGE && $XE_VALIDATOR_ID == 'modules/member/skins/robotics_member_skin/1'" class="alert alert-danger text-center {$XE_VALIDATOR_MESSAGE_TYPE}">
+		<p>{$XE_VALIDATOR_MESSAGE}</p>
+	</div>
+	<script>
+		xe.lang.deleteProfileImage = '{$lang->msg_delete_extend_form}';
+		xe.lang.deleteImageMark = '{$lang->msg_delete_extend_form}';
+		xe.lang.deleteImageName = '{$lang->msg_delete_extend_form}';
+	</script>
+	<form ruleset="@insertMember" id="fo_insert_member" action="./" method="post" enctype="multipart/form-data" class="form-horizontal">
+	  <input type="hidden" name="act" value="procMemberModifyInfo" />
+	  <input type="hidden" name="module" value="member" />
+	  <input type="hidden" name="member_srl" value="{$member_info->member_srl}" />
+	  <input type="hidden" name="signature" value="{htmlspecialchars($member_info->signature, ENT_COMPAT | ENT_HTML401, 'UTF-8', false)}" />
+	  <input type="hidden" name="page" value="{$page}" />
+		<input type="hidden" name="xe_validator_id" value="modules/member/skins/robotics_member_skin/1" />
+
+		<div class="form-group">
+			<label for="{$identifierForm->name}" class="control-label"><em style="color:red">*</em> {$identifierForm->title}</label>
+			<input type="hidden" name="{$identifierForm->name}" value="{$identifierForm->value}" />
+			<input class="form-control" type="text" name="{$identifierForm->name}" id="{$identifierForm->name}" value="{$identifierForm->value}" disabled="disabled" />
+		</div>
+		<div class="form-group" loop="$formTags=>$formTag">
+			<label for="{$formTag->name}" class="control-label">{$formTag->title|noescape}</label>
+			<input class="form-control" cond="$formTag->name == 'email_address'" type="{$formTag->type}" name="{$formTag->name}" id = "{$formTag->name}" value= "{$member_info->email_address}" />
+
+			<block cond="$formTag->name == 'find_account_question'">
+					<select class="custom-select mb-2" name="{$formTag->name}" id="{$formTag->name}" disabled="disabled">
+
+							<!--@foreach($lang->find_account_question_items as $key=>$val)-->
+								<!--@if($key == $member_info->find_account_question)-->
+									<option value="{$key}" selected="selected">{$val}</option>
+								<!--@else-->
+									<option value="{$key}">{$val}</option>
+								<!--@end-->
+							<!--@end-->
+					</select>
+					<input class="form-control" type="text" name="find_account_answer" id="find_account_answer" title="{$lang->find_account_answer}" value="" disabled="disabled">
+					<div class="custom-control custom-checkbox">
+						<input class="custom-control-input" type="checkbox" name="modify_find_account_answer" value="Y" id="find_account_answer_checkbox">
+						<label class="custom-control-label" for="find_account_answer_checkbox">{$lang->cmd_modify}</label>
+					</div>
+					<script>(function($) {$(function() {$('[name=modify_find_account_answer]').change(function() {var $this = $(this);if($this.prop('checked')) {$('[name=find_account_question],[name=find_account_answer]').attr('disabled', false); } else {$('[name=find_account_question]').attr('disabled', true); $('[name=find_account_answer]').attr('disabled', true).val(''); } }); }); })(jQuery);</script>
+			</block>
+
+			<block cond="$formTag->name == 'profile_image'">
+				<div class="custom-file">
+					<input type="hidden" name="__{$formTag->name}_exist" value="false" />
+					<input class="custom-file-input" type="file" name="{$formTag->name}" id="{$formTag->name}" value="" accept="image/*" />
+					<label class="custom-file-label" for="{$formTag->name}">{$lang->upload_file}</label>
+				</div>
+				<p class="help-block">
+					<small>{$lang->profile_image_max_width}: {$member_config->profile_image_max_width}px, {$lang->profile_image_max_height}: {$member_config->profile_image_max_height}px</small>
+				</p>
+			</block>
+			<input class="form-control" cond="$formTag->name == 'user_name'" type="{$formTag->type}" name="{$formTag->name}" id = "{$formTag->name}" value= "{$member_info->user_name}" />
+			<input class="form-control" cond="$formTag->name == 'nick_name'" type="{$formTag->type}" name="{$formTag->name}" id = "{$formTag->name}" value= "{$member_info->nick_name}" />
+			<div class="form-row no-gutters" cond="$formTag->name == 'birthday'">
+				{@ $column_name = "birthday";}
+				<span class="col">
+					<input type="hidden"name="birthday" id="date_birthday" value="{$member_info->birthday}" />
+					<input type="text" placeholder="YYYY-MM-DD" name="birthday_ui" id="birthday" value="{zdate($member_info->birthday, 'Y-m-d', false)}" class="inputDate form-control" />
+				</span>
+				<span class="col-auto">
+					<input type="button" value="{$lang->cmd_delete}" class="col-auto btn btn-danger dateRemover" id="dateRemover_{$column_name}">
+				</span>
+					<script type="text/javascript">
+					(function($){
+						$(function(){
+							var option = { dateFormat: "yy-mm-dd", changeMonth:true, changeYear:true, gotoCurrent:false, yearRange:'-100:+10', onSelect:function(){
+								$(this).prev('input[type="hidden"]').val(this.value.replace(/-/g,""))}
+							};
+							$.extend(option,$.datepicker.regional['{Context::getLangType()}']);
+							$("#date_{$column_name}").datepicker(option);
+							$("#date_{$column_name}").datepicker("option", "dateFormat", "yy-mm-dd");
+							$("#dateRemover_{$column_name}").click(function(){
+								$("#date_{$column_name}").siblings().addBack().val("");
+									return false;
+							})
+						});
+					})(jQuery);
+				</script>
+			</div>
+			<div class="controls" cond="$formTag->name =='signature'">
+				{$editor|noescape}
+				<style scoped>
+				.xpress-editor>#smart_content,
+				.xpress-editor>#smart_content>.tool{clear:none}
+				</style>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="control-label">{$lang->allow_mailing}</div>
+			<div class="custom-control custom-radio custom-control-inline">
+				<input class="custom-control-input" type="radio" name="allow_mailing" id="mailingYes" value="Y" checked="checked"|cond="$member_info->allow_mailing == 'Y'">
+				<label class="custom-control-label" for="mailingYes">{$lang->cmd_yes}</label>
+			</div>
+			<div class="custom-control custom-radio custom-control-inline">
+				<input class="custom-control-input" type="radio" name="allow_mailing" id="mailingNo" value="N" checked="checked"|cond="$member_info->allow_mailing != 'Y'" >
+				<label class="custom-control-label" for="mailingNo">{$lang->cmd_no}</label>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="control-label">{$lang->allow_message}</div>
+				<div class="custom-control custom-radio custom-control-inline" loop="$lang->allow_message_type=>$key,$val">
+					<input class="custom-control-input" type="radio" name="allow_message" value="{$key}" checked="checked"|cond="$member_info->allow_message == $key" id="allow_{$key}" />
+					<label class="custom-control-label" for="allow_{$key}">{$val}</label>
+				</div>
+		</div>
+		<div class="clearfix">
+			<div class="float-right">
+				<input type="submit" value="{$lang->cmd_registration}" class="btn btn-primary" />
+				<a href="{getUrl('act','dispMemberInfo','member_srl','')}" class="btn btn-dark">{$lang->cmd_cancel}</a>
+			</div>
+		</div>
+	</form>
+</div>
+<script>
+jQuery(function($){
+	// label for setup
+	$('.control-label[for]').each(function(){
+		var $this = $(this);
+		if($this.attr('for') == ''){
+			$this.attr('for', $this.next().children(':visible:first').attr('id'));
+		}
+	});
+});
+
+
+(function($){
+    $(function(){
+        var option = { changeMonth: true, changeYear: true, gotoCurrent: false,yearRange:'-100:+10', dateFormat:'yy-mm-dd', onSelect:function(){
+            $(this).prev('input[type="hidden"]').val(this.value.replace(/-/g,""))}
+        };
+        $.extend(option,$.datepicker.regional['{$lang_type}']);
+        $(".inputDate").datepicker(option);
+		$(".dateRemover").click(function() {
+			$(this).prevAll('input').val('');
+			return false;});
+    });
+})(jQuery);
+</script>
+<include target="./common_footer.html" />

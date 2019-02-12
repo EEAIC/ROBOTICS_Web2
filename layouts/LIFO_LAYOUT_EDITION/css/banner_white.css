@@ -1,0 +1,227 @@
+.nav-link {
+  color: inherit;
+}
+.nav-link:hover {
+  text-decoration: none;
+}
+
+.dropdown>a {
+  color: inherit;
+}
+/*
+body {
+    background-image: url('/public/image/Night_sky_with_ star.jpg');
+    background-size: 100%;
+    background-repeat: repeat-y;
+    background-position: center center;
+}
+*/
+
+body {
+    font-family: '돋움';
+}
+
+.list-group-item {
+    background-color: inherit;
+}
+
+/* modal시 banner shift 방지 */
+body.modal-open{
+width:100%!important;
+padding-right:0!important;
+overflow-y:scroll!important;
+
+}
+
+
+.main-banner {
+    position: sticky;
+    top:0;
+    width: 100%;
+    z-index: 500;
+
+}
+
+.dropdown-menu {
+  z-index: 499;
+}
+
+.header-style {
+    border-bottom: solid 0.5px gray;
+    background-color: rgb(255,255,255);
+    font-family: verdana, sans-serif;
+    text-align: center;
+    padding-left: 0;
+    margin-bottom: 0;
+}
+
+@media screen and (max-width:884px) {
+    .nav-info-item {
+        z-index: 2;
+    }
+
+    .sidebar-scroll {
+        position: absolute;
+        height: 0px;
+        overflow: scroll;
+        width: 100%;
+    }
+}
+
+.nav-style {
+    background-color: rgb(255,255,255);
+    font-family: verdana, sans-serif;
+    font-weight: bold;
+}
+
+
+
+
+@media screen and (min-width:885px) {
+
+    .nav-middle:before {
+    display: block;
+    content: '';
+    position: absolute;
+    top: calc(100%);
+    width: 100%;
+    height: 10px;
+    box-shadow: inset 0 10px 6px -6px rgba(0,0,0,.2);
+    transition-property: box-shadow;
+    transition-duration: 3s;
+    z-index: 1000;
+}
+
+    .nav-sidebar-btn {
+        display: none;
+
+    }
+    .nav-close {
+        display: none;
+    }
+    /* mainmenu 선택바 설정 */
+    .nav-banner ul li .nav-banner-link{
+        position: relative;
+    }
+    .nav-banner ul li .nav-banner-link:before{
+        content : "";
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 3em;
+        border-bottom: 0.125em solid transparent;
+    }
+    .nav-banner ul li:hover .nav-banner-link:before {
+        border-bottom-color: aqua;
+    }
+
+
+    /* submenu 설정 */
+    .nav-submenu {
+        padding: 0;
+        margin-bottom: 1em;
+        position: absolute;
+        height: 0px;
+        left: 0px;
+        width: 100%;
+        background-color: rgb(255,255,255);
+        font-family: verdana, sans-serif;
+        overflow-y: hidden;
+        transition: height .5s ease-in-out;
+        text-align: center;
+        box-shadow: 0 10px 6px -6px rgba(0, 0, 0, 0.2);
+    }
+    /* submenu 높이 */
+    .nav-banner ul li:hover .nav-submenu {
+        height:6em;
+    }
+
+    .nav-submenu li {
+        display: inline-block;
+    }
+
+}
+.nav-info-box {
+    margin-right: 5%;
+}
+
+.nav-info-item {
+    margin: 0em 0.5em 0.5em 0em;
+    padding: none;
+}
+
+.nav-info-item .name {
+     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 7em;
+    text-align: right;
+
+}
+
+.nav-info-item a {
+    text-decoration: none;
+    cursor:pointer;
+}
+
+
+.nav-info-item:hover a:hover {
+    color:aqua;
+}
+
+.nav-banner-item{
+    display: block;
+    margin: 0em 2em 0em 2em;
+}
+
+
+@media screen and (min-width:885px) {
+    .submenu-text{
+        margin: 3em 4em 1.5em 4em;
+        cursor:pointer;
+    }
+    .submenu-text a {
+        color: rgba(0,0,0,0.5);
+    }
+
+    /* submenu 선택바 설정 */
+    .nav-banner-item ul li .submenu-link{
+        position: relative;
+        padding-top: 1.75em;
+    }
+
+    .nav-banner-item ul li .submenu-link:before{
+        content : "";
+        position: absolute;
+        padding: none;
+        margin-top: -1.5em;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 4.5em;
+        border-top: 0.125em solid rgba(0,0,0,0.5);
+    }
+
+    .nav-banner-item ul li:hover .submenu-link:before{
+        border-top-color: black;
+    }
+
+    .nav-banner-item ul li:hover .submenu-link {
+        color: black;
+    }
+    .nav-banner-link{
+    display: block;
+    padding: 1.5em 0em 1.5em 0em;
+    cursor:pointer;
+    }
+}
+
+.content-head {
+    padding: 0em 0em 2em 2em;
+    border-bottom-style: solid;
+    border-bottom-color: darkgray;
+    border-bottom-width: 1px;
+}
+.content-head h1 {
+    font-weight: bold;
+}

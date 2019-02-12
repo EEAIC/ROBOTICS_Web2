@@ -1,0 +1,125 @@
+<load target="../../tpl/js/signup_check.js" />
+<!--// datepicker javascript plugin load -->
+<!--%load_js_plugin("ui")-->
+<!--%load_js_plugin("ui.datepicker")-->
+<include target="./common_header.html" />
+  <div class="area p-2 mb-2 mx-auto col-md-7 col-lg-5">
+
+  <h3>{$lang->cmd_signup}</h3>
+	<div cond="$XE_VALIDATOR_MESSAGE && $XE_VALIDATOR_ID == 'modules/member/skins'" class="alert alert-danger text-center {$XE_VALIDATOR_MESSAGE_TYPE}">
+		<p>{$XE_VALIDATOR_MESSAGE}</p>
+	</div>
+    <form ruleset="@insertMember" id="fo_insert_member" action="./" method="post" enctype="multipart/form-data" class="form-horizontal">
+		<input type="hidden" name="act" value="procMemberInsert" />
+		<input type="hidden" name="xe_validator_id" value="modules/member/skins" />
+		<input type="hidden" name="success_return_url" value="{getUrl('act','dispMemberInfo')}" />
+		<div class="agreement" cond="$member_config->agreement">
+			<div class="text">
+				{$member_config->agreement|noescape}
+			</div>
+			<div class="confirm">
+				<label for="accept_agree">
+					<input type="checkbox" name="accept_agreement" value="Y" id="accept_agree" />
+					{$lang->about_accept_agreement}
+				</label>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="{$identifierForm->name}" class="control-label"><em style="color:red">*</em> {$identifierForm->title}</label>
+			<input class="form-control" type="text"|cond="$identifierForm->name!='email_address'" type="email"|cond="$identifierForm->name=='email_address'" name="{$identifierForm->name}" id="{$identifierForm->name}" value="{$identifierForm->value}" required />
+		</div>
+		<div class="form-group">
+			<label for="password" class="control-label"><em style="color:red">*</em> {$lang->password}</label>
+			<input class="form-control" type="password" name="password" id="password" value="" required />
+			<small class="form-text text-muted">{$lang->about_password_strength[$member_config->password_strength]}</small>
+		</div>
+		<div class="form-group">
+			<label for="password2" class="control-label"><em style="color:red">*</em> {$lang->password3}</label>
+			<input class="form-control" type="password" name="password2" id="password2" value="" required />
+		</div>
+		<div class="form-group" loop="$formTags=>$formTag" cond="$formTag->name != 'signature'">
+			<label for="{$formTag->name}" class="control-label">{$formTag->title|noescape}</label>
+      <input class="form-control mb-2" cond="$formTag->name == 'email_address'" type="{$formTag->type}" name="{$formTag->name}" id = "{$formTag->name}"/>
+      <block cond="$formTag->name == 'find_account_question'">
+  				<select class="custom-select mb-2" name="{$formTag->name}" id="{$formTag->name}" %s>
+  						<!--@foreach($lang->find_account_question_items as $key=>$val)-->
+  							<option value="{$key}">{$val}</option>
+  						<!--@end-->
+  				</select>
+          <input class="form-control" type="text" name="find_account_answer" id="find_account_answer" />
+  		</block>
+      <block cond="$formTag->name == 'profile_image'">
+        <div class="custom-file">
+          <input type="hidden" name="__{$formTag->name}_exist" value="false" />
+          <input class="custom-file-input" type="file" name="{$formTag->name}" id="{$formTag->name}" value="" accept="image/*" />
+          <label class="custom-file-label" for="{$formTag->name}">{$lang->upload_file}</label>
+        </div>
+        <p class="help-block">
+          <small>{$lang->profile_image_max_width}: {$member_config->profile_image_max_width}px, {$lang->profile_image_max_height}: {$member_config->profile_image_max_height}px</small>
+        </p>
+      </block>
+
+
+      <input class="form-control" cond="$formTag->name == 'user_name'" type="{$formTag->type}" name="{$formTag->name}" id = "{$formTag->name}" />
+  		<input class="form-control" cond="$formTag->name == 'nick_name'" type="{$formTag->type}" name="{$formTag->name}" id = "{$formTag->name}" />
+  		<div class="form-row no-gutters" cond="$formTag->name == 'birthday'">
+  			<input type="hidden" name="birthday" id="date_birthday" value="{$member_info->birthday}" />
+        <span class="col pr-2">
+			     <input type="date" name="birthday_ui" class="form-control" id="birthday" />
+        </span>
+        <span class="col-auto">
+			     <input type="button" value="{$lang->cmd_delete}" class="btn btn-danger dateRemover" />
+        </span>
+  		</div>
+		</div>
+		<div class="mb-2">
+			<div class="control-label">{$lang->allow_mailing}</div>
+			<div class="custom-control custom-radio custom-control-inline">
+				<input class="custom-control-input" type="radio" name="allow_mailing" id="mailingYes" value="Y" checked="checked"|cond="$member_info->allow_mailing == 'Y'" />
+        <label class="custom-control-label" for="mailingYes">{$lang->cmd_yes}</label>
+      </div>
+      <div class="custom-control custom-radio custom-control-inline">
+        <input class="custom-control-input" type="radio" name="allow_mailing" id="mailingNo" value="N" checked="checked"|cond="$member_info->allow_mailing != 'Y'" />
+        <label class="custom-control-label" for="mailingNo">{$lang->cmd_no}</label>
+      </div>
+		</div>
+		<div class="mb-2">
+			<div class="control-label">{$lang->allow_message}</div>
+			<div class="custom-control custom-radio custom-control-inline" loop="$lang->allow_message_type=>$key,$val">
+        <input class="custom-control-input" type="radio" name="allow_message" value="{$key}" checked="checked"|cond="$member_info->allow_message == $key || (!$member_info && $key == 'Y')" id="allow_{$key}" />
+        <label class="custom-control-label" for="allow_{$key}">{$val}</label>
+      </div>
+		</div>
+    <div class="clearfix border-top border-secondary">
+  		<div class="float-right p-2">
+  			<input type="submit" value="{$lang->cmd_registration}" class="btn btn-primary" />
+  			<a href="{getUrl('act','','member_srl','')}" class="btn btn-dark">{$lang->cmd_cancel}</a>
+  		</div>
+    </div>
+	</form>
+</div>
+<script>
+jQuery(function($){
+	// label for setup
+	$('.control-label[for]').each(function(){
+		var $this = $(this);
+		if($this.attr('for') == ''){
+			$this.attr('for', $this.next().children(':visible:first').attr('id'));
+		}
+	});
+});
+(function($){
+	$(function(){
+		var option = { changeMonth: true, changeYear: true, gotoCurrent: false,yearRange:'-100:+10', dateFormat:'yy-mm-dd', onSelect:function(){
+
+			$(this).prev('input[type="hidden"]').val(this.value.replace(/-/g,""))}
+		};
+		$.extend(option,$.datepicker.regional['{$lang_type}']);
+		$(".inputDate").datepicker(option);
+		$(".dateRemover").click(function() {
+			$(this).prevAll('input').val('');
+			return false;});
+	});
+})(jQuery);
+</script>
+<include target="./common_footer.html" />

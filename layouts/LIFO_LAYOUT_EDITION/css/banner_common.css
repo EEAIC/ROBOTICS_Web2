@@ -1,0 +1,55 @@
+a:hover {
+  text-decoration: none;
+  color: inherit;
+}
+
+.container {
+    margin: auto;
+}
+
+.area {
+	background-color: white;
+	border: 1px solid #dee3eb;
+}
+
+
+.logo_link {
+    padding-bottom: 0.5rem;
+}
+
+.nav-info:hover {
+    color : aqua;
+}
+
+
+@media screen and (max-width:884px) {
+    .container {
+        width: 100%;
+        margin-top: 0.75rem;
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+
+    .nav-sidebar-btn {
+        position: absolute;
+        font-size: 1.5em;
+        cursor: pointer;
+        padding-left: 1rem;
+    }
+    .nav-sidebar-btn:not([href]):not([tabindex]):hover { /* override _reboot.scss */
+        color : aqua;
+    }
+}
+
+@media screen and (min-width:885px) {
+    .container {
+        width: 80%;
+        margin-top: 0.75rem;
+
+    }
+
+    #comment::before {
+        display: block;
+        content: "";
+    }
+}

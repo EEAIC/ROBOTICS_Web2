@@ -1,0 +1,17 @@
+<include target="./common_header.html" />
+<form class="area p-2 mb-2 mx-auto col-md-7 col-lg-5" ruleset="leaveMember" id="fo_insert_member" action="./" method="post">
+	<h3>{$member_title = $lang->msg_leave_member}</h3>
+	<div cond="$XE_VALIDATOR_MESSAGE && $XE_VALIDATOR_ID == 'modules/member/skins/robotics_member_skin/1'" class="alert alert-danger text-center {$XE_VALIDATOR_MESSAGE_TYPE}">
+		{$XE_VALIDATOR_MESSAGE}
+	</div>
+	<input type="hidden" name="module" value="member" />
+	<input type="hidden" name="act" value="procMemberLeave" />
+  <input type="hidden" name="mid" value="{$mid}" />
+  <input type="hidden" name="document_srl" value="{$document_srl}" />
+  <input type="hidden" name="page" value="{$page}" />
+	<input type="hidden" name="xe_validator_id" value="modules/member/skins/robotics_member_skin/1" />
+	<input class="form-control mb-2" type="email" value="{$formValue}" readonly title="{Context::getLang($identifier)}" />
+	<input class="form-control mb-2" type="password" name="password" id="cpw" required placeholder="{$lang->password}" title="{$lang->password}" />
+	<input class="btn btn-danger w-100 mb-2" type="submit" value="{$lang->cmd_leave}"  />
+</form>
+<include target="./common_footer.html" />

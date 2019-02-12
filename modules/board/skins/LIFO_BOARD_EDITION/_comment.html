@@ -1,0 +1,178 @@
+<!-- COMMENT -->
+
+
+<div class="feedback" id="comment">
+<div class="area p-2 mb-2" >
+	<div>
+		<i class="xi-comment"></i> {$lang->comment} <span class="badge badge-info">{$oDocument->getCommentCount()}</span>
+	</div>
+	<ul class="list-group list-group-flush mt-1 feedback" cond="$oDocument->getCommentcount()">
+		<li loop="$oDocument->getComments()=>$key,$comment" class="list-group-item fbItem"|cond="!$comment->get('depth')" class="list-group-item fbItem indent indent2"|cond="$comment->get('depth')" id="comment_{$comment->comment_srl}">
+			<div class="clearfix">
+				<div class="float-left">
+						<strong cond="!$comment->member_srl">{$comment->getNickName()}</strong>
+						<strong cond="$comment->member_srl" href="#popup_menu_area" class="member_{$comment->member_srl}" onclick="return false">{$comment->getNickName()}</strong>
+				</div>
+				<div class="dropdown col-auto float-right pr-0" cond="$comment->isGranted()||!$comment->get('member_srl')" >
+				  <a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="xi-ellipsis-v"></i></a>
+					<div class="dropdown-menu dropdown-menu-right">
+						<a cond="$comment->isGranted()||!$comment->get('member_srl')" href="{getUrl('act','dispBoardModifyComment','comment_srl',$comment->comment_srl)}" class="dropdown-item text-secondary" rel="nofollow"><i class="xi-eraser"></i> {$lang->cmd_modify}</a>
+						<a cond="$comment->isGranted()||!$comment->get('member_srl')" href="{getUrl('act','dispBoardDeleteComment','comment_srl',$comment->comment_srl)}" class="dropdown-item text-danger" rel="nofollow"><i class="xi-trash"></i> {$lang->cmd_delete}</a>
+					</div>
+				</div>
+				<div cond="$comment->hasUploadedFiles()" class="float-right">
+					<div class="dropdown">
+						<button type="button" class="btn btn-primary btn-sm dropdown-toggle"  id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							<i class="xi-diskette"></i> {$lang->uploaded_file} <span class="badge badge-light"><strong>{$comment->get('uploaded_count')}</strong></span>
+						</button>
+						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton" style="max-width: 200px;">
+								<!--@foreach($comment->getUploadedFiles() as $key => $file)-->
+									<a class="dropdown-item text-truncate" href="{getUrl('')}{$file->download_url}" rel="nofollow" style="word-wrap: break-word; word-break: keep-all;">{$file->source_filename} [File Size:{FileHandler::filesize($file->file_size)}/Download:{number_format($file->download_count)}]</a>
+								<!--@end-->
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--@if(!$comment->isAccessible())-->
+			<label class="mb-1" for="cpw_{$comment->comment_srl}">{$lang->msg_is_secret}</label>
+			<form action="./" method="get" class="xe_content form-inline" onsubmit="return procFilter(this, input_password)">
+				<div class="input-group">
+					<input type="password" name="password" id="cpw_{$comment->comment_srl}" class="form-control form-control-sm" placeholder="{$lang->msg_input_password}" />
+					<div class="input-group-append">
+						<button type="submit" class="btn btn-primary btn-sm">{$lang->cmd_input}</button>
+					</div>
+				</div>
+					<input type="hidden" name="mid" value="{$mid}" />
+					<input type="hidden" name="page" value="{$page}" />
+					<input type="hidden" name="document_srl" value="{$comment->get('document_srl')}" />
+					<input type="hidden" name="comment_srl" value="{$comment->get('comment_srl')}" />
+			</form>
+			<!--@else-->
+			<div class="content">
+
+				<block cond="$comment->get('depth') > 1">
+					{@
+						$oCommentModel = &getModel('comment');
+						$target_comment = $oCommentModel->getComment($comment->parent_srl);
+					}
+						<strong>@{$target_comment->nick_name}</strong>
+				</block>
+				{$comment->getContent(false)|noescape}
+			</div>
+
+			<!--@end-->
+			<p class="text-secondary mb-1"><small>{$comment->getRegdate('Y.m.d H:i')}
+				<block cond="$is_logged && $comment->get('member_srl') != $logged_info->member_srl">
+					| <a class="text-reset" href="#" onclick="doCallModuleAction('comment','procCommentDeclare','{$comment->comment_srl}'); return false; ">{$lang->cmd_declare}</a>
+				</block>
+				</small>
+			</p>
+				{@
+					$votedUp = $comment->get('voted_count') ? $comment->get('voted_count') : 0;
+					$votedDown = $comment->get('blamed_count') ? $comment->get('blamed_count') : 0;
+				}
+				<div class="float-left">
+					<a class="btn btn-primary btn-sm" cond="$is_logged && $comment->member_srl != $logged_info->member_srl" href="#" onclick="doCallModuleAction('comment','procCommentVoteUp','{$comment->comment_srl}'); return false;"><i class="xi-thumbs-up"></i> {$votedUp}</a>
+					<a class="btn btn-primary btn-sm disabled" cond="!$is_logged || $comment->member_srl == $logged_info->member_srl" href="#" onclick="doCallModuleAction('comment','procCommentVoteUp','{$comment->comment_srl}'); return false;"><i class="xi-thumbs-up"></i> {$votedUp}</a>
+
+					<a class="btn btn-danger btn-sm" cond="$is_logged && $comment->member_srl != $logged_info->member_srl" href="#" onclick="doCallModuleAction('comment','procCommentVoteDown','{$comment->comment_srl}'); return false; "><i class="xi-thumbs-down"></i> {$comment->get('blamed_count')}</a>
+					<a class="btn btn-danger btn-sm disabled" cond="!$is_logged || $comment->member_srl == $logged_info->member_srl" href="#" onclick="doCallModuleAction('comment','procCommentVoteDown','{$comment->comment_srl}'); return false; "><i class="xi-thumbs-down"></i> {$comment->get('blamed_count')}</a>
+				</div>
+				<div class="btn-group float-right">
+					<a cond="$oDocument->allowComment()" href="{getUrl('act','dispBoardReplyComment','comment_srl',$comment->comment_srl)}" class="btn btn-outline-secondary btn-sm" rel="nofollow"><i class="xi-reply"></i> {$lang->cmd_reply}</a>
+					<div cond="$logged_info->is_admin == 'Y'" class="btn-group" role="group">
+						  <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						  	<i class="xi-wrench"></i> {$lang->cmd_management}
+						  </button>
+						  <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+								<a class="dropdown-item" href="#" onclick="if(!confirm('{$lang->confirm_move}')) return; var params = new Array(); params['comment_srl']='{$comment->comment_srl}'; params['mid']=current_mid;params['cur_url']=current_url; exec_xml('comment', 'procCommentAdminMoveToTrash', params); return false; ">{$lang->spammer_move_to_trash}</a>
+								<a class="dropdown-item" href="{getUrl('', 'module', 'admin', 'act', 'dispCommentAdminList', 'search_target', 'ipaddress', 'search_keyword', $comment->get('ipaddress'))}" target="_blank"> {$lang->cmd_search_by_ipaddress}</a>
+								<a class="dropdown-item" href="#" onclick="var params = new Array(); params['ipaddress_list']='{$comment->get('ipaddress')}'; exec_xml('spamfilter', 'procSpamfilterAdminInsertDeniedIP', params, completeCallModuleAction); return false; "> {$lang->cmd_add_ip_to_spamfilter}</a>
+						  </div>
+						</div>
+				</div>
+		</li>
+	</ul>
+		<nav class="mt-3" cond="$oDocument->comment_page_navigation">
+			<ul class="justify-content-center pagination pagination-sm">
+				<li class="page-item pagination-prev">
+					<a href="{getUrl('cpage',1)}#comment" class="page-link ">&laquo;</a>
+				</li>
+				<block loop="$page_no=$oDocument->comment_page_navigation->getNextPage()">
+					<li cond="$cpage!=$page_no" class="page-item">
+						<a class="page-link" href="{getUrl('cpage',$page_no)}#comment">{$page_no}</a>
+					</li>
+					<li cond="$cpage==$page_no" class="page-item active">
+						<a class="page-link" href="{getUrl('cpage',$page_no)}#comment">{$page_no}</a>
+					</li>
+				</block>
+				<li class="page-item pagination-next">
+					<a href="{getUrl('cpage',$oDocument->comment_page_navigation->last_page)}#comment" class="page-link">&raquo;</a>
+				</li>
+			</ul>
+		</nav>
+	</div>
+	<div class="area p-2 mb-2" cond="$grant->write_comment && $oDocument->isEnableComment()">
+		<form action="./" method="post" onsubmit="return procFilter(this, insert_comment)" id="write_comment">
+			<input type="hidden" name="mid" value="{$mid}" />
+			<input type="hidden" name="document_srl" value="{$oDocument->document_srl}" />
+			<input type="hidden" name="comment_srl" value="" />
+	        <input type="hidden" name="content" value="" />
+	        {$oDocument->getCommentEditor()|noescape}
+
+				<div class="form-row" id="toggle_author_row" style="display: none;"|cond="$is_logged">
+					<div class="form-group mb-2 col-sm-3" cond="!$is_logged">
+						<span class="item">
+							<input type="text" name="nick_name" id="userName" class="userName form-control form-control-sm" placeholder="{$lang->writer}"/>
+						</span>
+					</div>
+					<div class="form-group mb-2 col-sm-3">
+						<span id="toggle_password_view">
+							<span class="item" id="comment_password_form">
+								<input cond="!$is_logged" type="password" name="password" id="userPw" class="userPw form-control form-control-sm" placeholder="{$lang->password}"/>
+							</span>
+						</span>
+					</div>
+				</div>
+				<div class="form-row">
+					<div class="form-group mb-2 col-auto" cond="$is_logged">
+							<div class="item custom-control custom-checkbox custom-control-inline" >
+								<input type="checkbox" name="notify_message" value="Y" id="notify_message" class="custom-control-input" />
+								<label for="notify_message"  class="custom-control-label">{$lang->notify}</label>
+							</div>
+					</div>
+						<div class="form-group mb-2 col-auto" cond="$module_info->secret=='Y'">
+							<div class="item custom-control custom-checkbox custom-control-inline" >
+								<input type="checkbox" name="is_secret" value="Y" id="is_secret" class="custom-control-input" onclick="view_password(this);"|cond="$is_logged"/>
+								<label for="is_secret" class="custom-control-label">{$lang->secret}</label>
+								<script>
+									function view_password(cb) {
+											if (cb.checked) {
+												var tag = `<span class="item" id="comment_password_form">
+													<input type="password" name="password" id="userPw" class="userPw form-control form-control-sm" placeholder="{$lang->password}"/>
+												</span>`
+												$("#toggle_password_view").html(tag);
+												$("#toggle_author_row").show();
+											} else {
+												var tag = "";
+												$("#toggle_password_view").html(tag);
+												$("#toggle_author_row").hide();
+											}
+									}
+								</script>
+							</div>
+						</div>
+					</div>
+
+					<div class="clearfix">
+						<div class="float-right">
+							<button type="submit" class="btn btn-success btn-sm"><i class="xi-message"></i> {$lang->cmd_comment_registration}</button>
+						</div>
+					</div>
+			</div>
+		</form>
+	</div>
+</div>
+
+
+<!-- /COMMENT -->

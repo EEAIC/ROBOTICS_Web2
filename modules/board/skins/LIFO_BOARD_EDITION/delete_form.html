@@ -1,0 +1,22 @@
+<include target="_header.html" />
+<div cond="$oDocument->isExists()" class="context_data area p-2 mb-2">
+	<h3 class="title">{$oDocument->getTitle()|noescape}</h3>
+	<p class="author">
+		<i class="xi-user"></i><strong> {$oDocument->getNickName()}</strong>
+	</p>
+</div>
+<form action="./" method="get" onsubmit="return procFilter(this, delete_document)" class="context_message area p-2 mb-2 col-md-8 col-lg-6 mx-auto">
+	<input type="hidden" name="mid" value="{$mid}" />
+	<input type="hidden" name="page" value="{$page}" />
+	<input type="hidden" name="document_srl" value="{$document_srl}" />
+	<h3>{sprintf($lang->comfirm_act_msg,$lang->document,$lang->cmd_delete,$lang->msg_rul)}</h3>
+	<div class="form-row">
+		<div class="col">
+			<input type="submit" class="btn btn-danger w-100" value="{$lang->cmd_delete}" />
+		</div>
+		<div class="col">
+			<button type="button" class="btn btn-dark w-100" onclick="history.back()">{$lang->cmd_cancel}</button>
+		</div>
+	</div>
+</form>
+<include target="_footer.html" />

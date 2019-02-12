@@ -1,0 +1,52 @@
+<footer class="section_footer">
+  <div class="border-top bg-white">
+    <div class="area_notice border-bottom p-2">
+      <div class="mx-auto w-80">
+        {@
+          $mid = $layout_info->footer_board_menu_id;
+          $oModuleModel = &getModel('module');
+          $module = $oModuleModel->getModuleInfoByMid($mid);
+          $oDocumentModel = &getModel('document');
+          $args = new stdClass();
+          $args->page = 1;
+          $args->list_count = 1;
+          $args->page_count = 1;
+          $args->sort_index = 'list_order';
+          $args->module_srl = $module->module_srl;
+          $columnList = array('document_srl', 'module_srl', 'title', 'member_srl', 'status', 'category_srl');
+          $output = $oDocumentModel->getDocumentList($args, true, true, $columnList);
+
+          $title = array_values($output->data)[0]->variables[title];
+          $document_srl = array_values($output->data)[0]->document_srl;
+        }
+        <dl class="row m-0 justify-content-center">
+            <dt class="col-auto">
+              <a href="{getUrl('mid', $mid)}" class="text-reset" data-clk="ntc.notice">{$module->browser_title}</a>
+            </dt>
+            <dd class="col-auto m-0">
+              <a href="{getUrl('', 'mid', $mid, 'document_srl', $document_srl)}" class="text-reset">{$title}</a>
+            </dd>
+        </dl>
+
+      </div>
+		</div>
+    <div class="aside border-bottom p-2" cond="$layout_info->footer_textarea">
+      <div class="text-center">
+        <span>
+          {$layout_info->footer_textarea}
+        </span>
+      </div>
+	  </div>
+    <div class="footer">
+      <div class="area_terms">
+        <ul class="nav justify-content-center">
+          <li class="nav-item text-center">
+             <small>
+               <a href="{$layout_info->footer_copyright_url}" target="_blank" class="nav-link" href="#">Copyright ⓒ <strong>{$layout_info->footer_copyright}</strong> All Rights Reserved.</a>
+             </small>
+          </li>
+        </ul>
+  		</div>
+    </div>
+  </div>
+</footer>

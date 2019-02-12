@@ -1,0 +1,177 @@
+.wrap a {
+    color: black;
+}
+
+#aside {
+
+}
+
+.area_section>ul, .area_section>li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: block;
+
+}
+.aside_footer {
+  padding-bottom: 70px;
+}
+
+.aside_footer>ul, .section_aside_bottom>li {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: block;
+
+}
+
+.wrap {
+    position: fixed;
+    top : 0;
+    height: 0;
+    width: 100%;
+    box-sizing: border-box;
+    transition: 0.7s;
+    z-index: 505;
+    background-color: #f2f2f2;
+    overflow: scroll;
+    -webkit-overflow-scrolling:touch
+}
+.section_userinfo {
+    display: block;
+    position: relative;
+    background-color: midnightblue;
+    height: 5rem;
+
+
+}
+
+.section_userinfo .user_name {
+    display: block;
+    padding-left: 74px;
+    padding-top: 1.25rem;
+
+}
+
+.user_thumb {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    height: 1rem;
+    width: 1rem;
+}
+
+
+.user_nick {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: block;
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: white;
+    cursor: pointer;
+}
+
+.btn_userinfo_close {
+    position: absolute;
+    top: 1.25rem;
+    right: 1.25rem;
+    color: white;
+    font-size: 2rem;
+
+}
+
+.section_menu {
+    margin-top: 5px;
+    border-bottom: 1px solid #dfe1e3;
+    background: #fff;
+}
+
+.area_section {
+    position: relative;
+    overflow: hidden;
+
+
+}
+
+
+.section_menu .section_category {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 0.5em 0rem 0.5em 1.25em;
+    border-top: 1px solid #ebebeb;
+    background-color: #f8f8f8;
+    font-size: 1.25rem;
+    display: block;
+
+
+}
+
+.section_menu .section_item_list {
+    position: relative;
+    display: block;
+    line-height: 1.267em;
+    bottom;
+}
+
+.section_menu .section_item_list::before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 1px;
+    margin-left: -1px;
+    background-color: #f5f5f5;
+}
+
+.section_menu .section_item_list::after {
+    content: "";
+    display: table;
+    table-layout: fixed;
+    clear: both;
+}
+
+.section_menu .section_item {
+    position: relative;
+    float: left;
+    width: 50%;
+    border-bottom: 1px solid #f5f5f5;
+    line-height: 2rem;
+    padding-left: 1rem;
+
+}
+
+.section_item .section_item_link {
+    display: block;
+}
+
+
+.stopm {
+    padding: 0.5rem 0.5rem;
+    line-height: 18px;
+    letter-spacing: -1px;
+    color: gray;
+}
+
+.section_aside_bottom {
+    padding-top: 1.5em;
+}
+
+.section_aside_bottom .sab_item {
+    position: relative;
+    float: left;
+    width: 50%;
+}
+
+.section_aside_bottom .btn_bottom {
+    display: block;
+    height: 2rem;
+    font-size: 1.25rem;
+    color:gray;
+    line-height: 1.25rem;
+    text-align: center;
+}

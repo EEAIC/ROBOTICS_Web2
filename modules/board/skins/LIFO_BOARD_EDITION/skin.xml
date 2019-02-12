@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<skin version="0.2">
+    <title xml:lang="ko">LIFO EDITION with Bootstrap</title>
+    <version>0.6</version>
+    <date>2018-12-17</date>
+    <author email_address="artherlim@google.com" link="https://gconmaster.github.io/">
+        <name xml:lang="ko">JEONGKEE LIM</name>
+    </author>
+    <license>MIT</license>
+</skin>

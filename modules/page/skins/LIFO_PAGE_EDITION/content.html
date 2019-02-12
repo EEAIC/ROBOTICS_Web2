@@ -1,0 +1,49 @@
+<load target="./default.css" />
+  <div class="area p-2 mb-2">
+    <block cond="$oDocument->document_srl">
+    <block cond="$module_info->display_title != 'hide'">
+    <div class="border-bottom border-secondary mb-2">
+      <h2 class="py-2 m-0">
+        {$oDocument->getTitle()|noescape}
+      </h2>
+    </div>
+    </block>
+    <div class="">
+      {$oDocument->getContent(false)|noescape}
+    </div>
+    <block cond="$module_info->display_popupmenu != 'hide'">
+      <div class="pt-3 clearfix">
+        <div class="float-sm-left" cond="$is_logged">
+          <div class="mb-2 no-gutters" >
+            <div class="btn-group col" role="group">
+              <a class="btn btn-primary btn-sm w-100" cond="$is_logged && $oDocument->get('member_srl') != $logged_info->member_srl" href="#" onclick="doCallModuleAction('document','procDocumentVoteUp','{$oDocument->document_srl}'); return false;"><i class="xi-thumbs-up"></i> {$oDocument->get('voted_count')}</a>
+              <a class="btn btn-primary btn-sm disabled w-100" cond="$is_logged && $oDocument->get('member_srl') == $logged_info->member_srl" href="#" onclick="doCallModuleAction('document','procDocumentVoteUp','{$oDocument->document_srl}'); return false;"><i class="xi-thumbs-up"></i> {$oDocument->get('voted_count')}</a>
+              <a class="btn btn-danger btn-sm w-100"  cond="$is_logged && $oDocument->get('member_srl') != $logged_info->member_srl" href="#" onclick="doCallModuleAction('document','procDocumentVoteDown','{$oDocument->document_srl}'); return false; "><i class="xi-thumbs-down"></i> {$oDocument->get('blamed_count')}</a>
+              <a class="btn btn-danger btn-sm disabled w-100"  cond="$is_logged && $oDocument->get('member_srl') == $logged_info->member_srl" href="#" onclick="doCallModuleAction('document','procDocumentVoteDown','{$oDocument->document_srl}'); return false; "><i class="xi-thumbs-down"></i> {$oDocument->get('blamed_count')}</a>
+            </div>
+          </div>
+        </div>
+        <div class="float-right">
+          <a cond="$is_logged" class="btn btn-outline-secondary btn-sm mb-2" href="#" onclick="doCallModuleAction('member','procMemberScrapDocument', {$oDocument->document_srl}); return false; "><i class="xi-bookmark"></i> {$lang->cmd_scrap}</a>
+          <a class="btn btn-outline-secondary btn-sm mb-2" cond="$is_logged && $oDocument->get('member_srl') != $logged_info->member_srl" href="#" onclick="doCallModuleAction('document','procDocumentDeclare','{$oDocument->document_srl}'); return false; "><i class="xi-bell"></i> {$lang->cmd_declare}</a>
+          <a class="btn btn-outline-secondary btn-sm mb-2" href="{getUrl('', 'module', 'document', 'act', 'dispDocumentPrint', 'document_srl', $oDocument->document_srl)}" target="_blank"><i class="xi-print"></i> {$lang->cmd_print}</a>
+          <block cond="$logged_info->is_admin == 'Y'">
+            <div class="btn-group mb-2 text-center" role="group">
+              <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="xi-wrench"></i> {$lang->cmd_management}
+              </button>
+              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="#" onclick="if(!confirm('{$lang->confirm_move}')) return; var params = new Array(); params['document_srl']='{$oDocument->document_srl}'; params['mid']=current_mid;params['cur_url']=current_url; exec_xml('document', 'procDocumentAdminMoveToTrash', params); return false; ">{$lang->spammer_move_to_trash}</a>
+                <a class="dropdown-item" href="{getUrl('', 'module', 'admin', 'act', 'dispDocumentAdminList', 'search_target', 'ipaddress', 'search_keyword', $oDocument->get('ipaddress'))}" target="_blank"> {$lang->cmd_search_by_ipaddress}</a>
+                <a class="dropdown-item" href="#" onclick="var params = new Array(); params['ipaddress_list']='{$oDocument->get('ipaddress')}'; exec_xml('spamfilter', 'procSpamfilterAdminInsertDeniedIP', params, completeCallModuleAction); return false; ">{$lang->cmd_add_ip_to_spamfilter}</a>
+              </div>
+            </div>
+          </block>
+        </div>
+      </div>
+    </block>
+  </block>
+  <block cond="!$oDocument->document_srl">
+    {$lang->none_content}
+  </block>
+</div>

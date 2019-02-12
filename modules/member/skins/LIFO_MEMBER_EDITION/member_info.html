@@ -1,0 +1,35 @@
+<include target="./common_header.html" />
+<div class="area p-2 mb-2">
+	<h3>{$lang->member_info}</h3>
+	<div role="alert" cond="$XE_VALIDATOR_MESSAGE && $XE_VALIDATOR_ID == 'modules/member/skins/robotics_member_skin/1'" class="alert alert-danger text-center {$XE_VALIDATOR_MESSAGE_TYPE}">
+		{$XE_VALIDATOR_MESSAGE}
+	</div>
+
+	<dl class="row w-100">
+		<block loop="$displayDatas => $item">
+			<dt class="col-4 col-md-3"><em class="text-danger" cond="$item->required || $item->mustRequired">*</em> {$item->title}</dt>
+			<dd class="col-8 col-md-9" cond="$item->value">{$item->value|noescape}</dd>
+			<dd class="col-8 col-md-9" cond="!$item->value">{$lang->not_exists}</dd>
+		</block>
+		<dt class="col-4 col-md-3">{$lang->member_group}</dt>
+		<dd class="col-8 col-md-9">{implode(', ', $memberInfo['group_list'])}</dd>
+		<dt class="col-4 col-md-3">{$lang->signup_date}</dt>
+		<dd class="col-8 col-md-9">{zdate($memberInfo[regdate],"Y-m-d")}</dd>
+		<block cond="$memberInfo[member_srl] == $logged_info->member_srl || $logged_info->is_admin == 'Y'">
+			<dt class="col-4 col-md-3">{$lang->last_login}</dt>
+			<dd class="col-8 col-md-9">{zdate($memberInfo[last_login],"Y-m-d")}</dd>
+		</block>
+	</dl>
+
+
+
+	<div class="clearfix">
+		<div class="btn-group float-right" cond="$memberInfo['member_srl'] == $logged_info->member_srl">
+			<a href="{getUrl('act', 'dispMemberModifyEmailAddress')}" class="btn" cond="$member_config->identifier == 'email_address'">{$lang->cmd_modify_member_email_address}</a>
+			<a href="{getUrl('act','dispMemberModifyInfo','member_srl','')}" class="btn btn-info">{$lang->cmd_modify_member_info}</a>
+			<a href="{getUrl('act','dispMemberModifyPassword','member_srl','')}" class="btn btn-warning">{$lang->cmd_modify_member_password}</a>
+			<a href="{getUrl('act','dispMemberLeave','member_srl','')}" class="btn btn-danger">{$lang->cmd_leave}</a>
+		</div>
+	</div>
+</div>
+<include target="./common_footer.html" />

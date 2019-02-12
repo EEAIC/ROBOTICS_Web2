@@ -1,0 +1,176 @@
+<div class="area p-2 mb-2">
+<div class="board_read">
+	<!-- READ HEADER -->
+	<div class="read_header mb-0">
+		<div class="d-flex align-items-center w-100">
+			<h1 class="col text-truncate">
+				<a href="{getUrl('category',$oDocument->get('category_srl'), 'document_srl', '')}" class="category" cond="$module_info->use_category=='Y' && $oDocument->get('category_srl')">{$category_list[$oDocument->get('category_srl')]->title}</a>
+				<a href="{$oDocument->getPermanentUrl()}">{$oDocument->getTitle()|noescape}</a>
+			</h1>
+			<div class="dropdown col-auto pr-0">
+			  <a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="xi-ellipsis-v"></i></a>
+				<div class="dropdown-menu dropdown-menu-right">
+					<a cond="$oDocument->isEditable()" class="dropdown-item text-secondary" href="{getUrl('act','dispBoardWrite','document_srl',$oDocument->document_srl,'comment_srl','')}" rel="nofollow">
+						<i class="xi-eraser"></i> {$lang->cmd_modify}
+					</a>
+					<a cond="$oDocument->isEditable()" class="dropdown-item text-danger" href="{getUrl('act','dispBoardDelete','document_srl',$oDocument->document_srl,'comment_srl','')}" rel="nofollow"><i class="xi-trash"></i> {$lang->cmd_delete}</a>
+					<div cond="$oDocument->isEditable()" class="dropdown-divider"></div>
+					<a cond="$is_logged" class="dropdown-item text-info" href="#" onclick="doCallModuleAction('member','procMemberScrapDocument', {$oDocument->document_srl}); return false; "><i class="xi-bookmark"></i> {$lang->cmd_scrap}</a>
+					<div cond="$is_logged" class="dropdown-divider"></div>
+					<a class="dropdown-item" href="{getUrl('', 'module', 'document', 'act', 'dispDocumentPrint', 'document_srl', $oDocument->document_srl)}" target="_blank"><i class="xi-print"></i> {$lang->cmd_print}</a>
+				</div>
+			</div>
+		</div>
+		<div class="border-bottom border-secondary">
+			<ul  class="nav">
+				<!--@if($module_info->display_author!='N' && !$oDocument->getMemberSrl() && !$oDocument->isExistsHomepage())-->
+				<li class="author nav-item">
+					<a class="nav-link">
+						<i class="xi-user"></i> {$oDocument->getNickName()}
+					</a>
+				</li>
+				<!--@else-->
+				<li class="author nav-item" cond="$module_info->display_author!='N' && !$oDocument->getMemberSrl() && $oDocument->isExistsHomepage()">
+					<a href="{$oDocument->getHomepageUrl()}" target="_blank" rel="nofollow noopener" class="author nav-link"><i class="xi-user"></i> {$oDocument->getNickName()}</a>
+				</li>
+				<li class="author nav-item dropright" cond="$module_info->display_author!='N' && $oDocument->getMemberSrl()">
+					<a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle member_{$oDocument->get('member_srl')} author"><i class="xi-user"></i> {$oDocument->getNickName()}</a>
+					<div class="dropdown-menu">
+							<a cond="$is_logged && $oDocument->get('member_srl') != $logged_info->member_srl" class="dropdown-item" href="{getUrl('act','dispCommunicationSendMessage','receiver_srl', $oDocument->get('member_srl'))}" onclick="popopen(this.href, 'popup'); return false;" target="_blank">{$lang->cmd_send_message}</a>
+							<a cond="$is_logged" class="dropdown-item" href="{getUrl('act','dispCommunicationAddFriend','target_srl', $oDocument->get('member_srl'))}" onclick="popopen(this.href, 'popup'); return false;" target="_blank">{$lang->cmd_add_friend}</a>
+							<a cond="$is_logged" class="dropdown-item" href="{getUrl('act','dispMemberInfo','member_srl', $oDocument->get('member_srl'))}" target="_blank">{$lang->cmd_view_member_info}</a>
+							<a cond="$is_logged && $logged_info->is_admin == 'Y'" class="dropdown-item" href="mailto:{$oDocument->get('email_address')}" target="_blank">{$lang->cmd_send_email}</a>
+							<a class="dropdown-item" href="{getUrl('', 'mid', $mid, 'search_target','nick_name','search_keyword', $oDocument->get('nick_name'))}" target="_blank">{$lang->cmd_view_own_document}</a>
+							<a cond="$is_logged && $logged_info->is_admin == 'Y'" class="dropdown-item" href="{getUrl('act', 'dispMemberAdminInsert', 'member_srl', $oDocument->get('member_srl'))}" target="_blank">{$lang->cmd_manage_member_info}</a>
+							<a cond="$is_logged && $logged_info->is_admin == 'Y'" class="dropdown-item" href="{getUrl('', 'module', 'admin', 'act','dispDocumentAdminList', 'search_target', 'member_srl', 'search_keyword', $oDocument->get('member_srl'))}" target="_blank">{$lang->cmd_trace_document}</a>
+							<a cond="$is_logged && $logged_info->is_admin == 'Y'" class="dropdown-item" href="{getUrl('', 'module', 'admin', 'act','dispCommentAdminList', 'search_target', 'member_srl', 'search_keyword', $oDocument->get('member_srl'))}" target="_blank">{$lang->cmd_trace_comment}</a>
+				  </div>
+				</li>
+				<!--@end-->
+				<li class="time nav-item">
+					 <a class="nav-link">
+						 <i class="xi-time"></i> {$oDocument->getRegdate('Y.m.d H:i')}
+					 </a>
+				</li>
+				<li class="read_count nav-item">
+					<a class="nav-link">
+						<i class="xi-eye"></i> {$lang->readed_count} : {$oDocument->get('readed_count')}
+					</a>
+				</li>
+				<li class="vote_count nav-item" cond="$oDocument->get('voted_count')!=0">
+					<a class="nav-link">
+						<i class="xi-thumbs-up"></i> {$lang->cmd_vote} : {$oDocument->get('voted_count')}
+					</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" cond="$is_logged && $oDocument->get('member_srl') != $logged_info->member_srl" href="#" onclick="doCallModuleAction('document','procDocumentDeclare','{$oDocument->document_srl}'); return false; "><i class="xi-bell"></i> {$lang->cmd_declare}</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+
+	<!-- /READ HEADER -->
+	<!-- Extra Output -->
+	<div class="exOut" cond="$oDocument->isExtraVarsExists() && (!$oDocument->isSecret() || $oDocument->isGranted())">
+		<table border="1" cellspacing="0" summary="Extra Form Output">
+			<tr loop="$oDocument->getExtraVars() => $key,$val">
+				<th scope="row">{$val->name}</th>
+				<td>{$val->getValueHTML()|noescape}&nbsp;</td>
+			</tr>
+		</table>
+	</div>
+	<!-- /Extra Output -->
+	<!-- READ BODY -->
+	<div class="read_body">
+		<!--@if($oDocument->isSecret() && !$oDocument->isGranted())-->
+		<form action="./" method="get" onsubmit="return procFilter(this, input_password)" class="secretForm">
+			<input type="hidden" name="mid" value="{$mid}" />
+			<input type="hidden" name="page" value="{$page}" />
+			<input type="hidden" name="document_srl" value="{$oDocument->document_srl}" />
+			<p><label for="cpw">{$lang->msg_is_secret} {$lang->msg_input_password}</label></p>
+			<div class="input-group col col-md-5 px-0">
+				<input type="password" name="password" id="cpw" class="form-control" />
+				<div class="input-group-append">
+					<button type="submit" class="btn btn-primary">{$lang->cmd_input}</button>
+				</div>
+			</div>
+		</form>
+		<!--@else-->
+		<div class="content mb-4">
+
+			<load target="./codesnippet/styles/monokai_sublime.css" />
+    	<script src="./codesnippet/highlight.pack.js"></script>
+			<script>hljs.initHighlightingOnLoad();</script>
+			{$oDocument->getContent(false)|noescape}
+		</div>
+		<!--@end-->
+		<div class="mt-1" cond="$oDocument->hasUploadedFiles()">
+			<div>
+					<i class="xi-diskette align-middle"></i>
+					<span class="align-middle">{$lang->uploaded_file}</span>
+					<span class="badge badge-dark align-middle">
+						<strong>{$oDocument->get('uploaded_count')}</strong>
+					</span>
+			</div>
+			<!--@foreach($oDocument->getUploadedFiles() as $key => $file)-->
+			<li class="bg-light list-unstyled">
+				<div class="p-3 my-1">
+					<a class="text-reset" href="{getUrl('')}{$file->download_url}" rel="nofollow">
+						<div class="row align-items-center">
+							<div class="col" style="width: 1px;">
+								<h5 class="mb-1 font-weight-bold text-truncate">{$file->source_filename}</h5>
+									<small class="text-muted">{FileHandler::filesize($file->file_size)}</small>
+							</div>
+							<div class="col-auto">
+								<i class="xi-download xi-2x d-block text-center"></i>
+								<small class="d-block text-center text-muted">{number_format($file->download_count)}</small>
+							</div>
+						</div>
+					</a>
+				</div>
+			</li>
+			<!--@end-->
+		</div>
+		<div class="">
+			{@ $tag_list = $oDocument->get('tag_list') }
+			<span class="" cond="count($tag_list)">
+				<i class="xi-tags align-middle"></i>
+				<!--@for($i=0;$i<count($tag_list);$i++)-->
+					{@ $tag = $tag_list[$i]; }
+					<a href="{getUrl('search_target','tag','search_keyword',$tag,'document_srl','')}" class="badge badge-secondary align-middle" rel="tag">{htmlspecialchars($tag)}</a>
+				<!--@end-->
+			</span>
+		</div>
+	</div>
+	<!-- /READ BODY -->
+	<!-- READ FOOTER -->
+	<div class="">
+			<div class="clearfix">
+				<div class="float-left">
+					<a class="btn btn-primary" cond="$is_logged && $oDocument->get('member_srl') != $logged_info->member_srl" href="#" onclick="doCallModuleAction('document','procDocumentVoteUp','{$oDocument->document_srl}'); return false;"><i class="xi-thumbs-up"></i> {$oDocument->get('voted_count')}</a>
+					<a class="btn btn-primary disabled" cond="!$is_logged || $oDocument->get('member_srl') == $logged_info->member_srl" href="#" onclick="doCallModuleAction('document','procDocumentVoteUp','{$oDocument->document_srl}'); return false;"><i class="xi-thumbs-up"></i> {$oDocument->get('voted_count')}</a>
+					<a class="btn btn-danger"  cond="$is_logged && $oDocument->get('member_srl') != $logged_info->member_srl" href="#" onclick="doCallModuleAction('document','procDocumentVoteDown','{$oDocument->document_srl}'); return false; "><i class="xi-thumbs-down"></i> {$oDocument->get('blamed_count')}</a>
+					<a class="btn btn-danger disabled"  cond="!$is_logged || $oDocument->get('member_srl') == $logged_info->member_srl" href="#" onclick="doCallModuleAction('document','procDocumentVoteDown','{$oDocument->document_srl}'); return false; "><i class="xi-thumbs-down"></i> {$oDocument->get('blamed_count')}</a>
+				</div>
+				<div class="btn-group float-right">
+					<a href="{getUrl('document_srl','')}" class="btn btn-primary"><i class="xi-list-ul-l"></i> {$lang->cmd_list}</a>
+					<div cond="$logged_info->is_admin == 'Y'" class="btn-group" role="group">
+						  <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						  	<i class="xi-wrench"></i> {$lang->cmd_management}
+						  </button>
+						  <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+								<a class="dropdown-item" href="#" onclick="if(!confirm('{$lang->confirm_move}')) return; var params = new Array(); params['document_srl']='{$oDocument->document_srl}'; params['mid']=current_mid;params['cur_url']=current_url; exec_xml('document', 'procDocumentAdminMoveToTrash', params); return false; ">{$lang->spammer_move_to_trash}</a>
+								<a class="dropdown-item" href="{getUrl('', 'module', 'admin', 'act', 'dispDocumentAdminList', 'search_target', 'ipaddress', 'search_keyword', $oDocument->get('ipaddress'))}" target="_blank"> {$lang->cmd_search_by_ipaddress}</a>
+								<a class="dropdown-item" href="#" onclick="var params = new Array(); params['ipaddress_list']='{$oDocument->get('ipaddress')}'; exec_xml('spamfilter', 'procSpamfilterAdminInsertDeniedIP', params, completeCallModuleAction); return false; ">{$lang->cmd_add_ip_to_spamfilter}</a>
+						  </div>
+						</div>
+				</div>
+			</div>
+	</div>
+	<!-- /READ FOOTER -->
+</div>
+</div>
+<block cond="$oDocument->allowTrackback()">
+	<include target="_trackback.html" />
+</block>
+<include target="_comment.html" />

@@ -1,0 +1,53 @@
+<div class="wrap" id="aside">
+  <div class="section_userinfo">
+    <!--@if($is_logged)-->
+      <a class="user_name" href="{getUrl('act','dispMemberInfo')}">
+          <span class="user_thumb">
+              <img cond="$logged_info->profile_image" src="{$logged_info->profile_image->src}" width="47" height="47">
+              <i cond="!$logged_info->profile_image" class="xi-user" style="font-size: 47px; color: white;"></i>
+          </span>
+          <strong class="user_nick">{$logged_info->nick_name}</strong>
+      </a>
+    <!--@else-->
+      <a class="user_name" data-toggle="modal" data-target="#Modal-login">
+          <span class="user_thumb">
+              <i class="xi-user" style="font-size: 47px; color: white;"></i>
+          </span>
+          <strong class="user_nick">{$lang->cmd_login}</strong>
+      </a>
+    <!--@end-->
+      <a href="#" class="close btn_userinfo_close" aria-label="Close" onclick="closeAside();">
+          <span aria-hidden="true">&times;</span>
+      </a>
+  </div>
+          <div class="section_menu">
+            <div id="section" class="area_section" loop="$main_menu->list=>$key1,$val1">
+              <a class="section_category" href="{$val1['href']}"|cond="!$val1['list']">{$val1['link']}</a>
+              <ul class= "section_item_list" cond="$val1['list']">
+                  <li class="section_item" loop="$val1['list']=>$key2,$val2">
+                      <a class="section_item_link" href="{$val2['href']}">{$val2['link']}</a>
+                  </li>
+              </ul>
+            </div>
+            <div class="stopm text-center">Copyright ⓒ <strong>{$layout_info->footer_copyright}</strong> All Rights Reserved.</div>
+          </div>
+          <!--@if($is_logged)-->
+          <div class="aside_footer mt-3">
+              <ul class="section_aside_bottom">
+                  <li class="sab_item">
+                      <a href="{getUrl('act','dispMemberLogout')}" class="btn_bottom" >
+                          <i class="xi-power-off"></i>
+                          {$lang->cmd_logout}
+                      </a>
+                  </li>
+                  <li class="sab_item">
+                      <a href="{getUrl('mid','notice')}" class="btn_bottom">
+                          <span class="fas fa-bullhorn"></span>
+                          <i class="xi-bell"></i>
+                          공지사항
+                      </a>
+                  </li>
+              </ul>
+          </div>
+          <!--@end-->
+      </div>

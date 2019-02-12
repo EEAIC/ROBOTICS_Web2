@@ -1,0 +1,12 @@
+/* widget 크기 제한 */
+.widgetOutput {
+	max-width: 100%;
+}
+
+.xe-widget-wrapper {
+  max-width: 100%;
+}
+
+.page_wrap {
+	background-color: #f2f2f2;
+}

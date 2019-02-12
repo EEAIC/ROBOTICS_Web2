@@ -1,0 +1,137 @@
+<include target="./common_header.html" />
+<load target="filter/delete_friend_group.xml" />
+<load target="filter/move_friend.xml" />
+<load target="lang/lang.xml" />
+<div class="area p-2 mb-2">
+	<h3>{$member_title = $lang->cmd_view_friend }</h3>
+	<div cond="$XE_VALIDATOR_MESSAGE && $XE_VALIDATOR_ID == 'modules/communication/skins/default/frineds/1'" class="message {$XE_VALIDATOR_MESSAGE_TYPE}">
+		<p>{$XE_VALIDATOR_MESSAGE}</p>
+	</div>
+	<form ruleset="deleteCheckedFriend" id="fo_friend_list" action="./" method="post">
+		<input type="hidden" name="module" value="communication" />
+		<input type="hidden" name="act" value="procCommunicationDeleteFriend" />
+		<input type="hidden" name="xe_validator_id" value="modules/communication/skins/default/frineds/1" />
+
+		<div class="form-group float-sm-right mw-100">
+			<span class="form-inline">
+				<select class="custom-select custom-select-sm mr-2 mb-2 col  w-25" name="jumpMenu" id="jumpMenu">
+					<option value="">{$lang->default_friend_group}</option>
+					<!--@foreach($friend_group_list as $key => $val)-->
+					<option value="{$val->friend_group_srl}" <!--@if($val->friend_group_srl == $friend_group_srl)-->selected="selected"<!--@end--> >{$val->title}</option>
+					<!--@end-->
+				</select>
+				<button type="button" class="btn btn-info btn-sm mb-2" style="max-width: fit-content;" onclick="doJumpFriendGroup()">{$lang->cmd_move}</button>
+			</span>
+			<span class="form-inline no-gutters">
+				<div class="col mr-2 mb-2" cond="$friend_group_list">
+					<select class="custom-select custom-select-sm mw-100" name="friend_group_list" id="friend_group_list">
+						<option loop="$friend_group_list => $key,$val" value="{$val->friend_group_srl}" selected="selected"|cond="$val->friend_group_srl == $friend_group_srl">{$val->title}</option>
+					</select>
+				</div>
+				<div class="btn-group btn-group-sm mb-2 col" style="min-width: fit-content;">
+					<button cond="$friend_group_list" type="button" class="btn btn-warning" onclick="doRenameFriendGroup();return false;">{$lang->cmd_modify}</button>
+					<button cond="$friend_group_list" type="button" class="btn btn-danger" onclick="doDeleteFriendGroup();return false;">{$lang->cmd_delete}</button>
+					<a href="{getUrl('','module','communication','act','dispCommunicationAddFriendGroup')}" class="btn btn-primary" onclick="popopen(this.href);return false;">{$lang->cmd_add_friend_group}</a>
+				</div>
+			</span>
+		</div>
+
+		<table class="table table-striped mw-100">
+			<caption class="text-right">Total: {$total_count}</caption>
+			<thead>
+				<tr>
+					<th class="d-none d-sm-table-cell w-75" style="width:1px; white-space:nowrap;">
+						{$lang->friend_group}
+					</th>
+					<th class="d-table-cell d-sm-none w-100">
+						{$lang->content}
+					</th>
+
+					<th class="d-none d-sm-table-cell w-25" style="width:1px; white-space:nowrap;">{$lang->nick_name}</th>
+					<th class="d-none d-sm-table-cell text-wrap">{$lang->regdate}</th>
+					<th class="">
+						<span class="custom-control custom-checkbox">
+							<input class="custom-control-input" name="check_all" type="checkbox" onclick="XE.checkboxToggleAll('friend_srl_list[]', {wrap:'fo_friend_list'})" id="friend_checkbox"/>
+							<label class="custom-control-label" for="friend_checkbox">&nbsp;</label>
+						</span>
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				<block cond="$friend_list">
+					<tr loop="$friend_list => $no,$val">
+						<td class="title">
+							<small class="d-block d-sm-none font-weight-bold">
+								{$lang->friend_group}
+							</small>
+							{$val->group_title?$val->group_title:$lang->default_friend_group}
+
+							<small class="d-block d-sm-none font-weight-bold">
+							{$lang->nick_name}
+							</small>
+							<div class="d-block d-sm-none">
+						  {$val->nick_name}
+							</div>
+						</td>
+						<td class="d-none d-sm-table-cell" style="width:1px; white-space:nowrap;">
+							<div class="dropdown">
+								<a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#" class="dropdown-toggle member_{$val->target_srl}">{$val->nick_name}</a>
+								<div class="dropdown-menu">
+										<a cond="$is_logged" class="dropdown-item" href="{getUrl('act','dispCommunicationMessages')}" target="_blank">{$lang->cmd_view_message_box}</a>
+										<a cond="$is_logged" class="dropdown-item" href="{getUrl('act','dispMemberInfo','member_srl', $val->target_srl)}" target="_blank">{$lang->cmd_view_member_info}</a>
+										<a class="dropdown-item" href="{getUrl('', 'mid', $mid, 'search_target','nick_name','search_keyword', $val->nick_name)}" target="_blank">{$lang->cmd_view_own_document}</a>
+										<a cond="$is_logged && $logged_info->is_admin == 'Y'" class="dropdown-item" href="{getUrl('act', 'dispMemberAdminInsert', 'member_srl', $val->target_srl)}" target="_blank">{$lang->cmd_manage_member_info}</a>
+										<a cond="$is_logged && $logged_info->is_admin == 'Y'" class="dropdown-item" href="{getUrl('', 'module', 'admin', 'act','dispDocumentAdminList', 'search_target', 'member_srl', 'search_keyword', $val->target_srl)}" target="_blank">{$lang->cmd_trace_document}</a>
+										<a cond="$is_logged && $logged_info->is_admin == 'Y'" class="dropdown-item" href="{getUrl('', 'module', 'admin', 'act','dispCommentAdminList', 'search_target', 'member_srl', 'search_keyword', $val->target_srl)}" target="_blank">{$lang->cmd_trace_comment}</a>
+							  </div>
+							</div>
+						</td>
+						<td class="d-none d-sm-table-cell" style="width:1px; white-space:nowrap;">{zdate($val->regdate,"Y-m-d")}</td>
+						<td>
+							<span class="custom-control custom-checkbox">
+								<input class="custom-control-input" type="checkbox" name="friend_srl_list[]" value="{$val->friend_srl}" id="friend_checkbox_{$val->friend_srl}"/>
+								<label class="custom-control-label" for="friend_checkbox_{$val->friend_srl}">&nbsp;</label>
+							</span>
+						</td>
+					</tr>
+				</block>
+				<block cond="!$friend_list">
+					<tr>
+						<td colspan="4">
+							<p class="text-center m-0">{$lang->msg_no_friend}</p>
+						</td>
+					</tr>
+				</block>
+			</tbody>
+		</table>
+		<div class="clearfix">
+
+			<div class="form-group float-sm-right mw-100">
+				<span class="form-inline">
+					<select cond="$friend_group_list" class="custom-select mr-2 mb-2 col  w-25" name="target_friend_group_srl">
+						<option loop="$friend_group_list => $key,$val" value="{$val->friend_group_srl}">{$val->title}</option>
+					</select>
+					<div class="btn-group mb-2">
+						<button cond="$friend_group_list" type="submit" name="act" class="btn btn-info w-100" value="procCommunicationMoveFriend">{$lang->cmd_move}</button>
+						<button cond="$friend_group_list" type="submit" name="act" class="btn btn-danger w-100" value="procCommunicationDeleteFriend">{$lang->cmd_delete}</button>
+					</div>
+				</span>
+			</div>
+		</div>
+
+		<nav>
+			<ul class="pagination justify-content-center">
+				<li class="page-item"><a class="page-link" href="{getUrl('page','','document_srl','')}" class="direction">&laquo; {$lang->first_page}</a></li>
+				<!--@while($page_no = $page_navigation->getNextPage())-->
+				<li class="page-item active"|cond="$page == $page_no" class="page-item"|cond="$page != $page_no"><a class="page-link" href="{getUrl('page',$page_no,'document_srl','')}">{$page_no}</a></li>
+				<!--@end-->
+				<li class="page-item"><a class="page-link" href="{getUrl('page',$page_navigation->last_page,'document_srl','')}" class="direction">{$lang->last_page} &raquo;</a></li>
+			</ul>
+		</nav>
+	</form>
+	<form action="./" method="get" id="for_delete_group">
+		<input type="hidden" name="friend_group_srl" value="" />
+		<input type="hidden" name="xe_validator_id" value="modules/communication/skins/default/frineds/1" />
+	</form>
+</div>
+<include target="./common_footer.html" />

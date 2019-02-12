@@ -1,0 +1,44 @@
+<include target="_header.html" />
+<div class="area p-2 mb-2">
+<div cond="$oSourceComment->isExists()" class="context_data content">
+	<h3 class="author">
+		<a cond="$oSourceComment->homepage" href="{$oSourceComment->homepage}" rel="nofollow noopener">{$oSourceComment->getNickName()}</a>
+		<strong cond="!$oSourceComment->homepage">{$oSourceComment->getNickName()}</strong>
+	</h3>
+	{$oSourceComment->getContent(false)|noescape}
+</div>
+<div class="feedback">
+	<form action="./" method="post" onsubmit="return procFilter(this, insert_comment)" class="">
+		<input type="hidden" name="mid" value="{$mid}" />
+		<input type="hidden" name="document_srl" value="{$oComment->get('document_srl')}" />
+		<input type="hidden" name="comment_srl" value="{$oComment->get('comment_srl')}" />
+		<input type="hidden" name="parent_srl" value="{$oComment->get('parent_srl')}" />
+        <input type="hidden" name="content" value="{htmlspecialchars($oComment->get('content'))}" />
+        {$oComment->getEditor()|noescape}
+		<div class="write_author">
+			<div class="form-row">
+				<span class="item form-group col-md-6" cond="!$is_logged">
+					<input type="text" name="nick_name" id="userName" class="form-control" value="{$oComment->getNickName()}" placeholder="{$lang->writer}" />
+				</span>
+				<span class="item form-group col-md-6" cond="!$is_logged">
+					<input type="password" name="password" id="userPw" class="userPw form-control" placeholder="{$lang->password}" />
+				</span>
+			</div>
+			<div class="form-group col-auto item custom-control custom-checkbox custom-control-inline" cond="$is_logged">
+				<input cond="$is_logged" type="checkbox" name="notify_message" value="Y" checked="checked"|cond="$oComment->get('notify_message')=='Y'" id="notify_message" class="custom-control-input" />
+				<label class="custom-control-label" cond="$is_logged" for="notify_message">{$lang->notify}</label>
+			</div>
+			<div class="form-group col-auto item custom-control custom-checkbox custom-control-inline" cond="$module_info->secret=='Y'">
+				<input cond="$module_info->secret=='Y'" type="checkbox" name="is_secret" value="Y" id="is_secret" checked="checked"|cond="$oComment->get('is_secret')=='Y'" class="custom-control-input" />
+				<label class="custom-control-label"  cond="$module_info->secret=='Y'" for="is_secret">{$lang->secret}</label>
+			</div>
+		</div>
+		<div class="clearfix">
+		<div style="float:right">
+			<button type="submit" class="btn btn-success"><i class="xi-message"></i> {$lang->cmd_comment_registration}</button>
+		</div>
+		</div>
+	</form>
+</div>
+</div>
+<include target="_footer.html" />

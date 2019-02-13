@@ -1,0 +1,48 @@
+<div class="col-sm-auto col-md-6 col-lg-5 px-0">
+<div class="poll_box card">
+	<div cond="$XE_VALIDATOR_MESSAGE && $XE_VALIDATOR_ID == 'modules/poll/skins/lifo-poll/form/' . $poll->poll_srl" class="px-3 pt-3 message {$XE_VALIDATOR_MESSAGE_TYPE}">
+		<p class="alert alert-info">{$XE_VALIDATOR_MESSAGE}</p>
+	</div>
+
+    <div class="poll_table">
+        <div class="poll_content">
+						<ul class="list-group list-group-flush">
+            <!--@foreach($poll->poll as $poll_srl_index => $val)-->
+							<li class="list-group-item border-bottom-0">
+                <h5 class="card-title title font-weight-bold">{$val->title}</h5>
+                <!--@foreach($val->item as $item_srl => $item)-->
+									<block cond="$val->poll_count">
+										{@$per = (int)(( $item->poll_count / $val->poll_count)*100) }
+									</block>
+									<block cond="!$val->poll_count">
+										{@$per = 0}
+									</block>
+				          <div class="mb-2">
+				              <strong>{$item_srl+1}</strong> {$item->title}
+				          </div>
+				          <div class="mb-2">
+										<div class="progress">
+										  <div class="progress-bar bg-success" role="progressbar" style="width: {$per}%;" aria-valuenow="{$per}" aria-valuemin="0" aria-valuemax="100"><!--@if($per)-->{$item->poll_count} ({$per}%)<!--@end--></div>
+										</div>
+				          </div>
+                <!--@end-->
+								</li>
+            <!--@end-->
+						<li class="list-group-item pt-0 border-0">
+							<i class="xi-user"></i> {$lang->poll_join_count} : {number_format($poll->poll_count)}
+						</li>
+						</ul>
+        </div>
+		<div>
+
+
+
+		</div>
+		<div class="card-footer text-muted">
+
+			{$lang->poll_stop_date}: <strong>{zdate($poll->stop_date, "Y-m-d")}</strong>
+		</div>
+    </div>
+
+	</div>
+</div>

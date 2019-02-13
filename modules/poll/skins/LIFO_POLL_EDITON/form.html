@@ -1,0 +1,67 @@
+<!--@if(__DEBUG__)-->
+	<load target="css/poll.css" />
+	<load target="../../tpl/js/poll.js" />
+<!--@else-->
+	<load target="css/poll.css" />
+	<load target="../../tpl/js/poll.js" />
+<!--@end-->
+
+<script>
+    var poll_alert_lang = "{$lang->msg_check_poll_item}";
+</script>
+
+<div class="">
+<div id="poll_{$poll->poll_srl}">
+	<div cond="$XE_VALIDATOR_MESSAGE && $XE_VALIDATOR_ID == 'modules/poll/skins/lifo-poll/form/{$poll->poll_srl}'" class="px-3 pt-3 message {$XE_VALIDATOR_MESSAGE_TYPE}">
+		<p class="alert alert-info">{$XE_VALIDATOR_MESSAGE}</p>
+	</div>
+	  <form class="col-sm-auto col-md-6 col-lg-5 px-0" ruleset="poll" action="./" method="post" onsubmit="return doPoll(this)">
+	    <input type="hidden" name="module" value="poll" />
+	    <input type="hidden" name="act" value="procPoll" />
+	    <input type="hidden" name="poll_srl" value="{$poll->poll_srl}" />
+	    <input type="hidden" name="poll_srl_indexes" value="" />
+	    <input type="hidden" name="skin" value="{$skin}" />
+	    <input type="hidden" name="success_return_url" value="{getRequestUriByServerEnviroment()}" />
+	    <input type="hidden" name="xe_validator_id" value="modules/poll/skins/lifo-poll/form/{$poll->poll_srl}" />
+    <div class="card">
+			<div class="poll_content">
+				<ul class="list-group list-group-flush">
+			    <!--@foreach($poll->poll as $poll_srl_index => $val)-->
+						<li class="list-group-item">
+			      <input type="hidden" name="checkcount_{$poll_srl_index}" value="{$val->checkcount}" />
+			      <h5 class="card-title title font-weight-bold">{$val->title}</h5>
+			      <!--@if($val->checkcount>1)-->
+						<p class="card-text"><small class="text-muted">{$lang->poll_checkcount} : {$val->checkcount}</small></p>
+			      <!--@end-->
+			      {@ $_key = 0}
+						<div class="btn-group-toggle" data-toggle="buttons">
+			      <!--@foreach($val->item as $item_srl => $item)-->
+			      {@$_idx = $poll->poll_srl.'_'.$poll_srl_index.'_'.$item_srl}
+			          <!--@if($val->checkcount>1)-->
+									<label class="btn btn-outline-secondary col mb-1 text-left">
+								    <input type="checkbox" autocomplete="off" name="options item_{$poll->poll_srl}_{$poll_srl_index}" value="{$item->poll_item_srl}" id="item_{$item->poll_item_srl}"> {$item->title}
+								  </label>
+			          <!--@else-->
+									<label class="btn btn-outline-secondary col mb-1 text-left">
+								    <input type="radio" autocomplete="off" name="options item_{$poll->poll_srl}_{$poll_srl_index}" value="{$item->poll_item_srl}" id="item_{$item->poll_item_srl}">
+											{$item->title}
+								  </label>
+			          <!--@end-->
+			      {@ $_key++}
+			      <!--@end-->
+						</div>
+						</li>
+			    <!--@end-->
+					</ul>
+			</div>
+      <div class="card-body pt-0 btn-group">
+				<input type="button" value="{$lang->cmd_view_result}" class="btn btn-dark poll_button _poll_result _srl_{$poll->poll_srl} _skin_{$skin} col" />
+				<input type="submit" value="{$lang->cmd_apply_poll}" class="btn btn-primary poll_button col" />
+      </div>
+			<div class="card-footer text-muted">
+				{$lang->poll_stop_date}: <strong>{zdate($poll->stop_date, "Y-m-d")}</strong>
+			</div>
+		</div>
+    </form>
+</div>
+</div>

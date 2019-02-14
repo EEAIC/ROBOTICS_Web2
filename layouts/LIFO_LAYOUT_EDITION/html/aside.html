@@ -9,12 +9,12 @@
           <strong class="user_nick">{$logged_info->nick_name}</strong>
       </a>
     <!--@else-->
-      <a class="user_name" data-toggle="modal" data-target="#Modal-login">
-          <span class="user_thumb">
-              <i class="xi-user" style="font-size: 47px; color: white;"></i>
-          </span>
-          <strong class="user_nick">{$lang->cmd_login}</strong>
-      </a>
+    <span class="user_thumb">
+        <i class="xi-user" style="font-size: 47px; color: white;"></i>
+    </span>
+    <a class="user_name" data-toggle="modal" data-target="#Modal-login" style="width: fit-content;">
+        <strong class="user_nick">{$lang->cmd_login}</strong>
+    </a>
     <!--@end-->
       <a href="#" class="close btn_userinfo_close" aria-label="Close" onclick="closeAside();">
           <span aria-hidden="true">&times;</span>

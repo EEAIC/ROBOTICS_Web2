@@ -7,4 +7,19 @@
         <name xml:lang="ko">JEONGKEE LIM</name>
     </author>
     <license>MIT</license>
+    <extra_vars>
+        <group>
+            <title xml:lang="ko">전체 설정</title>
+            <var name="default_style" type="radio" default="list">
+				<title xml:lang="ko">목록 유형</title>
+				<options value="list">
+					<title xml:lang="ko">목록형</title>
+				</options>
+				<options value="gallery">
+					<title xml:lang="ko">갤러리형</title>
+				</options>
+			</var>
+        </group>
+    </extra_vars>
+
 </skin>

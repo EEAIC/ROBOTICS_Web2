@@ -55,11 +55,22 @@
 				</div>
 			</div>
 		</div>
+
+	<!--// 게시판 유형 -->
+	<!--@if($current_module_info->default_style=='list')-->
+
+	<!--@elseif($current_module_info->default_style=='gallery')-->
+		<include target="./html/_list_gallery.html" />
+	<!--@end-->
+
+
+
 	<div class="table-responsive-md">
 	<table class="table table-hover" width="100%" summary="List of Articles" >
 		<thead class="thead-dark">
 			<!-- LIST HEADER -->
 			<tr>
+
 				<block loop="$list_config=>$key,$val">
 				<th class="d-none d-sm-table-cell" style="width:1px; white-space:nowrap;" scope="col" cond="$val->type=='no' && $val->idx==-1"><span>{$lang->no}</span></th>
 				<th class="w-100" scope="col" cond="$val->type=='title' && $val->idx==-1"><span>{$lang->title}</span></th>

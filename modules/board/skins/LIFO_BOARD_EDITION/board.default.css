@@ -125,28 +125,9 @@
 	font-weight: bold;
 	color: #3912b3;
 }
-/* Board List */
-/* list.html */
-
-.list_footer {
-	position: relative;
-	margin: 15px 0;
-	zoom: 1;
-}
-.list_footer:after {
-	content: "";
-	display: block;
-	clear: both;
-}
-.list_footer .btnArea {
-	float: right;
-	margin: 0;
-}
 /* Board Write */
 
 /* write_form.html */
-.board_write {
-}
 .write_header {
 	padding: 9px 10px 10px 0px;
 }

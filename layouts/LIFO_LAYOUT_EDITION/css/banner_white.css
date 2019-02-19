@@ -17,10 +17,6 @@ body {
 }
 */
 
-body {
-    font-family: '돋움';
-}
-
 .list-group-item {
     background-color: inherit;
 }

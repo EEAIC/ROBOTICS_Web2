@@ -1,24 +1,26 @@
 <div class="card-columns">
     <block loop="$document_list=>$no,$document">
-        <!--// 썸네일 -->
-
-        <div class="card text-center cursor-pointer" onclick="location.href='{getUrl('document_srl',$document->document_srl, 'listStyle', $listStyle, 'cpage','')}'">
-
-            <span cond="$document->thumbnailExists()">
+        <div class="card text-center">
+            <!--// 썸네일 -->
+            <block cond="$document->thumbnailExists()">
                 <img src="{$document->getThumbnail()}" class="card-img-top" alt="...">
-            </span>
-            <span cond="!$document->thumbnailExists()">
-                <p>no Image</p>
-            </span>
+            </block>
+            <div class="card-body">
+                <h5 class="card-title">{$document->getTitle()}</h5>
+                <p class="card-text">{$document->getSummary()}</p>
+                <a href="{getUrl(document_srl,$document->document_srl, listStyle, $listStyle, cpage, undefined)}" class="btn btn-primary">{$lang->cmd_view_document}</a>
+            </div>
             <div class="card-footer">
                 <small cond="$document->getNickName()">
                     <i class="xi-user"></i>
                     {$document->getNickName()}
                     &nbsp;
                 </small>
-                <small class="text-muted"><i class="xi-calendar"></i> {$document->getRegdate('Y.m.d')}</small>
+                <small cond="$document->getRegdate()">
+                    <i class="xi-calendar"></i>
+                    {$document->getRegdate('Y.m.d')}
+                </small>
             </div>
         </div>
-
     </block>
 </div>

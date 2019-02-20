@@ -1,12 +1,28 @@
+<load target="../css/_list_gallery.css"/>
 <div class="card-columns">
     <block loop="$document_list=>$no,$document">
-        <div class="card text-center">
+        <div class="card text-center card-hover">
             <!--// 썸네일 -->
             <block cond="$document->thumbnailExists()">
                 <img src="{$document->getThumbnail()}" class="card-img-top" alt="...">
             </block>
             <div class="card-body">
-                <h5 class="card-title">{$document->getTitle()}</h5>
+                <h5 class="card-title">
+                    {$document->getTitle()}
+                    <a cond="$document->getCommentCount()" href="{getUrl('document_srl', $document->document_srl)}#comment" class="replyNum" style="color: inherit;" title="Replies">
+                        [{$document->getCommentCount()}]
+                    </a>
+                </h5>
+                <h6 class="card-subtitle mb-2 text-muted">
+                   
+                    <i class="xi-eye"></i>
+                    {$document->get('readed_count')>0?$document->get('readed_count'):'0'}
+                    &nbsp;
+                    <i class="xi-thumbs-up"></i>
+                    {$document->get('voted_count')!=0?$document->get('voted_count'):'0'}
+                            
+                  
+                </h6>
                 <p class="card-text">{$document->getSummary()}</p>
                 <a href="{getUrl(document_srl,$document->document_srl, listStyle, $listStyle, cpage, undefined)}" class="btn btn-primary">{$lang->cmd_view_document}</a>
             </div>

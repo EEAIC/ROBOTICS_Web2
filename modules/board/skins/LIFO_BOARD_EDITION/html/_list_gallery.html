@@ -1,38 +1,46 @@
 <load target="../css/_list_gallery.css"/>
+
+<!--// 목록 설정에서 설정된 항목 -->
+{@ $list_keys = array_keys($list_config);}
+
 <div class="card-columns">
     <block loop="$document_list=>$no,$document">
         <div class="card text-center card-hover">
             <!--// 썸네일 -->
-            <block cond="$document->thumbnailExists()">
+            <block cond="$document->thumbnailExists() && in_array(thumbnail, $list_keys)">
                 <img src="{$document->getThumbnail()}" class="card-img-top" alt="...">
             </block>
             <div class="card-body">
-                <h5 class="card-title">
+                <h5 class="card-title" cond="$document->getTitle()  && in_array(title, $list_keys)">
                     {$document->getTitle()}
-                    <a cond="$document->getCommentCount()" href="{getUrl('document_srl', $document->document_srl)}#comment" class="replyNum" style="color: inherit;" title="Replies">
+                    <a cond="$document->getCommentCount()  && in_array(comment_status, $list_keys)" href="{getUrl('document_srl', $document->document_srl)}#comment" class="replyNum" style="color: inherit;" title="Replies">
                         [{$document->getCommentCount()}]
                     </a>
                 </h5>
-                <h6 class="card-subtitle mb-2 text-muted">
-                   
-                    <i class="xi-eye"></i>
-                    {$document->get('readed_count')>0?$document->get('readed_count'):'0'}
-                    &nbsp;
-                    <i class="xi-thumbs-up"></i>
-                    {$document->get('voted_count')!=0?$document->get('voted_count'):'0'}
-                            
-                  
+                <h6 class="card-subtitle mb-2 text-muted" cond="!empty(array_intersect([readed_count, voted_count, blamed_count], $list_keys))">
+                    <span class="mx-1" cond="in_array(readed_count, $list_keys)">
+                        <i class="xi-eye"></i>
+                        {$document->get('readed_count')>0?$document->get('readed_count'):'0'}
+                    </span>
+                    <span class="mx-1" cond="in_array(voted_count, $list_keys)">
+                        <i class="xi-thumbs-up"></i>
+                        {$document->get('voted_count')!=0?$document->get('voted_count'):'0'}
+                    </span>
+                    <span class="mx-1" cond="in_array(blamed_count, $list_keys)">
+                        <i class="xi-thumbs-down"></i>
+                        {$document->get('blamed_count')!=0?$document->get('blamed_count'):'0'}
+                    </span>
                 </h6>
-                <p class="card-text">{$document->getSummary()}</p>
+                <p class="card-text" cond="in_array(summary, $list_keys)">{$document->getSummary()}</p>
                 <a href="{getUrl(document_srl,$document->document_srl, listStyle, $listStyle, cpage, undefined)}" class="btn btn-primary">{$lang->cmd_view_document}</a>
             </div>
-            <div class="card-footer">
-                <small cond="$document->getNickName()">
+            <div class="card-footer" cond="array_key_exists(nick_name, $list_config) || array_key_exists(regdate, $list_config)">
+                <small cond="in_array(nick_name, $list_keys)">
                     <i class="xi-user"></i>
                     {$document->getNickName()}
                     &nbsp;
                 </small>
-                <small cond="$document->getRegdate()">
+                <small cond="in_array(regdate, $list_keys)">
                     <i class="xi-calendar"></i>
                     {$document->getRegdate('Y.m.d')}
                 </small>

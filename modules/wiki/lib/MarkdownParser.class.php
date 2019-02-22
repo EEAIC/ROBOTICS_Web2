@@ -2,7 +2,6 @@
 /* require_once ('SyntaxParser.interface.php'); // Commented for backwards compatibility with PHP4 */
 require_once ('markdown.php');
 require_once ('WikiText.class.php');
-require_once ('Parsedwon.php');
 
 /**
  * @brief Converts Markdown syntax into HTML using external Markdown library

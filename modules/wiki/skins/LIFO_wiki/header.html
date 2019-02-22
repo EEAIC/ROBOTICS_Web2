@@ -8,6 +8,7 @@
 </script>
 {$module_info->header_text}
 <div class="wiki">
+    <div class="area p-2 mb-2">
     <div class="wkHeader">
 		<div class="wkTitle" cond="$module_info->title">
 			<h2 class="wkTitleText"><a href="{getUrl('','mid',$mid,'listStyle',$listStyle)}">{$module_info->title} <em cond="$module_info->sub_title">{$module_info->sub_title}</em></a></h2>
@@ -39,9 +40,7 @@
     <div class="wikiRead">
         <div class="wkReadHeader">
             <div class="titleArea">
-                <h3 class="title">
-                    <a href="{$oDocument->getPermanentUrl()}">{$oDocument->getTitle()}</a>
-                </h3>
+                <h3 class="title"><a href="{$oDocument->getPermanentUrl()}">{$oDocument->getTitle()}</a></h3>
                 <span class="sum">
                     <span class="read">{$lang->readed_count} <span class="num">{$oDocument->get('readed_count')}</span></span>
                     <span class="vote">{$lang->voted_count} <span class="num">{$oDocument->get('voted_count')}</span></span>

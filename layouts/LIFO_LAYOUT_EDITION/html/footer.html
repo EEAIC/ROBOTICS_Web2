@@ -3,9 +3,9 @@
     <div class="area_notice border-bottom p-2">
       <div class="mx-auto w-80">
         {@
-          $mid = $layout_info->footer_board_menu_id;
+          $_mid = $layout_info->footer_board_menu_id;
           $oModuleModel = &getModel('module');
-          $module = $oModuleModel->getModuleInfoByMid($mid);
+          $module = $oModuleModel->getModuleInfoByMid($_mid);
           $oDocumentModel = &getModel('document');
           $args = new stdClass();
           $args->page = 1;
@@ -19,12 +19,13 @@
           $title = array_values($output->data)[0]->variables[title];
           $document_srl = array_values($output->data)[0]->document_srl;
         }
+
         <dl class="row m-0 justify-content-center">
             <dt class="col-auto">
-              <a href="{getUrl('mid', $mid)}" class="text-reset" data-clk="ntc.notice">{$module->browser_title}</a>
+              <a href="{getUrl('mid', $_mid)}" class="text-reset" data-clk="ntc.notice">{$module->browser_title}</a>
             </dt>
             <dd class="col-auto m-0">
-              <a href="{getUrl('', 'mid', $mid, 'document_srl', $document_srl)}" class="text-reset">{$title}</a>
+              <a href="{getUrl('', 'mid', $_mid, 'document_srl', $document_srl)}" class="text-reset">{$title}</a>
             </dd>
         </dl>
 

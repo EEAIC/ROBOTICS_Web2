@@ -216,16 +216,18 @@
 			if($output->data) $list = $output->data;
 			else $list = array();
 
-			$item->member_srl = $oDocument->getMemberSrl();
-			$item->nick_name = $oDocument->getNickName();
-			$contributors[] = $item;
+			// $item->member_srl = $oDocument->getMemberSrl();
+			// $item->nick_name = $oDocument->getNickName();
+			// $contributors[] = $item;
+
 			for($i=0,$c=count($list);$i<$c;$i++) {
 				unset($item);
 				$item->member_srl = $list[$i]->member_srl;
 				$item->nick_name = $list[$i]->nick_name;
-				if($item->member_srl == $oDocument->getMemberSrl()) continue;
+				//if($item->member_srl == $oDocument->getMemberSrl()) continue;
 				$contributors[] = $item;
 			}
+
 			return $contributors;
 		}
 		

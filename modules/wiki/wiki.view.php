@@ -45,13 +45,18 @@ class WikiView extends Wiki
 		// Force simple textarea if markup is Markdown, Google Code or MediaWiki
 		$editor_config = $oModuleModel->getModulePartConfig('editor', $this->module_info->module_srl);
 		if($this->module_info->markup_type != 'xe_wiki_markup'
-				&& (!$editor_config || $editor_config->sel_editor_colorset != 'white_text_usehtml'))
+				&& (!$editor_config))
 		{
 			$editor_config->editor_skin = 'xpresseditor';
 			$editor_config->sel_editor_colorset = 'white_text_usehtml';
 			$editor_config->content_style = 'default';
 			$oModuleController = &getController('module');
 			$oModuleController->insertModulePartConfig('editor', $this->module_info->module_srl, $editor_config);
+		} else if ($editor_config) 
+		{
+			$oModuleController = &getController('module');
+			$oModuleController->insertModulePartConfig('editor', $this->module_info->module_srl, $editor_config);
+
 		}
 
 		// Load wiki title

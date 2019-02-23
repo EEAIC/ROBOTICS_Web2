@@ -65,11 +65,9 @@ class WikiView extends Wiki
 			$this->module_info->title = $this->module_info->browser_title;
 		}
 
-		// Load left side tree, if tree skin is used
-		if($this->module_info->skin == 'xe_wiki_tree')
-		{
-			$this->getLeftMenu();
-		}
+		// Load left side tree	
+		$this->getLeftMenu();
+		
 
 		$security = new Security($this->module_info);
 		$security->encodeHTML('title');

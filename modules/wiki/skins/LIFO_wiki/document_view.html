@@ -25,33 +25,54 @@
 					<dt><label for="cpw">{$lang->password}</label> :</dt>
 					<dd><input type="password" name="password" id="cpw" class="iText" /><input class="btn" type="submit" value="{$lang->cmd_input}" /></dd>
 				</dl>
-
 			</form>
 		<!--@else-->
+
             <!--@if($history)-->
                 {$history->content}
             <!--@else-->
                 {$oDocument->getContent()}
-            <!--@endif-->
+			<!--@endif-->
+			
 		<!--@end-->
 	</div>
-	<div class="wkReadFooter">
-        <!--@if(!$oDocument->getTrackbackCount())-->
-		<dl class="tbURL">
-			<dt>{$lang->trackback} : </dt>
-			<dd><a href="{$oDocument->getTrackbackUrl()}" onclick="return false;">{$oDocument->getTrackbackUrl()}</a></dd>
-		</dl>
-        <!--@end-->
+
+			
+	<div class="wkNav clearfix mb-1" cond="$oDocumentPrev||$oDocumentNext">
+		<a cond="$oDocumentPrev" href="{$oDocumentPrev->getPermanentUrl()}" class="wikiPrev float-left text-reset">&laquo; {$oDocumentPrev->getTitle()}</a>
+		<a cond="$oDocumentNext" href="{$oDocumentNext->getPermanentUrl()}" class="wikiNext float-right text-reset">{$oDocumentNext->getTitle()} &raquo;</a>
+	</div>
+
+	<div class="wkReadFooter border-top">
+	
         <!--@if($contributors)-->
-		<dl class="contributors">
+		<dl class="contributors mt-1 mb-0">
 			<dt>{$lang->contributors} : </dt>
-			<dd><!--@foreach($contributors as $key => $val)--><a href="#" class="member_{$val->member_srl}" onclick="return false;">{$val->nick_name}</a><!--@if($key<count($contributors)-1)-->, <!--@end--><!--@end--></dd>
+			<dd>
+				<!--@foreach($contributors as $key => $val)-->
+					<a href="#" class="member_{$val->member_srl}" onclick="return false;">{$val->nick_name}</a>
+					<!--@if($key<count($contributors)-1)-->, <!--@end-->
+				<!--@end-->
+			</dd>
 		</dl>
-        <!--@end-->
-		<div class="wkNav" cond="$oDocumentPrev||$oDocumentNext">
-			<a cond="$oDocumentPrev" href="{$oDocumentPrev->getPermanentUrl()}" class="wikiPrev">&laquo; {$oDocumentPrev->getTitle()}</a>
-			<a cond="$oDocumentNext" href="{$oDocumentNext->getPermanentUrl()}" class="wikiNext">{$oDocumentNext->getTitle()} &raquo;</a>
-		</div>
+		<!--@else-->
+		<dl class="contributors mt-1 mb-0">
+			<dt>{$lang->contributors} : </dt>
+			<dd>
+				<!--@if(!$oDocument->getMemberSrl())-->
+					<!--@if($oDocument->isExistsHomepage())-->
+					<a href="{$oDocument->getHomepageUrl()}" target="_blank" class="author">{$oDocument->getNickName()}</a>
+					<!--@else-->
+						<strong class="author">{$oDocument->getNickName()}</strong>
+					<!--@end-->
+				<!--@else-->
+					<a href="#popup_menu_area" class="member_{$oDocument->get('member_srl')} author" onclick="return false">{$oDocument->getNickName()}</a>
+				<!--@end-->			
+			</dd>
+		</dl>
+		<!--@end-->
+
+
 		<!--@if($oDocument->hasUploadedFiles())-->
         <dl class="attachedFile">
             <dt><img src="./img/iconFiles.gif" width="27" height="11" alt="{$lang->uploaded_file}" /> <button type="button" class="fileToggle" onclick="jQuery(this).parents('dl.attachedFile').toggleClass('open');return false;">{$lang->uploaded_file} ({$oDocument->get('uploaded_count')})</button></dt>
@@ -70,60 +91,76 @@
 
 </div>
 
-<!--@if($oDocument->allowTrackback())-->
-    <include target="./trackback.html" />
-<!--@end-->
 </div>
 
 
 <!--@if($oDocument->allowComment())-->
 	<a name="comment"></a>
 	<include target="./comment.html" />
-		<div class="area p-2 mb-2">
-		<!--@if($grant->write_comment && $oDocument->isEnableComment() )-->
-			<!--@if(!$is_logged)-->
-				{@ $ruleset = "insert_comment_not_logged"}
-				{@ $act_insert = "procWikiInsertCommentNotLogged"}
-			<!--@else-->
-				{@ $ruleset = "insert_comment"}
-				{@ $act_insert = "procWikiInsertComment"}
-			<!--@end-->
-			<form action="./" method="post" ruleset="{$ruleset}" class="wkEditor" >
-				<input type="hidden" name="act" value="{$act_insert}" />
-				<input type="hidden" name="success_return_url" value="{getUrl('act','dispWikiContent', 'module_srl', $module_info->module_srl,'document_srl',$oDocument->document_srl)}" />
-				<input type="hidden" name="module" value="wiki" />
-				<input type="hidden" name="mid" value="{$mid}" />
-				<input type="hidden" name="document_srl" value="{$oDocument->document_srl}" />
-				<input type="hidden" name="comment_srl" value="" />
-				<input type="hidden" name="content" value="" />
-				<input type="hidden" name="xe_validator_id" value="modules/wiki/skins/xe_wiki" />
-				<div class="wkWrite commentEditor">
-					<div class="editor">{$oDocument->getCommentEditor()}</div>
-
-					<div class="editOption">
-					<!--@if(!$is_logged)-->
-					<input type="text" name="nick_name" class="iText userName" value="{$lang->writer}" onfocus="this.value=''" />
-					<input type="password" name="password" class="iText userPw" value="{$lang->password}" onfocus="this.value=''" />
-					<input type="text" name="email_address" class="iText emailAddress" value="{$lang->email_address}" onfocus="this.value=''" />
-					<input type="text" name="homepage" class="iText homePage" value="{$lang->homepage}" onfocus="this.value=''" />
-					<!--@end-->
-
-					<!--@if($is_logged)-->
-						<input type="checkbox" name="notify_message" value="Y" id="notify_message" class="inputCheck" />
-						<label for="notify_message">{$lang->notify}</label>
-					<!--@end-->
-						<input type="checkbox" name="is_secret" value="Y" id="is_secret" class="inputCheck" />
-						<label for="is_secret">{$lang->secret}</label>
+	<div class="mb-2 area p-2">
+	
+	<!--@if($grant->write_comment && $oDocument->isEnableComment() )-->
+		<!--@if(!$is_logged)-->
+			{@ $ruleset = "insert_comment_not_logged"}
+			{@ $act_insert = "procWikiInsertCommentNotLogged"}
+		<!--@else-->
+			{@ $ruleset = "insert_comment"}
+			{@ $act_insert = "procWikiInsertComment"}
+		<!--@end-->
+		<form action="./" method="post" ruleset="{$ruleset}" class="wkEditor" >
+			<input type="hidden" name="act" value="{$act_insert}" />
+			<input type="hidden" name="success_return_url" value="{getUrl('act','dispWikiContent', 'module_srl', $module_info->module_srl,'document_srl',$oDocument->document_srl)}" />
+			<input type="hidden" name="module" value="wiki" />
+			<input type="hidden" name="mid" value="{$mid}" />
+			<input type="hidden" name="document_srl" value="{$oDocument->document_srl}" />
+			<input type="hidden" name="comment_srl" value="" />
+			<input type="hidden" name="content" value="" />
+			<input type="hidden" name="xe_validator_id" value="modules/wiki/skins/xe_wiki" />
+			<div class="wkWrite commentEditor">
+				<div class="editor">{$oDocument->getCommentEditor()}</div>
+				<!--// 로그인 전 -->
+				<div class="form-row" id="toggle_author_row" style="display: none;"|cond="$is_logged">
+					<div class="form-group mb-2 col-sm-3" cond="!$is_logged">
+						<span class="item">
+							<input type="text" name="nick_name" id="userName" class="userName form-control form-control-sm" placeholder="{$lang->writer}"/>
+						</span>
 					</div>
-			
-					<div class="wkNav">
-						<input class="btn" type="submit" value="{$lang->cmd_comment_registration}" />
+					<div class="form-group mb-2 col-sm-3">
+						<span id="toggle_password_view">
+							<span class="item" id="comment_password_form">
+								<input cond="!$is_logged" type="password" name="password" id="userPw" class="userPw form-control form-control-sm" placeholder="{$lang->password}"/>
+							</span>
+						</span>
 					</div>
-
+				</div>
+				
+				<div class="form-row">
+					<!--// 로그인 후 -->
+					<div class="form-group mb-2 col-auto" cond="$is_logged">
+						<div class="item custom-control custom-checkbox custom-control-inline" >
+							<input type="checkbox" name="notify_message" value="Y" id="notify_message" class="custom-control-input" />
+							<label for="notify_message"  class="custom-control-label">{$lang->notify}</label>
+						</div>
+					</div>
+					<!--// 로그인과 상관 없이 -->
+					<div class="form-group mb-2 col-auto">
+						<div class="item custom-control custom-checkbox custom-control-inline" >
+							<input type="checkbox" name="is_secret" value="Y" id="is_secret" class="custom-control-input" onclick="view_password(this);"|cond="$is_logged"/>
+							<label for="is_secret" class="custom-control-label">{$lang->secret}</label>
+						</div>
+					</div>
 				</div>
 
-			</form>
-		<!--@end-->
+				<!--// 댓글 등록 버튼  -->
+				<div class="clearfix">
+					<div class="float-right">
+						<button type="submit" class="btn btn-success btn-sm"><i class="xi-message"></i> {$lang->cmd_comment_registration}</button>
+					</div>
+				</div>
+			
+			</di>
+		</form>
+	<!--@end-->
 	</div>
 <!--@end-->
 

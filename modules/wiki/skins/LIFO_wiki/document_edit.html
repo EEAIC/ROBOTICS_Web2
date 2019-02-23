@@ -131,21 +131,20 @@ jQuery(function($) {
 	<input type="hidden" name="document_srl" value="{$document_srl}" />
 	<input type="hidden" name="xe_validator_id" value="modules/wiki/skins/xe_wiki" />
 	<div class="wkWrite" id="wikiContentContainer">
-		<div class="title">
-			<label for="title">{$lang->write_form_title}</label>
-			<input type="text" name="title"  id="title" value="{htmlspecialchars($oDocument->get('title'))}" class="iText" />
+		<!--// 문서 제목 입력창  -->
+		<div class="title form-group">
+			<input type="text" name="title"  id="title" value="{htmlspecialchars($oDocument->get('title'))}" class="form-control" placeholder="{$lang->title}" />
 		</div>
-		<div class="alias" >
-			<label for="alias">{$lang->write_form_alias}</label>
-			{getFullUrl()}entry/
-			<input type="text" name="alias" id="alias" value="{htmlspecialchars($oDocument->get('alias'))}" class="iText" />
-		</div>
-		
-		<div class="editor">
-			
-			{$oDocument->getEditor()}
+
+		<!--// 단축 주소 입력창 -->
+		<div class="form-inline mb-2" >
+			<div class="form-group">
+				<label for="alias">{$lang->write_form_alias} {getFullUrl()}entry/</label>&nbsp;
+				<input type="text" name="alias" id="alias" value="{htmlspecialchars($oDocument->get('alias'))}" class="form-control form-control-sm" />
+			</div>
 		</div>
 		
+		<!--// 마크다운 문법 설명  -->
 		<!--@if($module_info->markup_type != 'xe_wiki_markup')-->
 		<a href="#" id="toggleWikiHelp">{$lang->wiki_language_help}</a>
 		<div id="wikiHelp" class="hide" title="Click to hide">
@@ -158,30 +157,35 @@ jQuery(function($) {
 			<!--@end-->
 		</div>
 		<!--@end-->
-	
-		<div class="wkNav">
-			<input class="btn" type="submit" value="{$lang->cmd_registration}" />
-		</div>
 		
-		<!--@if($module_info->markup_type != 'xe_wiki_markup')-->
-		<div id="wikiDocumentPreview"></div>
-		<!--@end-->
+		<!--// 에디터  -->
+		<div class="editor">
+			{$oDocument->getEditor()}
+		</div>
+
+		<!--// <block cond="$module_info->markup_type != 'xe_wiki_markup'">
+			<div id="wikiDocumentPreview"></div>
+		</block> -->
 	
-		<br /><br />
 		<!--@if(!$is_logged)-->
 			<input type="text" name="nick_name" class="inputText userName" value="{$lang->writer}" onfocus="this.value=''" />
 			<input type="password" name="password" class="inputText userPw" value="{$lang->password}" onfocus="this.value=''" />
 			<input type="text" name="email_address" class="inputText emailAddress" value="{$lang->email_address}" onfocus="this.value=''" />
 			<input type="text" name="homepage" class="inputText homePage" value="{$lang->homepage}" onfocus="this.value=''" />
 		<!--@end-->
+
 		<!--@if(is_array($status_list))-->
 			<!--@foreach($status_list AS $key=>$value)-->
-			<input type="radio" name="status" value="{$key}" id="{$key}" <!--@if($oDocument->get('status') == $key || ($key == 'PUBLIC' && !$document_srl))-->checked="checked"<!--@end--> />
-			<label for="{$key}">{$value}</label>
+			<div class="custom-control custom-radio custom-control-inline">
+				<input class="custom-control-input" type="radio" name="status" value="{$key}" id="{$key}" checked="checked"|cond="($oDocument->get('status') == $key) || ($key == 'PUBLIC' && !$document_srl)"/>
+				<label class="custom-control-label" for="{$key}">{$value}</label>
+			</div>			
 			<!--@end-->
 		<!--@end-->
-		<div class="wkNav">
-			<input class="btn" type="submit" value="{$lang->cmd_registration}" />
+
+		<!--// 글 등록 버튼  -->
+		<div class="text-right">
+			<button type="submit" class="btn btn-success btn-sm"><i class="xi-message"></i> {$lang->cmd_registration}</button>			
 		</div>
 	</div>
 </form>

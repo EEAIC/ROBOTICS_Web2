@@ -901,6 +901,7 @@ class WikiView extends Wiki
 		{
 			$wiki_syntax_parser = $this->getWikiTextParser();
 			$content = $wiki_syntax_parser->parse($org_content);
+			
 			if($oCacheHandler->isSupport())
 			{
 				$oCacheHandler->put($cache_key, $content);

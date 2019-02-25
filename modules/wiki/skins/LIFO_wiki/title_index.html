@@ -1,58 +1,92 @@
 <include target="header.html" />
 
-<table cellspacing="0" border="1" summary="List of Articles" class="wkList">
-    <thead>
+<table summary="List of Articles" class="table table-hover wkList" width="100%">
+    <thead class="thead-dark">
         <tr>
             <th scope="col" class="title">{$lang->title}</th>
-            <th scope="col">{$lang->author}</th>
-            <th scope="col">{$lang->date}</th>
+            <th scope="col" >{$lang->author}</th>
+            <th scope="col" >{$lang->date}</th>
         </tr>
     </thead>
     <tbody>
     <!--@foreach($document_list as $val)-->
-        <tr>
+        {@ $document_link = urldecode(getUrl('','mid',$mid,'entry',$val->get('alias'), 'document_srl', '')) }
+        <tr class="cursor-pointer" onclick="location.href='{$document_link}'">
             <td class="title">
-                <a href="{urldecode(getUrl('','mid',$mid,'entry',$val->get('alias'), 'document_srl', ''))}">{$val->getTitle()}</a>
+                {$val->getTitle()}
             </td>
-            <td class="author"><a href="#" onclick="return false;" class="member_{$val->member_srl}">{$val->getNickName()}</a></td>
-            <td class="date">{$val->getRegdate("Y.m.d H:i")}</td>
+            <td class="author">
+                {$val->getNickName()}
+            
+            </td>
+            <td class="date text-nowrap">{$val->getRegdate("Y.m.d H:i")}</td>
         </tr>
     <!--@end-->
     </tbody>
 </table>
 
-<form action="{getUrl()}" method="get" class="wkSearch wkSearchFooter" no-error-return-url="true">
-    <fieldset>
-        <legend>{$lang->wiki_search_title}</legend>
-        <input type="hidden" name="vid" value="{$vid}" />
-        <input type="hidden" name="mid" value="{$mid}" />
-        <input type="hidden" name="act" value="{$act}" />
-        <input type="hidden" name="category" value="{$category}" />
-        <input type="hidden" name="search_target" value="title_content" />
-        <select name="search_target">
-            <!--@foreach($search_option as $key => $val)-->
-            <option value="{$key}" <!--@if($search_target==$key)-->selected="selected"<!--@end-->>{$val}</option>
-            <!--@end-->
-        </select>
-        <input type="text" name="search_keyword" value="{htmlspecialchars($search_keyword)}" class="iText" title="{$lang->cmd_search}" />
-        <!--@if($last_division)-->
-            <a href="{getUrl('page',1,'document_srl','','division',$last_division,'last_division','')}" class="btn">{$lang->cmd_search_next}</a>
-        <!--@end-->
-        <button class="btn" type="submit">{$lang->cmd_search}</button>
-    </fieldset>
-</form>
-
-
-<div class="pagination">
-    <a href="{getUrl('page','','document_srl','','division',$division,'last_division',$last_division,'entry','')}" class="prevEnd">&lsaquo; {$lang->first_page}</a> 
-    <!--@while($page_no = $page_navigation->getNextPage())-->
-        <!--@if($page == $page_no)-->
-            <strong>{$page_no}</strong> 
-        <!--@else-->
-            <a href="{getUrl('page',$page_no,'document_srl','','division',$division,'last_division',$last_division,'entry','')}">{$page_no}</a>
-        <!--@end-->
-    <!--@end-->
-    <a href="{getUrl('page',$page_navigation->last_page,'document_srl','','division',$division,'last_division',$last_division,'entry','')}" class="nextEnd">{$lang->last_page} &rsaquo;</a>
+<div class="form-group clearfix no-gutters">
+        <div class="col col-md-auto float-left">
+            <form action="{getUrl()}" method="get" class="wkSearch wkSearchFooter form-row" no-error-return-url="true">                          
+                <input type="hidden" name="vid" value="{$vid}" />
+                <input type="hidden" name="mid" value="{$mid}" />
+                <input type="hidden" name="act" value="{$act}" />
+                <input type="hidden" name="category" value="{$category}" />
+                <input type="hidden" name="search_target" value="title_content" />
+                <div class="col-md-auto mb-2">
+                    <select name="search_target" class="custom-select col-md-auto">
+                        <option loop="$search_option=>$key,$val" value="{$key}" selected="selected"|cond="$search_target==$key">{$val}</option>
+                    </select>
+                </div>
+                
+                <div class="col-md-auto mb-2">
+                    <div class="input-group ">
+                        <input type="text" name="search_keyword" value="{htmlspecialchars($search_keyword)}" title="{$lang->cmd_search}" class="form-control xi-magnifier" />
+                        <div class="input-group-append">                    
+                            <button class="btn btn-primary" type="submit">{$lang->cmd_search}</button>
+                            <!--@if($last_division)-->
+                            <a href="{getUrl('page',1,'document_srl','','division',$last_division,'last_division','')}" class="btn">{$lang->cmd_search_next}</a>
+                            <!--@end-->                                   
+                        </div>
+                    </div>
+                </div>
+                
+                <!--@if($last_division)-->
+                <a href="{getUrl('page',1,'document_srl','','division',$last_division,'last_division','')}" class="btn">{$lang->cmd_search_next}</a>
+                <!--@end-->
+           
+        </form>
+    </div>
 </div>
+
+
+<nav class="mt-3">
+    <ul class="justify-content-center pagination">
+        <li class="page-item pagination-prev">
+            <a href="{getUrl('page','','document_srl','','division',$division,'last_division',$last_division,'entry','')}" class="page-link ">&laquo;</a>
+        </li>
+        <block loop="$page_no=$page_navigation->getNextPage()">
+            <li cond="$page!=$page_no" class="page-item">
+                <a class="page-link" href="{getUrl('page',$page_no,'document_srl','','division',$division,'last_division',$last_division,'entry','')}">{$page_no}</a>
+            </li>
+            <li cond="$page==$page_no" class="page-item active">
+                <a class="page-link" href="{getUrl('page',$page_no,'document_srl','','division',$division,'last_division',$last_division,'entry','')}">{$page_no}</a>
+            </li>
+        </block>
+        <li class="page-item pagination-next">
+            <a href="{getUrl('page',$page_navigation->last_page,'document_srl','','division',$division,'last_division',$last_division,'entry','')}" class="page-link">&raquo;</a>
+        </li>
+    </ul>
+</nav>
+</div>
+<script type="text/javascript">
+//     $(document).ready(function () {
+//     $(".pagination").rPage();
+// });
+
+</script>
+
+
+
 
 <include target="footer.html" />

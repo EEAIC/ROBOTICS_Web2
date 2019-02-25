@@ -1,0 +1,21 @@
+a {
+	color : white;
+  }
+a:hover {
+	text-decoration: none;
+	color: inherit;
+  }
+
+  
+.dropdown>a {
+	color: inherit;
+  }
+
+.area {
+	background-color: white;
+	border: 1px solid #dee3eb;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}

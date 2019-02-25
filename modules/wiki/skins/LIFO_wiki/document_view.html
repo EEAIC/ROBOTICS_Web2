@@ -1,16 +1,21 @@
 
 <include target="header.html" />
+
 <!--@if($module_info->markup_type != 'xe_wiki_markup')-->
 	<load target="../../lib/google-code-prettify/prettify.css" />
 	<load target="../../lib/google-code-prettify/prettify.js" />
+	
 	<script>
 		jQuery(document).ready(function($){
 			prettyPrint();
+			
 		});
+
+
 	</script>
 <!--@end-->
-<div class="wikiRead">
-	<div class="wkReadBody">
+<div class="wikiRead px-3">
+	<div class="wkReadBody mb-2 markdown-body">
 		<!--@if($oDocument->isSecret() && !$oDocument->isGranted())-->
 			<form action="./" method="get" ruleset="input_password" class="secretMessage">
 				<input type="hidden" name="act" value="procWikiVerificationPassword" />
@@ -19,21 +24,23 @@
 				<input type="hidden" name="page" value="{$page}" />
 				<input type="hidden" name="document_srl" value="{$oDocument->document_srl}" />
 				<input type="hidden" name="xe_validator_id" value="modules/wiki/skins/xe_wiki" />
-
-				<p>&quot;{$lang->msg_is_secret}&quot;</p>
-				<dl>
-					<dt><label for="cpw">{$lang->password}</label> :</dt>
-					<dd><input type="password" name="password" id="cpw" class="iText" /><input class="btn" type="submit" value="{$lang->cmd_input}" /></dd>
-				</dl>
+		
+				<span><label for="cpw">{$lang->msg_is_secret} {$lang->msg_input_password}</label></span>
+				<div class="input-group col col-md-5 px-0">
+					<input type="password" name="password" id="cpw" class="form-control" />
+					<div class="input-group-append">
+						<button type="submit" class="btn btn-primary">{$lang->cmd_input}</button>
+					</div>
+				</div>									
 			</form>
 		<!--@else-->
 
             <!--@if($history)-->
                 {$history->content}
-            <!--@else-->
-                {$oDocument->getContent()}
+			<!--@else-->
+				{$oDocument->variables[content]}
 			<!--@endif-->
-			
+				{$oDocument->getContent();}
 		<!--@end-->
 	</div>
 
@@ -97,9 +104,9 @@
 <!--@if($oDocument->allowComment())-->
 	<a name="comment"></a>
 	<include target="./comment.html" />
-	<div class="mb-2 area p-2">
 	
 	<!--@if($grant->write_comment && $oDocument->isEnableComment() )-->
+	<div class="mb-2 area p-2">
 		<!--@if(!$is_logged)-->
 			{@ $ruleset = "insert_comment_not_logged"}
 			{@ $act_insert = "procWikiInsertCommentNotLogged"}
@@ -145,7 +152,7 @@
 					<!--// 로그인과 상관 없이 -->
 					<div class="form-group mb-2 col-auto">
 						<div class="item custom-control custom-checkbox custom-control-inline" >
-							<input type="checkbox" name="is_secret" value="Y" id="is_secret" class="custom-control-input" onclick="view_password(this);"|cond="$is_logged"/>
+							<input type="checkbox" name="is_secret" value="Y" id="is_secret" class="custom-control-input"/>
 							<label for="is_secret" class="custom-control-label">{$lang->secret}</label>
 						</div>
 					</div>
@@ -160,8 +167,8 @@
 			
 			</di>
 		</form>
-	<!--@end-->
 	</div>
+	<!--@end-->
 <!--@end-->
 
 

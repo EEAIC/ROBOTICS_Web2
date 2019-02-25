@@ -139,7 +139,7 @@ jQuery(function($) {
 		<!--// 단축 주소 입력창 -->
 		<div class="form-inline mb-2" >
 			<div class="form-group">
-				<label for="alias">{$lang->write_form_alias} {getFullUrl()}entry/</label>&nbsp;
+				<label for="alias">{$lang->write_form_alias} {getFullUrl()}entry/</label>
 				<input type="text" name="alias" id="alias" value="{htmlspecialchars($oDocument->get('alias'))}" class="form-control form-control-sm" />
 			</div>
 		</div>
@@ -167,13 +167,17 @@ jQuery(function($) {
 			<div id="wikiDocumentPreview"></div>
 		</block> -->
 	
+		<!--// 비로그인시 사용자 정보 입력창  -->
 		<!--@if(!$is_logged)-->
-			<input type="text" name="nick_name" class="inputText userName" value="{$lang->writer}" onfocus="this.value=''" />
-			<input type="password" name="password" class="inputText userPw" value="{$lang->password}" onfocus="this.value=''" />
-			<input type="text" name="email_address" class="inputText emailAddress" value="{$lang->email_address}" onfocus="this.value=''" />
-			<input type="text" name="homepage" class="inputText homePage" value="{$lang->homepage}" onfocus="this.value=''" />
+		<div class="form-inline">
+			<input type="text" name="nick_name" class="inputText form-control form-control-sm userName mb-2 mr-sm-2" placeholder="{$lang->writer}" onfocus="this.value=''" />
+			<input type="password" name="password" class="inputText form-control form-control-sm userPw mb-2 mr-sm-2" placeholder="{$lang->password}" onfocus="this.value=''" />
+			<input type="text" name="email_address" class="inputText form-control form-control-sm emailAddress mb-2 mr-sm-2" placeholder="{$lang->email_address}" onfocus="this.value=''" />
+			<input type="text" name="homepage" class="inputText form-control form-control-sm homePage mb-2" placeholder="{$lang->homepage}" onfocus="this.value=''" />
+		</div>
 		<!--@end-->
 
+		<!--// 공개 여부 설정 버튼  -->
 		<!--@if(is_array($status_list))-->
 			<!--@foreach($status_list AS $key=>$value)-->
 			<div class="custom-control custom-radio custom-control-inline">
@@ -189,4 +193,7 @@ jQuery(function($) {
 		</div>
 	</div>
 </form>
+
+</div>
+</div>
 <include target="footer.html" />

@@ -21,7 +21,63 @@
     </author>
     <license>LGPL</license>
     <extra_vars>
-        <var name="title" type="text">
+        <var name="use_bootstrapCDN" type="select" default="N">
+            <title xml:lang="ko">BootstrapCDN 사용</title>
+            <title xml:lang="en">Use BootstrapCDN  </title>
+            <description xml:lang="ko">부트스트랩의 CSS 와 자바스크립트를 CDN 으로 지원합니다.</description>
+            <description xml:lang="en">Use BootstrapCDN, provided for free by the folks at StackPath.</description>
+            <options value="Y">
+                <title xml:lang="ko">사용함</title>
+                <title xml:lang="en">Y</title>
+            </options>
+            <options value="N">
+                <title xml:lang="ko">사용 안 함</title>
+                <title xml:lang="en">N</title>
+            </options>
+        </var>
+        <var name="use_gfm" type="select" default="Y">
+            <title xml:lang="ko">github flavored markdown 사용</title>
+            <title xml:lang="en">Use github flavored markdown</title>
+            <description xml:lang="ko">깃허브의 마크다운 디자인을 일부 지원합니다.</description>
+            <description xml:lang="en">Support github-markdown partly</description>
+            <options value="Y">
+                <title xml:lang="ko">사용함</title>
+                <title xml:lang="en">Y</title>
+            </options>
+            <options value="N">
+                <title xml:lang="ko">사용 안 함</title>
+                <title xml:lang="en">N</title>
+            </options>
+        </var>
+        <var name="remove_browser_title" type="select" default="N">
+            <title xml:lang="ko">브라우저 제목 제거 사용</title>
+            <title xml:lang="en">Remove browser title</title>
+            <description xml:lang="ko">LIFO_layout 에서 사이트 제목 섹션을 제거합니다.</description>
+            <description xml:lang="en">Remove browser title section in LIFO_layout</description>
+            <options value="Y">
+                <title xml:lang="ko">사용함</title>
+                <title xml:lang="en">Y</title>
+            </options>
+            <options value="N">
+                <title xml:lang="ko">사용 안 함</title>
+                <title xml:lang="en">N</title>
+            </options>
+        </var>
+        <var name="menu_style" type="select">
+            <title xml:lang="ko">Tree Menu style</title>
+			<title xml:lang="en">Tree Menu style</title>
+            <description xml:lang="ko">Please choose the style of tree menu.</description>
+			<description xml:lang="en">Please choose the style of tree menu.</description>
+			<options value="msdn">
+                <title xml:lang="ko">MSDN style tree</title>
+				<title xml:lang="en">MSDN style tree</title>
+			</options>		
+			<options value="classic">
+                <title xml:lang="ko">Classic tree</title>
+				<title xml:lang="en">Classic tree</title>
+			</options>
+		</var>
+        <var name="main_title" type="text">
 			<title xml:lang="ko">제목</title>
             <title xml:lang="en">Title</title>
 			<title xml:lang="vi">Tiêu đề</title>

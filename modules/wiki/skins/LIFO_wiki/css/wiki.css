@@ -1,8 +1,15 @@
+
+
+
+
+
 @charset "utf-8";
+.wiki {
+	background-color: #f2f2f2;
+}
+
+
 /* Wiki Reset */
-.wiki .iText,
-.wiki textarea,
-.wiki select{border:1px solid}
 
 .wiki img{border:0}
 .wiki .document_popup_menu,
@@ -12,109 +19,16 @@
 .wiki .document_popup_menu a,
 .wiki .comment_popup_menu a{text-decoration:underline}
 .wiki .hr{display:none}
-.wiki .iText,
-.wiki textarea,
-.wiki select{background:#fff;color:#333;border-top-color:#a6a6a6;border-left-color:#a6a6a6;border-right-color:#d8d8d8;border-bottom-color:#d8d8d8}
+
 .wiki .document_popup_menu a,
 .wiki .comment_popup_menu a{color:#8b8b8b}
 
 /* Wiki Header */
-.wkHeader *{margin:0 0 20px 0;padding:0}
-.wkHeader a{text-decoration:none}
-.wkHeader a:hover,
-.wkHeader a:active,
-.wkHeader a:focus{text-decoration:underline} 
-.wkHeader .wkTitle{letter-spacing:-.1em;margin-bottom:10px;border-bottom:3px solid;*zoom:1;background-repeat:no-repeat;background-position:left 8px}
-.wkHeader .wkTitle:after{content:"";display:block;clear:both}
-.wkHeader .wkTitleText{font-size:18px;float:left;clear:both;margin-bottom:-3px;padding:5px 15px 5px 5px;border-bottom:3px solid;background-repeat:no-repeat;background-position:right bottom}
-.wkHeader .wkTitleText a{text-decoration:none}
-.wkHeader .wkTitleText em{font-style:normal;font-weight:normal}
-.wkHeader .wkDesc{padding:7px 15px;-moz-border-radius:3px;-webkit-border-radius:3px;position:relative;background:#f8f8f8}
-.wkHeader a{color:#4d4d4d}
-.wkHeader .wkTitle{border-color:#ddd}
-.wkHeader .wkTitleText{border-color:#666}
-.wkHeader .wkTitleText a{color:#000}
-.wkHeader .wkTitleText em{color:#666}
-/* Wiki Information */
-.wkInfo{width:100%;padding:15px 0;font-size:1em;line-height:normal;*zoom:1}
-.wkInfo a{text-decoration:none}
-.wkInfo a:hover,
-.wkInfo a:active,
-.wkInfo a:focus{text-decoration:underline} 
-.wkInfo:after{content:"";display:block;float:none;clear:both}
-.wkInfo ul{overflow:hidden}
-.wkInfo .infoSum{float:left;font-size:16px;font-weight:bold}
-.wkInfo .infoView{float:left}
-.wkInfo .infoView li{position:relative;float:left;margin-left:3px;display:inline}
-.wkInfo .infoView li.icon a{display:block;float:left;width:23px;height:23px;overflow:hidden;background-repeat:no-repeat}
-.wkInfo .infoView li.icon a span{position:absolute;width:0;height:0;overflow:hidden;visibility:hidden;font-size:0;line-height:0}
-.wkInfo .infoView li.listTypeClassic a{background-position:0 0}
-.wkInfo .infoView li.listTypeClassic.active a{background-position:0 -23px}
-.wkInfo .infoView li.listTypeZine a{background-position:-23px 0}
-.wkInfo .infoView li.listTypeZine.active a{background-position:-23px -23px}
-.wkInfo .infoView li.listTypeGallery a{background-position:-46px 0}
-.wkInfo .infoView li.listTypeGallery.active a{background-position:-46px -23px}
-.wkInfo .infoView li.setup{margin:0 7px}
-.wkInfo .infoView li.setup a{display:block;float:left;width:43px;height:23px;background-repeat:no-repeat}
-.wkInfo .infoView li.setup a span{position:absolute;width:0;height:0;overflow:hidden;visibility:hidden;font-size:0;line-height:0}
-.wkInfo em,
-.wkInfo strong{color:#ff6600}
-/* Wiki List */
-.wkList{border:0;border-top:1px solid;width:100%;border-color:#bababa}
-.wkList .inputCheck{width:13px;height:13px}
-.wkList .jumpTo{float:left}
-.wkList .jumpTo *{vertical-align:middle;*vertical-align:top}
-.wkList .jumpTo select{height:20px;font-size:12px;*margin-right:5px}
-.wkList .jumpTo button{width:22px;height:20px;line-height:18px;_line-height:normal;border:1px solid;-moz-border-radius:3px;-webkit-border-radius:3px;margin:0;padding:0;text-align:center;background-repeat:no-repeat;font-size:11px;cursor:pointer;overflow:visible}
-.wkList .meta{position:relative;overflow:hidden;margin:0 0 5px 0;padding:0;list-style:none;white-space:nowrap}
-.wkList .meta li{position:relative;left:-10px;display:inline;padding:0 5px 0 10px;background-repeat:no-repeat;background-position:left center;font-size:11px}
-.wkList .meta li.author{font-size:11px}
-.wkList .meta li.date{font:9px Tahoma}
-.wkList .meta li em{font-size:9px}
-.wkList .replyNum,
-.wkList .trackbackNum{font:9px Verdana}
-.wkList th{border:0;border-bottom:1px solid;padding:8px 6px 7px 6px;*padding:8px 6px 6px 6px;white-space:nowrap;text-align:center;line-height:normal;font-weight:normal}
-.wkList th.title{width:100%}
-.wkList th a .sort{vertical-align:middle;margin:0 5px}
-.wkList td{border:0;border-bottom:1px solid;padding:8px 6px;white-space:nowrap;text-align:center;line-height:normal;vertical-align:top}
-.wkList td.num{font:9px Tahoma}
-.wkList td.check{font:11px Tahoma}
-.wkList td.title{width:100%;white-space:normal;text-align:left}
-.wkList td.title img{vertical-align:middle;margin:0 1px}
-.wkList td.title .author{font-size:11px}
-.wkList td.author{font-size:11px;text-align:left}
-.wkList td.replies{font:9px Tahoma}
-.wkList td.reading{font:9px Tahoma}
-.wkList td.recommend{font:bold 9px Tahoma}
-.wkList td.date{font:9px Tahoma}
-.wkList td.summary{text-align:left;border-top-style:dotted;white-space:normal}
-.wkList td.summary .thumb{display:block;float:left;padding:2px;border:1px solid;margin-right:10px}
-.wkList td.summary .thumb img{display:block}
-.wkList td.lastReply{text-align:left;font-size:11px}
-.wkList td .replyAnchor{position:relative;font-size:9px}
-.wkList td .by{font:9px Tahoma}
-.wkList .jumpTo button{background-color:#eee;border-color:#ccc;color:#000}
-.wkList .replyNum{color:#ff3636}
-.wkList .trackbackNum{color:#66c}
-.wkList .replyAnchor{color:#06C}
-.wkList th{border-color:#dcdcdc;color:#4d4d4d}
-.wkList th a{color:#66c}
-.wkList td{border-color:#eee;color:#4d4d4d}
-.wkList td.title a.forum:link,
-.wkList td.recommend{color:#ff3636}
-.wkList td.summary .thumb{border-color:#ddd;background:#fff}
-.wkList td .by{color:#ccc}
+.hide {display: none}
 /* Wiki Navigation */
 
 /* Search Form */
-.wkSearch{position:relative;float:right;margin:0;padding:0;line-height:normal}
-.wkSearch.wkSearchFooter{clear:both;float:none;margin:1em 0;text-align:center}
-.wkSearch fieldset{border:0;clear:both;text-align:center;margin:0;padding:0}
-.wkSearch fieldset:after{content:"";display:block;float:none;clear:both}
-.wkSearch fieldset *{vertical-align:top}
-.wkSearch legend{position:absolute;width:0;height:0;overflow:hidden;font:0/0 Sans-serif;visibility:hidden}
-.wkSearch select{font-size:12px;height:23px;border:1px solid}
-.wkSearch .iText{width:140px;height:16px;padding:4px;font-size:12px;*margin:-1px 0;vertical-align:middle}
+
 /* Wiki Read */
 
 
@@ -129,8 +43,6 @@
 .wkReadHeader .authorArea .ipAddress{color:#767676}
 .wkReadHeader .authorArea .permaLink{color:#767676}
 .wkReadBody{overflow:hidden;*zoom:1}
-.wkReadBody .xe_content{overflow:hidden}
-.wkReadBody .xe_content a{text-decoration:underline}
 
 .wkReadFooter .wkNav:after{content:"";display:block;clear:both}
 .wkReadFooter .wkNav .wikiPrev{float:left}
@@ -275,17 +187,8 @@
 .wiki .editOption .iText.emailAddress{width:140px;font:11px Tahoma}
 .wiki .editOption .iText.homePage{width:140px;font:11px Tahoma}
 /* Pagination */
-.pagination{padding:15px 0;margin:0;text-align:center}
-.pagination *{margin:0;padding:0}
-.pagination img{border:0}
-.pagination a,
-.pagination strong{position:relative;display:inline-block;text-decoration:none;line-height:normal;color:#4d4d4d;font-family:Tahoma, Sans-serif;margin:0;padding:2px 6px;font-size:11px;vertical-align:middle}
-.pagination strong{color:#ff3636 !important;border:1px solid #e7e7e7}
-.pagination a.prev,
-.pagination a.prevEnd,
-.pagination a.next,
-.pagination a.nextEnd{font-weight:normal !important;margin:0 !important;white-space:nowrap;text-decoration:none !important;border:1px solid #e7e7e7}
-.hide{display:none}
+
+
 /* Tree */
 #tree{position:relative}
 #tree ul.simpleTree li.noIcon{background:none}
@@ -307,17 +210,6 @@
 #wikiToc span#wikiTocTitle {font-weight:bold;padding:10px 20px;display:block}
 #wikiToc ul li{list-style-type:none}
 #wikiToc ul{padding:0 20px}
-.xe_content{line-height:1.5em !important}
-.wiki div.xe_content h1,
-.wiki div.xe_content h2,
-.wiki div.xe_content h3,
-.wiki div.xe_content h4,
-.wiki div.xe_content h5,
-.wiki div.xe_content h6{border-bottom:1px solid black;padding:3px 0}
-.wiki div.xe_content h3,
-.wiki div.xe_content h4,
-.wiki div.xe_content h5,
-.wiki div.xe_content h6{border-bottom:none;font-weight:bold}
 span.edit_link{ float:right;font-size:12px;font-weight:normal;line-height:1.5em}
 /* Button */
 

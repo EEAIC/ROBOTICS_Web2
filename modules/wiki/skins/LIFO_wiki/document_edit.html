@@ -1,5 +1,8 @@
 <include target="header.html" />
 
+
+
+
 <!--@if($module_info->markup_type == 'markdown')-->
 <script src="../../lib/pagedown/Markdown.Converter.js"></script>
 <script>
@@ -92,6 +95,9 @@ jQuery(function($) {
 			var document_srl = {$document_srl ? $document_srl : 'null'};
 			var latest_doc_edit = {$latest_doc_edit ? $latest_doc_edit : 'null'};
 			
+			
+		
+
 			$.getJSON(url
 					, { act: 'procWikiCheckIfDocumentWasUpdated'
 						, document_srl : document_srl
@@ -160,8 +166,36 @@ jQuery(function($) {
 		
 		<!--// 에디터  -->
 		<div class="editor">
-			{$oDocument->getEditor()}
+			<!--// {$oDocument->getEditor()} -->
 		</div>
+
+	
+
+		<div id="editSection" class="editor">
+
+		</div>
+
+		<script>
+		
+		
+		var editor = new tui.Editor({
+			el: document.querySelector('#editSection'),
+			initialEditType: 'markdown',
+			previewStyle: 'vertical',
+			height: '300px',
+			
+	
+		});
+		editor.setValue($('input[name=content]').val());
+
+		$("#fo_write").submit(function(event){
+		var eValue = editor.getMarkdown();
+			console.log(eValue)
+			$('input[name=content]').val(eValue);
+		})
+		</script>
+
+
 
 		<!--// <block cond="$module_info->markup_type != 'xe_wiki_markup'">
 			<div id="wikiDocumentPreview"></div>

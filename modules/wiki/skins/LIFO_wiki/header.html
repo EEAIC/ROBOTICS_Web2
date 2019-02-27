@@ -16,6 +16,19 @@
 </block>
 
 
+<link rel="stylesheet" href="https://uicdn.toast.com/tui-editor/latest/tui-editor.css"></link>
+
+<link rel="stylesheet" href="https://uicdn.toast.com/tui-editor/latest/tui-editor-contents.css"></link>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.33.0/codemirror.css"></link>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css"></link>
+
+<script src="https://uicdn.toast.com/tui-editor/latest/tui-editor-Editor-full.js"></script>
+
+
+
+
 <load target="css/common.css" />
 
 <load target="css/jquery.treeview.css" cond="$module_info->menu_style == 'classic'" />
@@ -40,7 +53,12 @@
     <div class="wkTitle">
         <nav class="navbar navbar-expand-lg navbar-dark mb-2" style="background-color: #008275;">
             <block cond="$module_info->main_title">
-                <a id="test" class="navbar-brand" href="{getUrl('','mid',$mid,'listStyle',$listStyle)}"  title="{$module_info->comment}">{$module_info->main_title} <em cond="$module_info->sub_title">{$module_info->sub_title}</em></a>
+                <a id="test" class="navbar-brand" href="{getUrl('','mid',$mid,'listStyle',$listStyle)}"  title="{$module_info->comment}">
+                    <!--// wiki logo 사용-->
+                    <block cond="$module_info->wiki_logo">
+                        <img src="{$module_info->wiki_logo}" width="30" height="30" class="d-inline-block align-top" alt="main_logo">
+                    </block>
+                    {$module_info->main_title}</a>
             </block>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#wikiNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -79,7 +97,10 @@
             <div class=" col-lg-9 px-0 px-lg-1  order-lg-first">
                 <div>
                     <div class="area p-2 mb-2">
-                        <div cond="$XE_VALIDATOR_MESSAGE && $XE_VALIDATOR_ID == 'modules/wiki/skins/xe_wiki'" class="message {$XE_VALIDATOR_MESSAGE_TYPE} alert alert-info mb-2">
+                        <div cond="$XE_VALIDATOR_MESSAGE && $XE_VALIDATOR_ID == 'modules/wiki/skins/xe_wiki'" 
+                        class="message {$XE_VALIDATOR_MESSAGE_TYPE} mb-2 alert alert-danger"|cond="$XE_VALIDATOR_MESSAGE_TYPE=='error'" 
+                        class="message {$XE_VALIDATOR_MESSAGE_TYPE} mb-2 alert alert-info"|cond="$XE_VALIDATOR_MESSAGE_TYPE =='info'"
+                        class="message {$XE_VALIDATOR_MESSAGE_TYPE} mb-2 alert alert-success"|cond="$XE_VALIDATOR_MESSAGE_TYPE !='error' && $XE_VALIDATOR_MESSAGE_TYPE !='info'">
                             <span>{$XE_VALIDATOR_MESSAGE}</span>
                         </div>
 
@@ -100,14 +121,15 @@
                                             <button cond="$oDocument->isExists() && $grant->delete_document" type="button" class="btn btn-outline-secondary btn-sm" onclick="if(confirm('{$lang->confirm_delete}')) { doDeleteWiki('{$oDocument->document_srl}'); }">{$lang->cmd_delete}</button>
                                             <a cond="$oDocument->isExists()&& $act!='dispWikiEditPage' && $grant->write_document" class="btn btn-outline-secondary  btn-sm" href="{getUrl('act','dispWikiEditPage','entry',$entry, 'document_srl', '')}">{$lang->cmd_edit}</a>
                                             <a cond="$use_history != 'N'" href="{getUrl('act','dispWikiHistory','document_srl',$oDocument->document_srl,'history_srl','')}" class="btn btn-outline-secondary  btn-sm">{$lang->histories}</a>
-                                            <block>
+                                            <block cond="$logged_info->is_admin == 'Y'">
                                                 <div class="btn-group" role="group">
-                                                    <button id="btnGroupDrop1" type="button" class="btn btn-outline-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <button id="Wiki_management" type="button" class="btn btn-outline-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                         {$lang->cmd_management}
                                                     </button>
-                                                    <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                                        <a class="dropdown-item" href="#">Dropdown link</a>
-                                                        <a class="dropdown-item" href="#">Dropdown link</a>
+                                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="Wiki_management">
+                                                        <a class="dropdown-item" href="#" onclick="if(!confirm('{$lang->confirm_move}')) return; var params = new Array(); params['document_srl']='{$oDocument->document_srl}'; params['mid']=current_mid;params['cur_url']=current_url; exec_xml('document', 'procDocumentAdminMoveToTrash', params); return false; ">{$lang->spammer_move_to_trash}</a>
+                                                        <a class="dropdown-item" href="{getUrl('', 'module', 'admin', 'act', 'dispDocumentAdminList', 'search_target', 'ipaddress', 'search_keyword', $oDocument->get('ipaddress'))}" target="_blank"> {$lang->cmd_search_by_ipaddress}</a>
+                                                        <a class="dropdown-item" href="#" onclick="var params = new Array(); params['ipaddress_list']='{$oDocument->get('ipaddress')}'; exec_xml('spamfilter', 'procSpamfilterAdminInsertDeniedIP', params, completeCallModuleAction); return false; ">{$lang->cmd_add_ip_to_spamfilter}</a>
                                                     </div>
                                                 </div>
                                             </block>
@@ -128,7 +150,10 @@
 
 
                                     <div class="sum clearfix mb-2">
-                                        <span class="date float-right">                       
+                                        <span class="date float-right">
+                                            <block cond="$is_logged && $oDocument->get('member_srl') != $logged_info->member_srl">
+                                                <a cond="$is_logged && $oDocument->get('member_srl') != $logged_info->member_srl" href="#" onclick="doCallModuleAction('document','procDocumentDeclare','{$oDocument->document_srl}'); return false; "> {$lang->cmd_declare}</a> |                       
+                                            </block>
                                             <span class="ipAddress" cond="$grant->manager || $module_info->display_ip_address!='N'">{$oDocument->getIpaddress()} | </span>                        
                                             
                                             <!--@if($history)-->
@@ -140,16 +165,22 @@
                                     </div>
                                 </div>
 
-                                <div class="visitLog alert alert-secondary" cond="$visit_log">
-                                    {@ $bFirst = true; }
-                                    <block loop="$visit_log=>$_entry">
-                                        <!--@if(!$bFirst)--> > <!--@else-->{@ $bFirst = false; }<!--@end--> 
-                                        <a class="alert-link" href="{getUrl('entry',$_entry,'document_srl','')}">{htmlspecialchars($_entry)}</a>
-                                    </block>
-                                </div>
-                                
+                             
 
-                            
+                                <!--// 사이트 분류 표시 -->
+                                {@
+                                    $oWikiModel = &getModel('wiki');
+                                    $header_document_tree = $oWikiModel->readWikiTreeCache($module_info->module_srl);            
+                                    $oDocument_parent_srl = $header_document_tree[$oDocument->document_srl]->parent_srl;
+                                    $oDocument_parent = $header_document_tree[$oDocument_parent_srl];
+                                }
+
+                                <div class="card my-2" cond="$oDocument_parent_srl">                                   
+                                    <div class="p-1">
+                                        분류 : <a class="" href="{getSiteUrl($site_module_info->domain, '','mid',$mid,'document_srl',$oDocument_parent->document_srl)}">{htmlspecialchars($oDocument_parent->title)}</a>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
 

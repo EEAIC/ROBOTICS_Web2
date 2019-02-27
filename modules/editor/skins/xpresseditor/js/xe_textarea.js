@@ -20,6 +20,7 @@ function editorStartTextarea(editor_sequence, content_key, primary_key) {
             content = content.replace(/&amp;/g, "&");
         }
     }
+
     obj.value = content;
 }
 

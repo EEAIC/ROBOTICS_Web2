@@ -38,7 +38,11 @@
             <!--@if($history)-->
                 {$history->content}
 			<!--@else-->
-				{$oDocument->variables[content]}
+				<div class="xe_content">
+
+					{$oDocument->variables[content]}
+				</div>
+				<!--// {$oDocument->getContent()} -->
 			<!--@endif-->
 		<!--@end-->
 	</div>

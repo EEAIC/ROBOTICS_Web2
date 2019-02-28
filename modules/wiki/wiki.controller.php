@@ -91,9 +91,9 @@ class WikiController extends Wiki
                 elseif ($lang == 'xe_wiki_markup') $lang = 'xewiki';
                 $wt = new WTParser($full_content, $lang);
 				$wt->setText($section_content, (int)$section);
-				$new_content = $wt->getText();
+				// $new_content = $wt->getText();
 
-				$obj->content = $new_content;
+				// $obj->content = $new_content;
 			}
 
 			$output = $oDocumentController->updateDocument($oDocument, $obj);

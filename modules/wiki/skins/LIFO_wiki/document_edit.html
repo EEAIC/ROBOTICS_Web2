@@ -166,34 +166,8 @@ jQuery(function($) {
 		
 		<!--// 에디터  -->
 		<div class="editor">
-			<!--// {$oDocument->getEditor()} -->
+			 {$oDocument->getEditor()}
 		</div>
-
-	
-
-		<div id="editSection" class="editor">
-
-		</div>
-
-		<script>
-		
-		
-		var editor = new tui.Editor({
-			el: document.querySelector('#editSection'),
-			initialEditType: 'markdown',
-			previewStyle: 'vertical',
-			height: '300px',
-			
-	
-		});
-		editor.setValue($('input[name=content]').val());
-
-		$("#fo_write").submit(function(event){
-		var eValue = editor.getMarkdown();
-			console.log(eValue)
-			$('input[name=content]').val(eValue);
-		})
-		</script>
 
 
 

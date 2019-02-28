@@ -579,7 +579,7 @@ class WikiView extends Wiki
 				if($this->module_info->markup_type == 'markdown') {
 					$content = Context::getLang('create_first_page_markdown_help');
 					$wiki_parser = $this->getWikiTextParser();
-					$content = $wiki_parser->parse($content);
+					// $content = $wiki_parser->parse($content);
 				}
 				else {
 					$content = Context::getLang('create_first_page_description');

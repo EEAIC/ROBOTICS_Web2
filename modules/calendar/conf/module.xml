@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<module>
+ <grants />
+	<permissions/>
+	<actions>
+		<action name="dispCalendarContentList" type="view" index="true"/>
+		<action name="dispCalendarAdminList" type="view" admin_index="true"/>
+	</actions>
+	<menus>
+		<menu name="calendar" type="all">
+			<title xml:lang="en">Board</title>
+			<title xml:lang="ko">게시판</title>
+			<title xml:lang="zh-CN">Board</title>
+			<title xml:lang="jp">Board</title>
+			<title xml:lang="es">Board</title>
+			<title xml:lang="ru">Board</title>
+			<title xml:lang="fr">Board</title>
+			<title xml:lang="zh-TW">Board</title>
+			<title xml:lang="vi">Board</title>
+			<title xml:lang="mn">Board</title>
+			<title xml:lang="tr">Board</title>
+		</menu>
+	</menus>
+</module>

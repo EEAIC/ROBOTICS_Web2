@@ -1,0 +1,26 @@
+<table name="calendar">
+    <column name="id" type="number" size="11" notnull="notnull" primary_key="primary_key"/>
+    <column name="calendarId" type="number" size="11" notnull="notnull"/>
+    <column name="title" type="varchar" size="250" />
+    <column name="body" type="text"/>
+    <column name="start" type="date"/>
+    <column name="end" type="date"/>
+    <column name="goingDuration" type="number" size="11" />
+    <column name="comingDuration" type="number" size="11" />
+    <column name="isAllDay" type="char" size="1" />
+    <column name="category" type="varchar" size="8"/>
+    <column name="dueDateClass" type="varchar" size="8"/>
+    <column name="location" type="text" />
+    <column name="recurrenceRule" type="char" size="1"/>
+    <column name="isPending" type="char" size="1"/>
+    <column name="isFocused" type="char" size="1"/>
+    <column name="isVisible" type="char" size="1"/>
+    <column name="isReadOnly" type="char" size="1"/>
+    <column name="isPrivate" type="char" size="1"/>
+    <column name="color" type="varchar" size="8" />
+    <column name="bgcolor" type="varchar" size="8"/>
+    <column name="dragBgColor" type="varchar" size="8"/>
+    <column name="borderColor" type="varchar" size="8"/>
+    <column name="customStyle" type="varchar" size="8"/>
+    <column name="raw" type="bigtext"/>
+</table>

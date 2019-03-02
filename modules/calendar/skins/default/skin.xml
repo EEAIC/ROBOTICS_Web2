@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<skin version="0.2">
+    <title xml:lang="ko">TOAST UI Calendar Skin</title>
+    <description xml:lang="ko">
+        달력 모듈의 기본 스킨
+    </description>
+    <version>0.1</version>
+    <date>2019-03-02</date>
+    <author email_address="artherlim@gmail.com">
+        <name xml:lang="ko">LIFOsitory</name>
+    </author>
+    <license>MIT</license>
+</skin>

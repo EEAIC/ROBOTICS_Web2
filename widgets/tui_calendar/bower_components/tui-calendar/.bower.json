@@ -1,0 +1,43 @@
+{
+  "name": "tui-calendar",
+  "authors": [
+    "NHNEnt FE Dev tean <dl_javascript@nhnent.com>"
+  ],
+  "license": "MIT",
+  "main": [
+    "dist/tui-calendar.js",
+    "dist/tui-calendar.css"
+  ],
+  "version": "1.10.0",
+  "description": "TOAST UI Calendar",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "src",
+    "examples",
+    "karma.*.js",
+    "package.json",
+    ".gitignore",
+    "jsdoc.conf.json",
+    "webpack.*.js"
+  ],
+  "dependencies": {
+    "tui-code-snippet": "^1.5.0",
+    "tui-date-picker": "^3.2.1",
+    "tui-time-picker": "^1.5.0"
+  },
+  "homepage": "https://github.com/nhnent/tui.calendar",
+  "_release": "1.10.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "v1.10.0",
+    "commit": "c5d6944ae65585916c5da26c0aa38e8a5fe0b3e2"
+  },
+  "_source": "https://github.com/nhnent/tui.calendar.git",
+  "_target": "^1.10.0",
+  "_originalSource": "tui-calendar",
+  "_direct": true
+}

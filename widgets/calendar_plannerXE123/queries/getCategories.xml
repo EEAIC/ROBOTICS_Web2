@@ -1,0 +1,11 @@
+<query id="getCategories" action="select">
+    <tables>
+        <table name="document_categories" />
+    </tables>
+    <columns>
+		<column name="document_categories.*" />
+    </columns>
+    <conditions>
+        <condition operation="in" column="document_categories.module_srl" var="module_srl" filter="number" />
+    </conditions>
+</query>

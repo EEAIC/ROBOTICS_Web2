@@ -14,5 +14,6 @@ define('__PROXY_SERVER__', 'http://domain:port/path');
 
 define('__DISABLE_DEFAULT_CSS__', 1);
 
+ini_set('display_errors', true);
 /* End of file config.user.inc.php */
 /* Location: ./config/config.user.inc.php */

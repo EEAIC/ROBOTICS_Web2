@@ -1,0 +1,11 @@
+<query id="getCalendarList" action="select">
+    <tables>
+        <table name="calendar" />
+    </tables>
+    <columns>
+        <column name="*" />
+    </columns>
+    <navigation>
+        <page var="page" default="1" />
+    </navigation>
+</query>

@@ -1,0 +1,59 @@
+<!--// Planner123 widget header -->
+<div class="infoView">
+<ul style='float:right;'><!--//  월, 2주, 1주 선택 버튼 --><!--// V500: XEicon-->
+<li style='float:left; list-style-type:none;'><a href="{getUrl('act','','document_srl','','device','','pOption_2','M')}" title="Monthly"><i class="xi xi-calendar xi-1-5x xi-border"></i></a></li>
+<li style='float:left; list-style-type:none;'><a href="{getUrl('act','','document_srl','','device','','pOption_2','W2')}" title="2weeks"><i class="xi xi-calendar-check xi-1-5x xi-border"></i></a</li>
+<li style='float:left; list-style-type:none;'><a href="{getUrl('act','','document_srl','','device','','pOption_2','W1')}" title="1week"><i class="xi xi-calendar-remove xi-1-5x xi-border"></i></a></li>
+</ul>
+</div>
+<div class="planner_control">
+<!--@if(($pOption_2 == 'M' || $pOption_2 == null) && $ind_weekly_base <= 0)-->
+<div class="planner_this">
+<!--//    <span>{$pYear} / {$pMonth}&nbsp;&nbsp;({$pYear+2333})</span><!--//숫자형식으로 년월 표시-->
+<span>{$pMon}&nbsp;{$pYear}</span><!--//영문형식으로 년월 표시-->
+</div>
+<!--@else-->
+<div class="planner_this_week">
+<div <!--@if(!$ind_mobile)-->style ="float:left;"<!--@else-->style ="float:right;"<!--@end--> >{date('Y/m/j', $dispStart_stamp)." ~ ".date('Y/m/j', $dispEnd_stamp)}</div>
+<div <!--@if(!$ind_mobile)-->style ="float:right;"<!--@else-->style ="float:left;"<!--@end--> >
+<a style="float:left;" href="{$linkpath}&amp;pOption_2={$pOption_2}&amp;pYear={$dispStartYY}&amp;pMonth={$dispStartMM}&amp;pDay={$dispStartDD-7}"><span class="month_button" title="previous week"><</span></a>
+<a style="float:left;" href="{$linkpath}&amp;pOption_2={$pOption_2}&amp;pYear={$todayYY}&amp;pMonth={$todayMM}&amp;pDay={$todayDD}"><span class="month_button" title="this week">T-W</span></a>
+<a style="float:left;" href="{$linkpath}&amp;pOption_2={$pOption_2}&amp;pYear={$dispStartYY}&amp;pMonth={$dispStartMM}&amp;pDay={$dispStartDD+7}"><span class="month_button" title="next week">></span></a>
+</div>
+</div>
+<!--@end-->
+<div class="planner_navigation">
+<form style="float:left; width:60px;" name = "fm_select_year">
+<select style ="height:17px; margin:0; padding:0; font-size:11px;" name="selectyear" onchange="document.location.href='{$linkpath}&amp;pOption_2={$pOption_2}&amp;pYear=' + this.options[this.selectedIndex].value +'&amp;pMonth={$pMonth}'">
+<option value='{$pYear}'>{$pYear}</option>
+<!--@for($j=$todayYY+10; $j>=$todayYY-5; $j--)-->
+<option value='{$j}'>{$j}</option>")
+<!--@end-->
+</select></form>
+<a style="float:left;" href="{$linkpath}&amp;pOption_2={$pOption_2}&amp;pYear={$pYear}&amp;pMonth={$pMonth-1}"><span class="month_button" title="previous month"><</span></a>
+<!--@if(!$ind_mobile)-->
+<!--@for($i=1; $i < 13; $i++)-->
+<a style="float:left;" href="{$linkpath}&amp;pOption_2={$pOption_2}&amp;pYear={$pYear}&amp;pMonth={$i}"><span class="month_button<!--@if($pMonth == $i)-->_on<!--@end-->" title="{$i} {$lang->unit_month}" >{$i}</span></a>
+<!--@end-->
+<!--@else--><!--//(V560변경)-->
+<form style="float:left; margin-right:5px;" name = "fm_select_month">
+<select style ="height:17px; margin:0;  margin-left:5px; padding:0; font-size:11px;" name="selectmonth" onchange="document.location.href='{$linkpath}&amp;pYear=' + {$pYear} + '&amp;pMonth=' + this.options[this.selectedIndex].value">
+<option value='{$pMonth}'>&nbsp;{$pMonth}</option>
+<!--@for($i=1; $i < 13; $i++)-->
+<option value='{$i}'>&nbsp;{$i}</option>
+<!--@end-->
+</select></form>
+<!--@endif-->
+<a style="float:left;" href="{$linkpath}&amp;pOption_2={$pOption_2}&amp;pYear={$pYear}&amp;pMonth={$pMonth+1}"><span class="month_button" title="next month">></span></a>
+<!--@if(!$ind_mobile && $widget_info->display_country_select != 'N')-->
+<span style="float:left;">&nbsp;</span>
+<form style="float:left; width:65px;" name = "fm_holiday_cnt">
+<select style ="height:17px; margin:0; padding:0; font-size:11px;" name="selectcountry" onchange="document.location.href='{getUrl('pGanjioption',1,'pHoliday_cnt','')}&amp;pHoliday_cnt=' + this.options[this.selectedIndex].value">
+<option value='{$holiday_cnt_code}'>{$country_name_arr[$holiday_cnt_code]}</option>
+<!--@foreach($country_name_arr as $cnt_key => $cnt_val)-->
+<option value='{$cnt_key}'>{$cnt_val}</option>
+<!--@end-->
+</select></form>
+<!--@endif-->
+</div>
+</div>

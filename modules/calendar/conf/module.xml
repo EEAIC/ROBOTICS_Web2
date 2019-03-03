@@ -5,6 +5,9 @@
 	<actions>
 		<action name="dispCalendarContentList" type="view" index="true"/>
 		<action name="dispCalendarAdminList" type="view" admin_index="true"/>
+		<action name="procCalendarAdminInsert" type="controller"/>
+		<action name="procScheduleAdminUpdate" type="controller"/>
+		<action name="procScheduleAdminDelete" type="controller"/>
 	</actions>
 	<menus>
 		<menu name="calendar" type="all">

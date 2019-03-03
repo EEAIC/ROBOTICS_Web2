@@ -1,0 +1,8 @@
+<filter name="content_insert" module="book" act="procCalendarInsert" confirm_msg_code="confirm_submit">
+  <form>
+    <node target="id" required="true" maxlength="40"/>
+    <node target="calendarId" required="true" maxlength="40" />
+  </form>
+  <parameter />
+  <response />
+</filter>

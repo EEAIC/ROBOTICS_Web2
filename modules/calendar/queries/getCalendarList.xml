@@ -5,7 +5,4 @@
     <columns>
         <column name="*" />
     </columns>
-    <navigation>
-        <page var="page" default="1" />
-    </navigation>
 </query>

@@ -1,0 +1,32 @@
+<query id="insertCalendar" action="insert">
+    <tables>
+        <table name="calendar"/>
+    </tables>
+    <columns>
+        <column name="id" var="id"/>
+        <column name="calendarId" var="calendarId"/>
+        <column name="title" var="title" />
+        <column name="body" var="body" />
+        <column name="start" var="start" />
+        <column name="end" var="end"  />
+        <column name="goingDuration" var="goingDuration" />
+        <column name="comingDuration" var="comingDuration" />
+        <column name="isAllDay" var="isAllDay" />
+        <column name="category" var="category" />
+        <column name="dueDateClass" var="dueDateClass"/>
+        <column name="location" var="location"/>
+        <column name="recurrenceRule"  var="recurrenceRule" />
+        <column name="isPending" var="isPending"/>
+        <column name="isFocused" var="isFocused"/>
+        <column name="isVisible" var="isVisible"/>
+        <column name="isReadOnly" var="isReadOnly"/>
+        <column name="isPrivate" var="isPrivate"/>
+        <column name="color" var="color" />
+        <column name="bgColor" var="bgColor"/>
+        <column name="dragBgColor" var="dragBgColor"/>
+        <column name="borderColor" var="borderColor"/>
+        <column name="customStyle" var="customStyle"/>
+        <column name="raw" var="raw"/>
+        <column name="state" var="state"/>
+    </columns>
+</query>

@@ -47,9 +47,14 @@ class calendarAdminView extends calendar {
         Context::set('calendar_list', $output->data);
         Context::set('page_navigation', $output->page_navigation);
 
+        // exec_json 으로 전달
+        $this->add('output', $output);
+        $this->setMessage('success_registed');
 
         // 관리자 목록(mid) 보기 템플릿 지정(tpl/index.html)
-        $this->setTemplateFile('index');
+        $this->setTemplateFile('list');
     }
+
+
 }
 ?>

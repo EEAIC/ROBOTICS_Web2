@@ -9,8 +9,10 @@
  
         function getCalendarAdminList($args){
             $output = executeQueryArray('calendar.getCalendarList', $args);
+
             return $output;
         }
+
 
    }
 ?>

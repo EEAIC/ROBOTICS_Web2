@@ -14,7 +14,7 @@
 
 	</script>
 <!--@end-->
-<div class="wikiRead px-3">
+<div class="wikiRead p-3">
 	<div class="wkReadBody mb-2 markdown-body">
 		<!--@if($oDocument->isSecret() && !$oDocument->isGranted())-->
 			<form action="./" method="get" ruleset="input_password" class="secretMessage">
@@ -38,9 +38,12 @@
             <!--@if($history)-->
                 {$history->content}
 			<!--@else-->
-				{$oDocument->variables[content]}
+				<div class="xe_content">
+
+					{$oDocument->variables[content]}
+				</div>
+				<!--// {$oDocument->getContent()} -->
 			<!--@endif-->
-				{$oDocument->getContent();}
 		<!--@end-->
 	</div>
 

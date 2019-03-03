@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <skin version="0.2">
-    <title xml:lang="ko">LIFO Skin</title>
-	<title xml:lang="en">LFIO Skin</title>
+    <title xml:lang="ko">LIFO Wiki Skin</title>
+	<title xml:lang="en">LFIO Wiki Skin</title>
     <description xml:lang="ko">
-        LIFO Skin
+        LIFO Wiki Skin
     </description>
 	<description xml:lang="en">
         This is LIFO skin of Wiki
@@ -77,6 +77,19 @@
 				<title xml:lang="en">Classic tree</title>
 			</options>
 		</var>
+
+         <var name="wiki_logo" type="image">
+			<title xml:lang="ko">로고</title>
+            <title xml:lang="en">Logo</title>
+			<title xml:lang="vi">Tiêu đề</title>
+            <title xml:lang="jp">タイトル</title>
+            <title xml:lang="zh-CN">제목</title>
+            <title xml:lang="zh-TW">標題</title>
+            <title xml:lang="tr">Başlık</title>
+            <description xml:lang="ko">로고 이미지를 사용하시려면 등록해주세요.</description>
+			<description xml:lang="en">Please input the logo.</description>
+        </var>
+
         <var name="main_title" type="text">
 			<title xml:lang="ko">제목</title>
             <title xml:lang="en">Title</title>
@@ -94,22 +107,7 @@
             <description xml:lang="tr">Lütfen başlığı giriniz.</description>
         </var>
         
-		<var name="sub_title" type="text">
-			<title xml:lang="ko">부제목</title>
-			<title xml:lang="en">Subtitle</title>
-			<title xml:lang="vi">Phụ đề</title>
-			<title xml:lang="jp">サブタイトル</title>
-            <title xml:lang="zh-CN">부제목</title>
-            <title xml:lang="zh-TW">副標題</title>
-            <title xml:lang="tr">Altbaşlık</title>
-            <description xml:lang="ko">제목 옆에 나타날 부제목을 적어주세요.</description>
-			<description xml:lang="en">Please input the subtitle which will be displayed beside title.</description>
-			<description xml:lang="vi">Xin vui lòng nhập phụ đề, nó sẽ được hiển thị bên cạnh tiêu đề chính.</description>
-			<description xml:lang="jp">タイトルの隣りに表示されるサブタイトルを入力して下さい。</description>
-            <description xml:lang="zh-CN">제목 옆에 나타날 부제목을 적어주세요.</description>
-            <description xml:lang="zh-TW">請輸入顯示在標題旁的副標題。</description>
-            <description xml:lang="tr"> Lütfen başlığın yanında görüntülenecek altbaşlığı giriniz.</description>
-        </var>
+
         
 		<var name="comment" type="textarea">
 			<title xml:lang="ko">상세 설명</title>

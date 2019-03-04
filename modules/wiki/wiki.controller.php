@@ -194,7 +194,7 @@ class WikiController extends Wiki
         $lang = Context::get('markup');
         $this->module_info->markup_type = $lang;
         $parser = $this->getWikiTextParser();
-        $content = $parser->parse($content, false);
+        // $content = $parser->parse($content, false);
         $rez = array('content'=>$content);
         //@TODO: avoid this by using the default ajax mechanism
         echo json_encode($rez);

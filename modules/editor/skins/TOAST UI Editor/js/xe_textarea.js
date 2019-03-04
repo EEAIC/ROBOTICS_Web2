@@ -21,14 +21,16 @@ function editorTextarea(editor_sequence, editor_height, editor_previewStyle, edi
         minHeight: editor_height,
         height: 'auto',
         language: editor_language
-       
     });
   
-    editor.setHtml(content_input.val());
+    
+    if(content_input.val()){
+        editor.setHtml(content_input.val());
+    }
     
     // Save edited content
 	insert_form.on("submit", function() {
 		content_input.val(editor.getHtml());
-	});
+    });
 }
 

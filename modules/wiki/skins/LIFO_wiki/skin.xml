@@ -76,6 +76,10 @@
                 <title xml:lang="ko">Classic tree</title>
 				<title xml:lang="en">Classic tree</title>
 			</options>
+            <options value="toast_ui_grid">
+                <title xml:lang="ko">TOAST UI GRID</title>
+				<title xml:lang="en">TOAST UI GRID</title>
+			</options>
 		</var>
 
          <var name="wiki_logo" type="image">

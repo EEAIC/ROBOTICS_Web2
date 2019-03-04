@@ -38,8 +38,7 @@
             <!--@if($history)-->
                 {$history->content}
 			<!--@else-->
-				<div class="xe_content">
-
+				<div class="xe_content">                    
 					{$oDocument->variables[content]}
 				</div>
 				<!--// {$oDocument->getContent()} -->
@@ -127,7 +126,7 @@
 			<input type="hidden" name="content" value="" />
 			<input type="hidden" name="xe_validator_id" value="modules/wiki/skins/xe_wiki" />
 			<div class="wkWrite commentEditor">
-				<div class="editor">{$oDocument->getCommentEditor()}</div>
+				<div class="editor mb-2">{$oDocument->getCommentEditor()}</div>
 				<!--// 로그인 전 -->
 				<div class="form-row" id="toggle_author_row" style="display: none;"|cond="$is_logged">
 					<div class="form-group mb-2 col-sm-3" cond="!$is_logged">

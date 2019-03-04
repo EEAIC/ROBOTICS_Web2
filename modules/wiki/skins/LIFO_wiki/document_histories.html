@@ -9,92 +9,84 @@
 
         old_radios.change(function(){
             var current_index = old_radios.index($(this));
-            new_radios.slice(0, current_index + 1).show();
-            new_radios.slice(current_index + 1, new_radios.length).hide();
+            new_radios.slice(0, current_index + 1).css('visibility', 'visible');
+            new_radios.slice(current_index + 1, new_radios.length).css('visibility', 'hidden');
         });
 
         new_radios.change(function(){
             var current_index = new_radios.index($(this));
-            old_radios.slice(0, current_index).hide();
-            old_radios.slice(current_index, old_radios.length).show();
+            old_radios.slice(0, current_index).css('visibility', 'hidden');
+            old_radios.slice(current_index, old_radios.length).css('visibility', 'visible');
         });
 
     });
 </script>
+
 <form method="get" action="./" no-error-return-url="true">
     <input type="hidden" name="mid" value="{$module_info->mid}" />
     <input type="hidden" name="act" value="dispWikiHistoryCompare" />
     <input type="hidden" name="document_srl" value="{$document_srl}" />
+<div class="card mb-2">
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+            <input type="radio" name="no_value" value="" style="visibility: hidden"/>
+            <input type="radio" name="history_srl" value="" checked="checked" />
+            {$oDocument->getRegdate('Y.m.d H:i:s')} 
+            (<a href="{getUrl('act','dispWikiContent', 'module_srl', $module_info->module_srl,'document_srl',$oDocument->document_srl)}">{$lang->cmd_view}</a> |
+            <a href="{getUrl('act','dispWikiEditPage','entry',$entry, 'document_srl', '')}">{$lang->cmd_edit}</a>
+            )
+            (현재 문서)
+            {$oDocument->getNickName()}
+            ({$oDocument->get('ipaddress')})
+           
+        </li>
+        <!--@foreach($histories as $val)-->               
+            <li class="list-group-item">
+                <p class="card-text">
+                    <input type="radio" name="old_history_srl" value="{$val->history_srl}" />
+                    <input type="radio" name="history_srl" value="{$val->history_srl}" />                   
+                    {zdate($val->regdate, 'Y.m.d H:i:s')} 
+                    (<a href="#" onclick="jQuery('#historyContent{$val->history_srl}').toggleClass('hide')">{$lang->cmd_view}</a> |
+                    <a href="{getUrl('act','dispWikiEditPage','history_srl',$val->history_srl)}">{$lang->restore}</a> |
+                    <a href="#" onclick="getDiff('diff{$val->history_srl}',{$oDocument->document_srl},{$val->history_srl})">{$lang->diff}</a>)
+                    
+                    <span class="font-weight-bold">r{$val->history_srl}</span>
+                    {$val->nick_name} ({$val->ipaddress})                                  
+                </p>
+            </li>
+            <li id="historyContent{$val->history_srl}" class="hide list-group-item">					
+				{nl2br(htmlspecialchars($val->content))}					
+            </li>
+            <li id="diff{$val->history_srl}" name="diff{$val->history_srl}" class="hide list-group-item">
+            </li>			
 
-<table cellspacing="0" border="1" summary="List of document histories" class="wkList">
-    <thead>
-        <tr>
-            <th></th>
-            <th></th>
-            <th scope="col" class="title">{$lang->title}</th>
-            <th scope="col">{$lang->author}</th>
-            <th scope="col">{$lang->date}</th>
-        </tr>
-    </thead>
-    <tbody>
-        <!--@if(!$page || $page == 1)-->
-        <tr>
-            <td>
-            </td>
-            <td>
-                <input type="radio" name="history_srl" value="{$val->history_srl}" checked="checked" />
-            </td>
-            <td class="title">
-                <a href="{getUrl('act','',page,'','history_srl','')}">{$oDocument->getTitle()} (current)</a>
-            </td>
-            <td class="author">{$oDocument->getNickName()}</td>
-            <td class="date">{$oDocument->getUpdate()}</td>
-        </tr>
         <!--@end-->
+    </ul>
+</div>
 
-        <!--@foreach($histories as $val)-->
-        <tr>
-            <td>
-                <input type="radio" name="old_history_srl" value="{$val->history_srl}" />
-            </td>
-            <td>
-                <input type="radio" name="history_srl" value="{$val->history_srl}" class="hide" />
-            </td>
-            <td class="title">
-				<button type="button" class="btn" onclick="jQuery('#historyContent{$val->history_srl}').toggleClass('hide')">{$lang->cmd_view}</button>
-				<a href="{getUrl('act','dispWikiEditPage','history_srl',$val->history_srl)}" class="btn">{$lang->restore}</a>
-				<button type="button" class="btn" onclick="getDiff('diff{$val->history_srl}',{$oDocument->document_srl},{$val->history_srl})">{$lang->diff}</button>
-                <div id="historyContent{$val->history_srl}" class="hide history_content">
-					<!--@if($module_info->markup_type == 'xe_wiki_markup')-->
-					{$val->content}
-					<!--@else-->
-					{nl2br(htmlspecialchars($val->content))}
-					<!--@end-->
-				</div>
-				<div id="diff{$val->history_srl}" name="diff{$val->history_srl}" class="hide diff">
-				</div>				
-            </td>
-            <td class="author"><a href="#" onclick="return false;" class="member_{$val->member_srl}">{$val->nick_name}</a></td>
-            <td class="date">{zdate($val->regdate, 'Y.m.d H:i:s')}</td>
-        </tr>
-        <!--@end-->
-    </tbody>
-</table>
-
-    <input type="submit" class="btn" value="Compare selected revisions" />
-</form>
-<!--@if($page_navigation)-->
-    <div class="pagination">
-        <a href="{getUrl('page','')}" class="prevEnd">&lsaquo; {$lang->first_page}</a> 
-        <!--@while($page_no = $page_navigation->getNextPage())-->
-            <!--@if($page == $page_no)-->
-                <strong>{$page_no}</strong> 
-            <!--@else-->
-                <a href="{getUrl('page',$page_no)}">{$page_no}</a>
-            <!--@end-->
-        <!--@end-->
-        <a href="{getUrl('page',$page_navigation->last_page)}" class="nextEnd">{$lang->last_page} &rsaquo;</a>
+    <div class="clearfix">
+        <input type="submit" class="btn btn-info float-right" value="선택 리비젼 비교" />
     </div>
+</form>
+
+
+<!--@if($page_navigation)-->
+    <ul class="justify-content-center pagination">
+		<li class="page-item pagination-prev">
+			<a href="{getUrl('page','')}" class="page-link ">&laquo; {$lang->first_page}</a>
+		</li>
+		<block loop="$page_no=$page_navigation->getNextPage()">
+			<li cond="$page!=$page_no" class="page-item">
+				<a class="page-link" href="{getUrl('page',$page_no)}">{$page_no}</a>
+			</li>
+			<li cond="$page==$page_no" class="page-item active">
+				<a class="page-link" href="{getUrl('page',$page_no)}">{$page_no}</a>
+			</li>
+		</block>
+		<li class="page-item pagination-next">
+			<a href="{getUrl('page',$page_navigation->last_page)}" class="page-link">{$lang->last_page} &raquo;</a>
+		</li>
+	</ul>
 <!--@endif-->
 
 <include target="footer.html" />

@@ -26,35 +26,35 @@
 </table>
 
 <div class="form-group clearfix no-gutters">
-        <div class="col col-md-auto float-left">
-            <form action="{getUrl()}" method="get" class="wkSearch wkSearchFooter form-row" no-error-return-url="true">                          
-                <input type="hidden" name="vid" value="{$vid}" />
-                <input type="hidden" name="mid" value="{$mid}" />
-                <input type="hidden" name="act" value="{$act}" />
-                <input type="hidden" name="category" value="{$category}" />
-                <input type="hidden" name="search_target" value="title_content" />
-                <div class="col-md-auto mb-2">
-                    <select name="search_target" class="custom-select col-md-auto">
-                        <option loop="$search_option=>$key,$val" value="{$key}" selected="selected"|cond="$search_target==$key">{$val}</option>
-                    </select>
-                </div>
-                
-                <div class="col-md-auto mb-2">
-                    <div class="input-group ">
-                        <input type="text" name="search_keyword" value="{htmlspecialchars($search_keyword)}" title="{$lang->cmd_search}" class="form-control xi-magnifier" />
-                        <div class="input-group-append">                    
-                            <button class="btn btn-primary" type="submit">{$lang->cmd_search}</button>
-                            <!--@if($last_division)-->
-                            <a href="{getUrl('page',1,'document_srl','','division',$last_division,'last_division','')}" class="btn">{$lang->cmd_search_next}</a>
-                            <!--@end-->                                   
-                        </div>
+    <div class="col col-md-auto float-left">
+        <form action="{getUrl()}" method="get" class="wkSearch wkSearchFooter form-row" no-error-return-url="true">                          
+            <input type="hidden" name="vid" value="{$vid}" />
+            <input type="hidden" name="mid" value="{$mid}" />
+            <input type="hidden" name="act" value="{$act}" />
+            <input type="hidden" name="category" value="{$category}" />
+            <input type="hidden" name="search_target" value="title_content" />
+            <div class="col-md-auto mb-2">
+                <select name="search_target" class="custom-select col-md-auto">
+                    <option loop="$search_option=>$key,$val" value="{$key}" selected="selected"|cond="$search_target==$key">{$val}</option>
+                </select>
+            </div>
+            
+            <div class="col-md-auto mb-2">
+                <div class="input-group ">
+                    <input type="text" name="search_keyword" value="{htmlspecialchars($search_keyword)}" title="{$lang->cmd_search}" class="form-control xi-magnifier" />
+                    <div class="input-group-append">                    
+                        <button class="btn btn-primary" type="submit">{$lang->cmd_search}</button>
+                        <!--@if($last_division)-->
+                        <a href="{getUrl('page',1,'document_srl','','division',$last_division,'last_division','')}" class="btn">{$lang->cmd_search_next}</a>
+                        <!--@end-->                                   
                     </div>
                 </div>
-                
-                <!--@if($last_division)-->
-                <a href="{getUrl('page',1,'document_srl','','division',$last_division,'last_division','')}" class="btn">{$lang->cmd_search_next}</a>
-                <!--@end-->
-           
+            </div>
+            
+            <!--@if($last_division)-->
+            <a href="{getUrl('page',1,'document_srl','','division',$last_division,'last_division','')}" class="btn">{$lang->cmd_search_next}</a>
+            <!--@end-->
+        
         </form>
     </div>
 </div>

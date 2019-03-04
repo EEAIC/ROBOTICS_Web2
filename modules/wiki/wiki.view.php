@@ -201,7 +201,8 @@ class WikiView extends Wiki
         $diff_html = $diff->Render($renderer);
 		if($diff_html == "")
 		{
-			$diff_html = Context::getLang('diff_no_differences');
+            $diff_html = Context::getLang('diff_no_differences');
+            Context::set('no_differences', true);
 		}
 		else
 		{
@@ -214,7 +215,9 @@ class WikiView extends Wiki
 			$new_version_header = Context::getLang('diff_new_version');
 			$new_version_header .= '<br />';
 			$new_version_header .= zdate($new_version->regdate, 'Y.m.d H:i:s');
-			$diff_html = str_replace("New Version", $new_version_header, $diff_html);
+            $diff_html = str_replace("New Version", $new_version_header, $diff_html);
+            
+            Context::set('no_differences', false);
 		}
 
         Context::set('old_version', $old_version);
@@ -466,6 +469,7 @@ class WikiView extends Wiki
 		// The requested order parameter values
 		$document_srl = Context::get('document_srl');
 
+    
 		$entry = Context::get('entry');
 		if(!$document_srl)
 		{
@@ -848,7 +852,7 @@ class WikiView extends Wiki
 		}
 
 		$content = $oDocument->getContent(FALSE, FALSE, FALSE, FALSE);
-		$content = $this->_renderWikiContent($oDocument->document_srl, $content);
+		// $content = $this->_renderWikiContent($oDocument->document_srl, $content);
 		// Retrieve documents that link here and that this doc links to
 		$oWikiModel = &getModel('wiki');
 		$inbound_links = $oWikiModel->getInboundLinks($oDocument->document_srl);
@@ -900,8 +904,10 @@ class WikiView extends Wiki
 		if(true || !$content)
 		{
 			$wiki_syntax_parser = $this->getWikiTextParser();
-			$content = $wiki_syntax_parser->parse($org_content);
-			
+			// $content = $wiki_syntax_parser->parse($org_content);
+            $content = $org_content;
+            
+
 			if($oCacheHandler->isSupport())
 			{
 				$oCacheHandler->put($cache_key, $content);

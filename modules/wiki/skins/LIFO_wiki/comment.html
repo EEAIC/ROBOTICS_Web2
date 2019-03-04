@@ -1,5 +1,3 @@
-
-
 <!--@if($oDocument->getCommentCount())-->
 <div class="area p-2 mb-2">
 	<div class="fbList" id="reply">
@@ -62,8 +60,10 @@
 								$target_comment = $oCommentModel->getComment($comment->parent_srl);
 							}
 								<strong>@{$target_comment->nick_name}</strong>
-						</block>
-						{$comment->getContent(false)|noescape}
+                        </block>
+                       
+                        {$comment->content}
+						
 					</div>
 					<!--@end-->
 

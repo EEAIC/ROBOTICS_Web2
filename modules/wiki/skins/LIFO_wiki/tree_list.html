@@ -46,5 +46,19 @@
 		<!--@end-->
 
 	</div>
+	<script>
+		{@
+			$js_array = json_encode($document_tree);
+			echo "var js_document_tree = " . $js_array . ";";
+		
+		}	
+		
+		Object.keys(js_document_tree).forEach(key =>{
+			console.log(js_document_tree[key]);
+		})
+		
+			
+		
+	</script>
 </div>
 <include target="footer.html" />

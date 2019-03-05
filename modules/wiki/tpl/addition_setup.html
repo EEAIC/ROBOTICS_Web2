@@ -4,8 +4,3 @@
 	<p>{$XE_VALIDATOR_MESSAGE}</p>
 </div>
 {$setup_content}
-<script cond="$markup_type != 'xe_wiki_markup'">
-	jQuery(function($){
-		$("#sel_editor_colorset").parent().prepend("<p>Document editor skin is not configurable when using Markdown, GoogleCode or MediaWiki syntax.</p>");
-	});
-</script>

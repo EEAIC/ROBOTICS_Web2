@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<skin version="0.2">
+    <title xml:lang="ko">TOAST UI Image Editor 위젯 스킨</title>    
+    <title xml:lang="en">TOAST UI Image Editor widget skin</title>
+    <description xml:lang="ko">TOAST UI Image Editor 위젯 스킨 입니다.</description>
+    <description xml:lang="en">TOAST UI Image Editor 위젯 스킨 입니다.</description>
+    <version>1.0</version>
+    <date>2019-03-06</date>
+    <author email_address="artherlim@gmail.com">
+        <name xml:lang="ko">LIFOsitory</name>
+        <name xml:lang="en">LIFOsitory</name>
+    </author>
+</skin>

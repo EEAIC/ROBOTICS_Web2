@@ -1,0 +1,21 @@
+$(document ).ready(function() {
+    // Image editor
+    var imageEditor = new tui.ImageEditor('#tui-image-editor', {
+        includeUI: {
+            theme: Theme, // or whiteTheme
+            initMenu: 'filter',
+            menuBarPosition: 'bottom'
+        },
+        cssMaxWidth: 700,
+        cssMaxHeight: 1000,
+        selectionStyle: {
+            cornerSize: 20,
+            rotatingPointOffset: 70
+        }
+    });
+
+    window.onresize = function() {
+        imageEditor.ui.resizeEditor();
+        
+    }
+});

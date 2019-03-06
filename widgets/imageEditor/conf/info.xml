@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget version="0.2">
+    <title xml:lang="ko">TOAST UI Image Editor 위젯</title>
+    <title xml:lang="en">TOAST UI Image Editor Widget</title>
+    <description xml:lang="ko">Full-featured photo image editor using canvas. It is really easy, and it comes with great filters.</description>
+    <description xml:lang="en">Full-featured photo image editor using canvas. It is really easy, and it comes with great filters.</description>
+    <version>1.0</version>
+    <date>2019-03-06</date>
+    <author email_address="developers@xpressengine.com">
+        <name xml:lang="ko">LIFOsitory</name>       
+        <name xml:lang="en">LIFOsitory</name>             
+    </author>
+    <extra_vars>
+    <title xml:lang="ko">추출 대상</title>
+        <var id="theme_select" type="select">
+            <name xml:lang="ko">테마 설정</name>
+            <name xml:lang="en">Theme Setting</name>
+            <options>
+                <value>Black</value>
+                <name xml:lang="ko">블랙 테마</name>
+                <name xml:lang="en">Black theme</name>
+            </options>
+            <options>
+                <value>White</value>
+                <name xml:lang="ko">하얀 테마</name>
+                <name xml:lang="en">White theme</name>
+            </options>
+        </var>
+    </extra_vars>
+</widget>

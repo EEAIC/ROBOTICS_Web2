@@ -1,7 +1,7 @@
 <include cond="$in_admin" target="header.html" />
 <load target="js/generate_code.js" />
-<div class="x_alert x_alert-info" id="widgetInfo" hidden><p>{$widget_info->description}</p></div>
-<div class="x_alert x_alert-info" id="codeHelp" hidden><p>{$lang->about_widget_code}</p></div>
+<div class="x_alert x_alert-info" id="widgetInfo" ><p>{$widget_info->description}</p></div>
+<div class="x_alert x_alert-info" id="codeHelp" ><p>{$lang->about_widget_code}</p></div>
 <form id="widget_code_form" class="x_form-horizontal" action="./" method="post">
 	<input type="hidden" name="module" value="widget" />
 	<input type="hidden" name="act" value="procWidgetGenerateCode" />

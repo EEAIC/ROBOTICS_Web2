@@ -40,11 +40,11 @@
 		</ul>
 	<!--@else-->
 	<!--@if(count($list))-->
-	    <ul>
+	    <div>
 		<!--@foreach($list as $node)-->
 		<li class="wikiTreeNode" style="
 			<!--@if($node->type == 'root' || $node->type == 'active_root')-->
-				list-style-image:url('./modules/wiki/skins/xe_wiki_tree/img/icon_root.png');
+				list-style : none;
 			<!--@elseif($node->type == 'parent')-->
 				list-style-image:url('./modules/wiki/skins/xe_wiki_tree/img/icon_up_one_level.png');
 			<!--@elseif($node->type == 'sibling')-->
@@ -64,7 +64,7 @@
 			<!--@end-->
 		</li>
 		<!--@end-->
-	    </ul>
+	    </div>
 	<!--@end-->
 	<!--@end-->
 

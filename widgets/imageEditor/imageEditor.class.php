@@ -1,8 +1,8 @@
 <?php
-/* Copyright (C) NAVER <http://www.navercorp.com> */
+/* Copyright (C) LIFOsitory */
 /**
  * @class imageEditor
- * @author NAVER (developers@xpressengine.com)
+ * @author LIFOsitory
  * @brief widget to display imageEditor
  * @version 0.1
  */

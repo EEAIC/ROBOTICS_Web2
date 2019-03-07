@@ -4,7 +4,7 @@ $(document ).ready(function() {
     // Image editor
     var imageEditor = new tui.ImageEditor('#tui-image-editor', {
         includeUI: {
-            theme: Theme, // or whiteTheme
+            theme: Theme,
             initMenu: 'filter',
             menuBarPosition: 'bottom'
         },

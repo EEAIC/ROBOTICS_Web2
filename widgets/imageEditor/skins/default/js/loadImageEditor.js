@@ -1,4 +1,6 @@
 $(document ).ready(function() {
+    console.log($("#tui-image-editor"));
+    console.log("test");
     // Image editor
     var imageEditor = new tui.ImageEditor('#tui-image-editor', {
         includeUI: {

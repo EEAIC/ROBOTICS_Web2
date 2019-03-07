@@ -1,12 +1,12 @@
-<load target="bower_components/fabric/dist/fabric.min.js"/>
-<load target="bower_components/tui-code-snippet/dist/tui-code-snippet.min.js"/>
+<load target="./bower_components/fabric/dist/fabric.min.js"/>
+<load target="./bower_components/tui-code-snippet/dist/tui-code-snippet.min.js"/>
 <load target="///cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.3/FileSaver.min.js"/>
-<load target="bower_components/tui-color-picker/dist/tui-color-picker.min.css"/>
-<load target="bower_components/tui-color-picker/dist/tui-color-picker.js"/>
-<load target="bower_components/tui-image-editor/dist/tui-image-editor.css"/>
-<load target="bower_components/tui-image-editor/dist/tui-image-editor.js"/>
+<load target="./bower_components/tui-color-picker/dist/tui-color-picker.min.css"/>
+<load target="./bower_components/tui-color-picker/dist/tui-color-picker.js"/>
+<load target="./bower_components/tui-image-editor/dist/tui-image-editor.css"/>
+<load target="./bower_components/tui-image-editor/dist/tui-image-editor.js"/>
 
-<load target="js/loadImageEditor.js" type="body" />
+<load target="./js/loadImageEditor.js" type="body" />
 
 <!--@if($widget_info->theme_select == 'Black') -->
 <load target="bower_components/tui-image-editor/theme/black-theme.js"/>
@@ -16,7 +16,10 @@
 
 
 <div class="widgetContainer" style="height: 800px">
-    <div id="tui-image-editor"></div>
+    <div id="tui-image-editor">
+        <h3>위젯 페이지를 저장한 후에 위젯이 생성됩니다.</h3>
+        <h4>페이지 당 Image Editor는 하나만 생성가능 합니다.</h4>
+    </div>
 </div>
 
 

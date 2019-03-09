@@ -51,6 +51,20 @@ class WikiController extends Wiki
 				$obj->nick_name = 'anonymous';
 			}
 		}
+
+		// Set member_srl
+		if(!$obj->member_srl) 
+		{
+			$logged_info = Context::get('logged_info');
+			if($logged_info)
+			{
+				$obj->member_srl = $logged_info->member_srl;
+			}
+			else
+			{
+				$obj->member_srl = 0;
+			}
+		}
 		
 		if($obj->is_notice != 'Y' || !$this->grant->manager) 
 		{
@@ -147,6 +161,7 @@ class WikiController extends Wiki
 				$oWikiController = &getController('wiki'); 
 				$oWikiController->insertLinkedDocuments($obj->document_srl, $linked_documents_aliases, $obj->module_srl);
 			}
+
 		}
 		
 		// Stop when an error occurs

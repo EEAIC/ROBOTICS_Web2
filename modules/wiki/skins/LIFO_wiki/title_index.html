@@ -11,13 +11,12 @@
     <tbody>
     <!--@foreach($document_list as $val)-->
         {@ $document_link = urldecode(getUrl('','mid',$mid,'entry',$val->get('alias'), 'document_srl', '')) }
-        <tr class="cursor-pointer" onclick="location.href='{$document_link}'">
+        <tr>
             <td class="title">
-                {$val->getTitle()}
+                <a href="{$document_link}">{$val->getTitle()}</a>
             </td>
             <td class="author">
-                {$val->getNickName()}
-            
+                {$val->getNickName()}         
             </td>
             <td class="date text-nowrap">{$val->getRegdate("Y.m.d H:i")}</td>
         </tr>

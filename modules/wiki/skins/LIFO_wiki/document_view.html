@@ -59,7 +59,7 @@
 			<dt>{$lang->contributors} : </dt>
 			<dd>
 				<!--@foreach($contributors as $key => $val)-->
-					<a href="#" class="member_{$val->member_srl}" onclick="return false;">{$val->nick_name}</a>
+					<a>{$val->nick_name}</a>
 					<!--@if($key<count($contributors)-1)-->, <!--@end-->
 				<!--@end-->
 			</dd>
@@ -75,7 +75,7 @@
 						<strong class="author">{$oDocument->getNickName()}</strong>
 					<!--@end-->
 				<!--@else-->
-					<a href="#popup_menu_area" class="member_{$oDocument->get('member_srl')} author" onclick="return false">{$oDocument->getNickName()}</a>
+					<a>{$oDocument->getNickName()}</a>
 				<!--@end-->			
 			</dd>
 		</dl>

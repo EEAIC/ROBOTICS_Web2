@@ -41,19 +41,18 @@
 		</div>
 	</p>
 	<!--@else-->	
-	<p id="wikiSearchInfo">
-		<strong>{number_format($total_count)} {$lang->results_number}</strong>
+	<p id="wikiSearchInfo" class="mb-2">
+		<strong>{$lang->results_number} [{number_format($total_count)}] </strong>
 		<!--@if($total_count>50)-->
 			{$lang->too_many_results}
 		<!--@end-->
 	</p>
 
-	<ul id="wikiSearchResults">
+	<ul id="wikiSearchResults" class="list-group list-group-flush">
 		<!--@foreach($document_list as $document)-->
-			<li>
-				<h4><a href="{getFullUrl( '','mid',$document->mid).'/entry/'.$document->entry}">{$document->get('title')}</a>&nbsp;&nbsp;<span><em>({$document->browser_title})</em></span></h4>
+			<li class="list-group-item wkList">
+				<h4><i class="xi-documents py-1 px-2 mr-1 bg-info rounded-pill text-white"></i><a href="{getUrl('','mid', $mid, 'entry', $document->entry, 'document_srl','')}" class="font-weight-bold">{$document->get('title')}</a></h4>
 				<p>{preg_replace('/^[ \t]*[\r\n]+/m', '', $document->getSummary(400))}</p>
-				<p><a href="{getFullUrl( '','mid',$document->mid).'/entry/'.$document->entry}">{getFullUrl( '','mid',$document->mid).'/entry/'.$document->entry}{$itemURL}</a></p>
 			</li>
 		<!--@end-->
 	</ul>

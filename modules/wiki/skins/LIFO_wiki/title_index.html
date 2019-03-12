@@ -4,8 +4,8 @@
     <thead class="thead-dark">
         <tr>
             <th scope="col" class="title">{$lang->title}</th>
-            <th scope="col" >{$lang->author}</th>
-            <th scope="col" >{$lang->date}</th>
+            <th scope="col" class="fit" >{$lang->author}</th>
+            <th scope="col" class="fit">{$lang->date}</th>
         </tr>
     </thead>
     <tbody>
@@ -15,10 +15,10 @@
             <td class="title">
                 <a href="{$document_link}">{$val->getTitle()}</a>
             </td>
-            <td class="author">
+            <td class="author fit">
                 {$val->getNickName()}         
             </td>
-            <td class="date text-nowrap">{$val->getRegdate("Y.m.d H:i")}</td>
+            <td class="date text-nowrap fit">{$val->getRegdate("Y.m.d H:i")}</td>
         </tr>
     <!--@end-->
     </tbody>

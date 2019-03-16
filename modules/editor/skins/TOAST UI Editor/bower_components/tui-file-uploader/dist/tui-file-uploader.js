@@ -431,7 +431,13 @@ return /******/ (function(modules) { // webpackBootstrap
 					data.id = data.file_srl;
 	                this.updateList(data);
 	                this.fire('success', data);
-	            }
+                },
+
+               // MODIFIED by LIFOsitroy
+               // add Event for deleting file in simple style
+                deleting: function(data) {
+                    this.fire('delete', data);
+                }
 	        }, this);
 
 	        if (this.useDropzone && this.dragView) {
@@ -697,10 +703,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	            '<caption><span>File Uploader List</span></caption>',
 	            '<thead class="tui-form-header">',
 	                '<tr>',
-	                    '<th scope="col" width="32" style="border-right:0;">{{checkbox}}</th>',
-	                    '<th scope="col" width="156">File Type</th>',
-	                    '<th scope="col" width="362">File Name</th>',
-	                    '<th scope="col" width="146" style="border-right:0">File Size</th>',
+	                    '<th scope="col" width="1%" style="border-right:0;">{{checkbox}}</th>',
+	                    '<th scope="col" width="15%">File Type</th>',
+	                    '<th scope="col" width="70%">File Name</th>',
+	                    '<th scope="col" style="border-right:0">File Size</th>',
 	                '</tr>',
 	            '</thead>',
 	            '<tbody class="tui-form-body {{listItemsClassName}}"></tbody>',
@@ -708,15 +714,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	    ].join(''),
 	    LIST_ITEM: [
 	        '<tr>',
-	            '<td width="32">',
+	            '<td width="1%">',
 	                '<label class="tui-checkbox">{{checkbox}}</td>',
-	            '<td width="156">{{filetype}}</td>',
-	            '<td width="362">',
+	            '<td width="15%">{{filetype}}</td>',
+	            '<td width="70%">',
 	                '<span class="tui-filename-area">',
 	                    '<span class="tui-file-name">{{filename}}</span>',
 	                '</span>',
 	            '</td>',
-	            '<td width="146">{{filesize}}</td>',
+	            '<td>{{filesize}}</td>',
 	        '</tr>'
 	    ].join('')
 	};
@@ -1201,7 +1207,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.$el.append($listContainer);
 
 	        if (isTableList) {
-	            this._setTableWidth($listContainer);
+	            // this._setTableWidth($listContainer);
 	            this._setColumnGroup();
 	            this._setTableHeader();
 	            this._setTableRowTemplate();
@@ -1259,7 +1265,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * @private
 	     */
 	    _setTableWidth: function($listContainer) {
-	        var columns = this.columnList;
+            var columns = this.columnList;
+            console.log($listContainer);
 	        var totalWidth = parseInt($listContainer.width(), 10);
 	        var sumWidth = 0;
 	        var emptyCount = 0;
@@ -1304,9 +1311,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var columns = this.columnList;
 	        var html = '';
 
-	        forEach(columns, function(column) {
-	            html += '<col width="' + column.width + '">';
-	        });
+	        // forEach(columns, function(column) {
+	        //     html += '<col width="' + column.width + '">';
+	        // });
 
 	        if (columns) {
 	            $colgroup.html(html);
@@ -1363,9 +1370,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var columns = this.columnList;
 	        var html = '';
 
-	        forEach(columns, function(column) {
-	            html += '<td width="' + column.width + '">' + column.body + '</td>';
-	        });
+	        // forEach(columns, function(column) {
+	        //     html += '<td width="' + column.width + '">' + column.body + '</td>';
+	        // });
 
 	        if (html) {
 	            html = '<tr>' + html + '</tr>';
@@ -2063,7 +2070,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * It is not used for batch transfer.
 	     * @param {Object} params - Removed item's id list (idList: [])
 	     */
-	    remove: function(params) {
+	    remove: function(params) {            
 	        $.ajax({
 	            url: this.uploader.url.remove,
 	            dataType: 'jsonp',
@@ -2341,14 +2348,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * @param {Object} params - Removed item's id list (idList: [])
 	     */
 	    remove: function(params) {
-	        $.ajax({
-	            url: this.uploader.url.remove,
-	            dataType: 'jsonp',
-	            data: params,
-	            success: $.proxy(function(data) {
-	                this.fire('removed', data);
-	            }, this)
-	        });
+            // MODIFIED By LIFOsitory
+            // Disable ajax
+            this.fire('deleting', params);
+
+	        // $.ajax({
+	        //     url: this.uploader.url.remove,
+	        //     dataType: 'jsonp',
+	        //     data: params,
+	        //     success: $.proxy(function(data) {
+	        //         this.fire('removed', data);
+	        //     }, this)
+	        // });
 	    },
 
 	    /**

@@ -1,24 +1,9 @@
 (function($){
     function init(cfg) {
-    
-        console.log(cfg);
-
-        settings = {
-            send_url: request_uri
-				.setQuery('module', 'file')
-                .setQuery('act', 'procFileUpload'),
-            remove_url: request_uri
-                .setQuery('module', 'file')
-                .setQuery('act', 'procFileDelete')
-            
-        }
-    
-        
-        $(function(){ editorFileUploader(settings, cfg); });
-
+        $(function(){ editorFileUploader(cfg); });
     }
 
-    function editorFileUploader(settings, cfg) {
+    function editorFileUploader(cfg) {
         var request = {
             send: request_uri
                 .setQuery('module', 'file')
@@ -28,28 +13,12 @@
         // create FileUploader
         var uploader = new tui.FileUploader($('#uploader'), {
             url: {
-                send: request.send
+                send: request.send,
+                remove: request.send
             },
             isMultiple: false,
             listUI: {
-                type: 'table',
-                columnList: [
-                    {
-                        header: '{{checkbox}}',
-                        body: '{{checkbox}}',
-                        
-                    },
-                    {
-                        header: 'File Name',
-                        body: '<span class="tui-filename-area"><span class="tui-file-name">{{filename}}</span></span>',
-                       
-                    },
-                    {
-                        header: 'File Size',
-                        body: '{{filesize}}',
-                        
-                    }
-                ]
+                type: cfg.fileUploadView
             }
         });
 
@@ -59,6 +28,7 @@
         var $checkedItemSize = $('#checkedItemSize');
         var $removeButton = $('.tui-btn-cancel');
 
+        disableRemoveButton(1);
         // check attached files
         loadFileList(cfg);
 
@@ -93,7 +63,6 @@
         uploader.on('update', function(evt) { // This event is only fired when using batch transfer
             var items = evt.filelist;
             var totalSize = uploader.getTotalSize(items);
-
             $itemTotalSize.html(totalSize);
         });
 
@@ -129,15 +98,26 @@
                 editorRelKeys[cfg.editorSequence].primary.val(evt.upload_target_srl);
             }
             
-            var successCount = evt.success;
-            var removeButtonState = (successCount > 0);
+            // var successCount = evt.success;
+            // var removeButtonState = (successCount > 0);
 
-            $uploadedCount.html(successCount);
-            disableRemoveButton(removeButtonState);
+            // $uploadedCount.html(successCount);
+            // disableRemoveButton(removeButtonState);
             // setUploadedCountInfo(successCount);
             resetInfo();
         });
 
+        // remove file in simple style
+        uploader.on('delete', function(evt) {
+            var param = {
+                file_srls : evt.idList.join(','),
+                editor_sequence : cfg.editorSequence
+            }
+
+            exec_xml("file","procFileDelete", param, function() { reloadFileList(cfg); });
+        });
+
+        // remove file in table style
         $removeButton.on('click', function() {
             var checkedItems = uploader.getCheckedList();
             // uploader.removeList(checkedItems);
@@ -152,7 +132,7 @@
                 editor_sequence : cfg.editorSequence
             }
             
-            // 파일 삭제 요청
+            // Requset file delete
             exec_xml("file","procFileDelete", params, function() { reloadFileList(cfg); });
         });
 
@@ -171,11 +151,10 @@
             };
 
             function on_complete(ret, response_tags) {
-                var files_data =  ret.files.item;
-                console.log(files_data);
-                if (files_data) {
-                    
-                    if (Array.isArray(files_data)){ // multiple file remove
+                var files_data =  ret.files.item;               
+                
+                if (files_data) {                    
+                    if (Array.isArray(files_data)){ // remove multiple file 
                         for (var i = 0; i < files_data.length; i++) {
                             files_data[i].name = files_data[i].source_filename;
                             files_data[i].size = files_data[i].file_size;

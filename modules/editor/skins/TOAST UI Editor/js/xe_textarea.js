@@ -13,6 +13,7 @@ function editorTextarea(cfg) {
 
     insert_form[0].setAttribute('editor_sequence', cfg.editor_sequence);
     
+    // Set default language
     if (!cfg.editor_language) {
         cfg.editor_language = 'en_US';
     }

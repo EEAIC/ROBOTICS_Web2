@@ -10,3 +10,12 @@
     width: 100%;
     
 }
+
+.tui-clearfix {
+    margin-top: 5px;
+}
+
+.tui-clearfix::after { 
+    content: '';
+    display: inline-block;
+    clear: both }

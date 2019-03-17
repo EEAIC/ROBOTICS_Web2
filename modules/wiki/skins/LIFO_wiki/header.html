@@ -1,8 +1,8 @@
 <!--// bootstrapCDN 사용 -->
 <block cond="$module_info->use_bootstrapCDN == 'Y'">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <load target="///stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"  index="-1"/>
+    <load target="///cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"  index="-1"/>
+    <load target="///stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"  index="-1"/>
 </block>
 
 <!--// browser_title 제거  -->
@@ -17,13 +17,14 @@
 
 
 <load target="css/common.css" />
+<load target="/common/xeicon/xeicon.min.css" />
 
 <load target="css/jquery.treeview.css" cond="$module_info->menu_style == 'classic'" />
 <load target="js/jquery.cookie.js" />
 <load target="js/jquery.treeview.js" />
 
 
-<load target="css/wiki.css" />
+<load target="css/wiki.css" index="10"/>
 <load target="js/wiki.js" />
 <load target="js/diff.js" cond="$use_history != 'N' && $act == 'dispWikiHistory'" />
 <script>
@@ -31,6 +32,11 @@
 		$(".message.info").delay(1500).fadeOut('slow');
     });
 </script>
+
+<load target="///uicdn.toast.com/tui.code-snippet/latest/tui-code-snippet.js"/>
+<load target="///uicdn.toast.com/tui-tree/latest/tui-tree.js"/>
+<load target="///uicdn.toast.com/tui-tree/latest/tui-tree.css"/>
+
 
 <!--// 사용자 입력 헤더  -->
 {$module_info->header_text}
@@ -58,13 +64,13 @@
                     <a class="nav-item nav-link" href="{getUrl('','act','dispWikiEditPage','entry','','document_srl','','mid',$mid,'vid',$vid)}">{$lang->new_document}</a>
                 </span>
                 
-                <form action="{getUrl()}" method="post" class="wkSearch form-inline">
+                <form action="{getUrl()}" method="get" class="wkSearch form-inline" no-error-return-url="true">
                     <input type="hidden" name="mid" value="{$mid}" />
-                    <input type="hidden" name="vid" value="{$vid}" />
+                    <input type="hidden" name="vid" value="{$vid}" />                   
                     <input type="hidden" name="act" value="dispWikiContent" />
-                    <input type="text" class="iText form-control mr-sm-2" name="entry" />
+                    <input type="text" class="form-control mr-sm-2" name="entry" />
                     <div class="btn-group col col-sm-auto px-0" role="group">
-                        <input class="btn btn-outline-light mt-2 my-sm-0 w-100" type="submit" value="{$lang->cmd_search}" />
+                        <input class="btn btn-outline-light mt-2 my-sm-0 w-100" type="submit" value="{$lang->cmd_move}" />
                         <a class="btn btn-outline-light mt-2 my-sm-0 w-100" cond="$grant->manager" href="{getUrl('act','dispWikiAdminInsertWiki')}">{$lang->cmd_setup}</a>
                     </div>
                 </form>
@@ -75,11 +81,11 @@
 
 
     <div class="">
-        <div class="row mx-0 mx-lg-n1">
+        <div class="row mx-0">
             <div class="col-lg-3 px-0 px-lg-1 order-lg-last">
-                <div class="area p-2 mb-2">
+                
                     <include target="left_side_tree_list.html" />
-                </div>
+              
             </div>
             <div class=" col-lg-9 px-0 px-lg-1  order-lg-first">
                 <div>
@@ -132,7 +138,7 @@
                         
 
                                     <h3 class="title">
-                                        <a class="text-reset" href="{$oDocument->getPermanentUrl()}">{$oDocument->getTitle()}</a>
+                                        <a class="font-weight-bold text-reset" href="{$oDocument->getPermanentUrl()}">{$oDocument->getTitle()}</a>
                                     </h3>
 
 

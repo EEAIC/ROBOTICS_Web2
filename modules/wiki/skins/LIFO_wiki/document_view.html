@@ -38,8 +38,7 @@
             <!--@if($history)-->
                 {$history->content}
 			<!--@else-->
-				<div class="xe_content">
-
+				<div class="xe_content">                    
 					{$oDocument->variables[content]}
 				</div>
 				<!--// {$oDocument->getContent()} -->
@@ -60,7 +59,7 @@
 			<dt>{$lang->contributors} : </dt>
 			<dd>
 				<!--@foreach($contributors as $key => $val)-->
-					<a href="#" class="member_{$val->member_srl}" onclick="return false;">{$val->nick_name}</a>
+					<a>{$val->nick_name}</a>
 					<!--@if($key<count($contributors)-1)-->, <!--@end-->
 				<!--@end-->
 			</dd>
@@ -76,7 +75,7 @@
 						<strong class="author">{$oDocument->getNickName()}</strong>
 					<!--@end-->
 				<!--@else-->
-					<a href="#popup_menu_area" class="member_{$oDocument->get('member_srl')} author" onclick="return false">{$oDocument->getNickName()}</a>
+					<a>{$oDocument->getNickName()}</a>
 				<!--@end-->			
 			</dd>
 		</dl>
@@ -127,7 +126,7 @@
 			<input type="hidden" name="content" value="" />
 			<input type="hidden" name="xe_validator_id" value="modules/wiki/skins/xe_wiki" />
 			<div class="wkWrite commentEditor">
-				<div class="editor">{$oDocument->getCommentEditor()}</div>
+				<div class="editor mb-2">{$oDocument->getCommentEditor()}</div>
 				<!--// 로그인 전 -->
 				<div class="form-row" id="toggle_author_row" style="display: none;"|cond="$is_logged">
 					<div class="form-group mb-2 col-sm-3" cond="!$is_logged">

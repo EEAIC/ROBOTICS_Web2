@@ -1,9 +1,18 @@
 <include target="header.html" />
 
 <load target="css/diff-styles.css" />
+<div class="mb-2">
+    <block cond="$no_differences">
+        <div class="alert alert-warning mb-0" role="alert">
+            {$diff_html}
+        </div>
+    </block>
+    <block cond="!$no_differences">
+        {$diff_html}
+    </block>
+</div>
 
-{$diff_html}
-
-<br/>
-<a href="{getUrl('act','dispWikiHistory','document_srl',$oDocument->document_srl,'history_srl','')}" class="btn btn-dark">{$lang->cmd_back}</a>
+<div class="clearfix">
+    <a href="{getUrl('act','dispWikiHistory','document_srl',$oDocument->document_srl,'history_srl','')}" class="btn btn-dark float-right">{$lang->cmd_back}</a>
+</div>
 

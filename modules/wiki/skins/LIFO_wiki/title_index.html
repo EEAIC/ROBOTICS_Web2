@@ -4,57 +4,56 @@
     <thead class="thead-dark">
         <tr>
             <th scope="col" class="title">{$lang->title}</th>
-            <th scope="col" >{$lang->author}</th>
-            <th scope="col" >{$lang->date}</th>
+            <th scope="col" class="fit" >{$lang->author}</th>
+            <th scope="col" class="fit">{$lang->date}</th>
         </tr>
     </thead>
     <tbody>
     <!--@foreach($document_list as $val)-->
         {@ $document_link = urldecode(getUrl('','mid',$mid,'entry',$val->get('alias'), 'document_srl', '')) }
-        <tr class="cursor-pointer" onclick="location.href='{$document_link}'">
+        <tr>
             <td class="title">
-                {$val->getTitle()}
+                <a href="{$document_link}">{$val->getTitle()}</a>
             </td>
-            <td class="author">
-                {$val->getNickName()}
-            
+            <td class="author fit">
+                {$val->getNickName()}         
             </td>
-            <td class="date text-nowrap">{$val->getRegdate("Y.m.d H:i")}</td>
+            <td class="date text-nowrap fit">{$val->getRegdate("Y.m.d H:i")}</td>
         </tr>
     <!--@end-->
     </tbody>
 </table>
 
 <div class="form-group clearfix no-gutters">
-        <div class="col col-md-auto float-left">
-            <form action="{getUrl()}" method="get" class="wkSearch wkSearchFooter form-row" no-error-return-url="true">                          
-                <input type="hidden" name="vid" value="{$vid}" />
-                <input type="hidden" name="mid" value="{$mid}" />
-                <input type="hidden" name="act" value="{$act}" />
-                <input type="hidden" name="category" value="{$category}" />
-                <input type="hidden" name="search_target" value="title_content" />
-                <div class="col-md-auto mb-2">
-                    <select name="search_target" class="custom-select col-md-auto">
-                        <option loop="$search_option=>$key,$val" value="{$key}" selected="selected"|cond="$search_target==$key">{$val}</option>
-                    </select>
-                </div>
-                
-                <div class="col-md-auto mb-2">
-                    <div class="input-group ">
-                        <input type="text" name="search_keyword" value="{htmlspecialchars($search_keyword)}" title="{$lang->cmd_search}" class="form-control xi-magnifier" />
-                        <div class="input-group-append">                    
-                            <button class="btn btn-primary" type="submit">{$lang->cmd_search}</button>
-                            <!--@if($last_division)-->
-                            <a href="{getUrl('page',1,'document_srl','','division',$last_division,'last_division','')}" class="btn">{$lang->cmd_search_next}</a>
-                            <!--@end-->                                   
-                        </div>
+    <div class="col col-md-auto float-left">
+        <form action="{getUrl()}" method="get" class="wkSearch wkSearchFooter form-row" no-error-return-url="true">                          
+            <input type="hidden" name="vid" value="{$vid}" />
+            <input type="hidden" name="mid" value="{$mid}" />
+            <input type="hidden" name="act" value="{$act}" />
+            <input type="hidden" name="category" value="{$category}" />
+            <input type="hidden" name="search_target" value="title_content" />
+            <div class="col-md-auto mb-2">
+                <select name="search_target" class="custom-select col-md-auto">
+                    <option loop="$search_option=>$key,$val" value="{$key}" selected="selected"|cond="$search_target==$key">{$val}</option>
+                </select>
+            </div>
+            
+            <div class="col-md-auto mb-2">
+                <div class="input-group ">
+                    <input type="text" name="search_keyword" value="{htmlspecialchars($search_keyword)}" title="{$lang->cmd_search}" class="form-control xi-magnifier" />
+                    <div class="input-group-append">                    
+                        <button class="btn btn-primary" type="submit">{$lang->cmd_search}</button>
+                        <!--@if($last_division)-->
+                        <a href="{getUrl('page',1,'document_srl','','division',$last_division,'last_division','')}" class="btn">{$lang->cmd_search_next}</a>
+                        <!--@end-->                                   
                     </div>
                 </div>
-                
-                <!--@if($last_division)-->
-                <a href="{getUrl('page',1,'document_srl','','division',$last_division,'last_division','')}" class="btn">{$lang->cmd_search_next}</a>
-                <!--@end-->
-           
+            </div>
+            
+            <!--@if($last_division)-->
+            <a href="{getUrl('page',1,'document_srl','','division',$last_division,'last_division','')}" class="btn">{$lang->cmd_search_next}</a>
+            <!--@end-->
+        
         </form>
     </div>
 </div>

@@ -1,14 +1,14 @@
 <include target="header.html" />
     <div class="wikiRead">
 		<div class="wkReadBody">
-			<div class="xe_content">
+			<div class="">
 				<div class="alert alert-primary">
 					<i class="xi-angle-right"></i> {$oDocument->get('content')}
 				</div>
 
-			<div class="command">
-				<a class="btn btn-success" href="{getUrl('act','dispWikiEditPage','entry',$oDocument->get('title'), 'document_srl', '')}">{$lang->cmd_create}</a>
-			</div>
+				<div class="command">
+					<a class="btn btn-success" href="{getUrl('act','dispWikiEditPage','entry',$oDocument->get('title'), 'document_srl', '')}">{$lang->cmd_create}</a>
+				</div>
 			</div>
 		</div>
 	</div>

@@ -35,6 +35,6 @@ function editorTextarea(cfg) {
     // Save edited content
 	insert_form.on("submit", function() {
 		content_input.val(editor.getHtml());
-	});
+    });
 }
 

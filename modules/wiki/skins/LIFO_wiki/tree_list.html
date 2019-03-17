@@ -4,47 +4,64 @@
 </div>
 <div class="area p-2 mb-2">
 
-
-	<div class="treeList">
-		{@ $_pDepth = 0;}
-		<ul>
-		
-			<!--@foreach($document_tree as $key => $val)-->
-
-				<!--@if($_pDepth > $val->depth)-->
-					<!--@for($i=$val->depth; $i<$_pDepth; $i++)-->
-					</ul>
-					</li>
-					<!--@end-->
-					{@ $_pDepth = $val->depth;
-						
-					}
-				<!--@end-->
-
-				<li>
-
-				<a href="{getSiteUrl($site_module_info->domain, '','mid',$mid,'document_srl',$val->document_srl)}">  {$val->title}</a>
-				<!--@if($val->childs)-->
-					{@$_pDepth++}
-					<ul>
-				<!--@else-->
-					</li>
-				<!--@end-->
-				
+	<div id="tree" class="tui-tree-wrap w-100"></div>
+	<div class="treeList clearfix mt-2">
+			<!--@if($grant->write_document)-->
+			<div class="float-right">
+				<a href="{getUrl('act','dispWikiModifyTree')}" class="btn btn-warning">{$lang->cmd_modify}</a>
+				<button type="button" onclick="doRecompileTree()" class="btn btn-secondary">{$lang->cmd_remake_cache}</button>
+			</div>
 			<!--@end-->
-			<!--@for($i=0;$i<$_pDepth;$i++)-->
-				</ul>
-			<!--@end-->
-			</li>
-		</ul>
-
-		<!--@if($grant->write_document)-->
-		<div class="treeUI">
-			<a href="{getUrl('act','dispWikiModifyTree')}" class="btn btn-warning">{$lang->cmd_modify}</a>
-			<button type="button" onclick="doRecompileTree()" class="btn btn-secondary">{$lang->cmd_remake_cache}</button>
+	
 		</div>
-		<!--@end-->
+	<script>
+		{@
+			$js_array = json_encode($document_tree);
+			echo "var items = " . $js_array . ";";
+		
+		}	
+		
+		var itemsByID = [];
+		Object.keys(items).forEach(key =>{
+			itemsByID[items[key].document_srl] = {
+				text : items[key].title,
+				children : [],
+				parent_srl : items[key].parent_srl,
+				document_srl : items[key].document_srl
+			};
+		});
 
-	</div>
+		itemsByID.forEach(function(item) {
+			if(item.parent_srl != 0) {
+				itemsByID[item.parent_srl].children.push(item);
+			}
+		});
+
+		var roots = itemsByID.filter(function(item) {
+			return item.parent_srl == 0;
+		})
+
+		var container = document.getElementById('tree');
+		var options = {
+			data: roots,
+			nodeDefaultState: 'opened'
+	}
+		var tree = new tui.Tree(container, options).enableFeature('Selectable', {
+            selectedClassName: 'tui-tree-selected',
+		});;
+		
+		tree.on('select', function(eventData) {
+			
+			var nodeData = tree.getNodeData(eventData.nodeId);
+			
+			var url = default_url.setQuery('mid','{$mid}').setQuery('document_srl', nodeData.document_srl);
+			console.log(url); 
+			location.href = url;
+        });
+
+		
+			
+		
+	</script>
 </div>
 <include target="footer.html" />

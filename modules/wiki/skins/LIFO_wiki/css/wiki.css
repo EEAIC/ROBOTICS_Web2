@@ -1,13 +1,26 @@
-
-
-
-
-
 @charset "utf-8";
 .wiki {
 	background-color: #f2f2f2;
 }
 
+p { 
+    margin: 0px;
+}
+
+.wkList a {
+	color: black;
+}
+
+.Box-title {
+	font-size: 14px;
+    font-weight: 600;
+}
+
+.table td.fit,
+.table th.fit {
+    white-space: nowrap;
+    width: 1px;
+}
 
 /* Wiki Reset */
 
@@ -85,11 +98,6 @@
 .fbList .item .indent{position:relative;*zoom:1}
 .fbList .item .indent:after{content:"";display:block;clear:both}
 .fbList .item.itemReply .indent{padding-left:15px;background-repeat:no-repeat;background-position:0 1.2em}
-.fbList .item .author{margin:0 0 5px 0}
-.fbList .item .author a{font-size:12px;text-decoration:none}
-.fbList .item .author a:hover,
-.fbList .item .author a:active,
-.fbList .item .author a:focus{text-decoration:underline}
 .fbList .item .iContent{position:relative;padding:1em 0 1em 120px;*zoom:1;z-index:1}
 .fbList .item .iContent:after{content:"";display:block;clear:both}
 .fbList .item .iContent *{margin-top:0}
@@ -212,9 +220,3 @@
 #wikiToc ul{padding:0 20px}
 span.edit_link{ float:right;font-size:12px;font-weight:normal;line-height:1.5em}
 /* Button */
-
-/* Button */
-.board .btn{text-decoration:none !important;display:inline-block;*display:inline;*zoom:1;padding:0 12px;margin:0;font-family:inherit;font-size:12px;line-height:24px;height:24px;color:#333333;text-align:center;text-shadow:0 1px 1px rgba(255, 255, 255, 0.75);vertical-align:top;cursor:pointer;overflow:visible;background-color:#f5f5f5;*background-color:#e6e6e6;background-image:-moz-linear-gradient(top, #ffffff, #e6e6e6);background-image:-webkit-linear-gradient(top, #ffffff, #e6e6e6);background-image:-o-linear-gradient(top, #ffffff, #e6e6e6);background-image:linear-gradient(top, #ffffff, #e6e6e6);background-repeat:repeat-x;filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#e6e6e6', GradientType=0);filter:progid:DXImageTransform.Microsoft.gradient(enabled=false);border:1px solid #bbbbbb;border-color:#e6e6e6 #e6e6e6 #bfbfbf;border-color:rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);border-bottom-color:#a2a2a2;border-radius:2px;box-shadow:inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05)}
-.board .btn:hover,
-.board .btn:active,
-.board .btn[disabled]{color:#333333;background-color:#e6e6e6;*background-color:#d9d9d9}

@@ -27,6 +27,7 @@ class fileController extends file
 	{
 		Context::setRequestMethod('JSON');
 		$file_info = Context::get('Filedata');
+		
 
 		// An error appears if not a normally uploaded file
 		if(!is_uploaded_file($file_info['tmp_name'])) exit();
@@ -46,6 +47,7 @@ class fileController extends file
 
 		$output = $this->insertFile($file_info, $module_srl, $upload_target_srl);
 		Context::setResponseMethod('JSON');
+		$this->add('filedata', $file_info);
 		$this->add('file_srl',$output->get('file_srl'));
 		$this->add('file_size',$output->get('file_size'));
 		$this->add('direct_download',$output->get('direct_download'));

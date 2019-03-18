@@ -49,19 +49,12 @@
                 <title xml:lang="en">N</title>
             </options>
         </var>
-        <var name="remove_browser_title" type="select" default="N">
-            <title xml:lang="ko">브라우저 제목 제거 사용</title>
-            <title xml:lang="en">Remove browser title</title>
-            <description xml:lang="ko">LIFO_layout 에서 사이트 제목 섹션을 제거합니다.</description>
-            <description xml:lang="en">Remove browser title section in LIFO_layout</description>
-            <options value="Y">
-                <title xml:lang="ko">사용함</title>
-                <title xml:lang="en">Y</title>
-            </options>
-            <options value="N">
-                <title xml:lang="ko">사용 안 함</title>
-                <title xml:lang="en">N</title>
-            </options>
+        <var name="nav_bgcolor" type="text" default="#008275">
+            <title xml:lang="ko">메뉴바 색상</title>
+            <title xml:lang="en">Navbar Color</title>
+            <description xml:lang="ko">메뉴바 색상을 변경할 수 있습니다.</description>
+            <description xml:lang="en">Change Navbar Color</description>
+
         </var>
         <var name="menu_style" type="select">
             <title xml:lang="ko">Tree Menu style</title>

@@ -325,7 +325,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var $target = $('<iframe name="' + this.formTarget + '"></iframe>');
 	        $target.css({
 	            visibility: 'hidden',
-	            position: 'absolute'
+                position: 'absolute',
+                top: '0px'
 	        });
 
 	        return $target;

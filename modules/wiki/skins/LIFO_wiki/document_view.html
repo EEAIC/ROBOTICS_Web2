@@ -1,108 +1,125 @@
-
 <include target="header.html" />
 
-<!--@if($module_info->markup_type != 'xe_wiki_markup')-->
-	<load target="../../lib/google-code-prettify/prettify.css" />
-	<load target="../../lib/google-code-prettify/prettify.js" />
-	
-	<script>
-		jQuery(document).ready(function($){
-			prettyPrint();
-			
-		});
-
-
-	</script>
-<!--@end-->
-<div class="wikiRead p-3">
-	<div class="wkReadBody mb-2 markdown-body">
-		<!--@if($oDocument->isSecret() && !$oDocument->isGranted())-->
-			<form action="./" method="get" ruleset="input_password" class="secretMessage">
-				<input type="hidden" name="act" value="procWikiVerificationPassword" />
-				<input type="hidden" name="success_return_url" value="{getUrl('act','dispWikiContent','mid',$mid,'entry',$entry, 'document_srl', '')}" />
-				<input type="hidden" name="mid" value="{$mid}" />
-				<input type="hidden" name="page" value="{$page}" />
-				<input type="hidden" name="document_srl" value="{$oDocument->document_srl}" />
-				<input type="hidden" name="xe_validator_id" value="modules/wiki/skins/xe_wiki" />
-		
-				<span><label for="cpw">{$lang->msg_is_secret} {$lang->msg_input_password}</label></span>
-				<div class="input-group col col-md-5 px-0">
-					<input type="password" name="password" id="cpw" class="form-control" />
-					<div class="input-group-append">
-						<button type="submit" class="btn btn-primary">{$lang->cmd_input}</button>
-					</div>
-				</div>									
-			</form>
-		<!--@else-->
-
-            <!--@if($history)-->
-                {$history->content}
-			<!--@else-->
-				<div class="xe_content">                    
-					{$oDocument->variables[content]}
-				</div>
-				<!--// {$oDocument->getContent()} -->
-			<!--@endif-->
-		<!--@end-->
-	</div>
-
-			
-	<div class="wkNav clearfix mb-1" cond="$oDocumentPrev||$oDocumentNext">
-		<a cond="$oDocumentPrev" href="{$oDocumentPrev->getPermanentUrl()}" class="wikiPrev float-left text-reset">&laquo; {$oDocumentPrev->getTitle()}</a>
-		<a cond="$oDocumentNext" href="{$oDocumentNext->getPermanentUrl()}" class="wikiNext float-right text-reset">{$oDocumentNext->getTitle()} &raquo;</a>
-	</div>
-
-	<div class="wkReadFooter border-top">
-	
-        <!--@if($contributors)-->
-		<dl class="contributors mt-1 mb-0">
-			<dt>{$lang->contributors} : </dt>
-			<dd>
-				<!--@foreach($contributors as $key => $val)-->
-					<a>{$val->nick_name}</a>
-					<!--@if($key<count($contributors)-1)-->, <!--@end-->
-				<!--@end-->
-			</dd>
-		</dl>
-		<!--@else-->
-		<dl class="contributors mt-1 mb-0">
-			<dt>{$lang->contributors} : </dt>
-			<dd>
-				<!--@if(!$oDocument->getMemberSrl())-->
-					<!--@if($oDocument->isExistsHomepage())-->
-					<a href="{$oDocument->getHomepageUrl()}" target="_blank" class="author">{$oDocument->getNickName()}</a>
-					<!--@else-->
-						<strong class="author">{$oDocument->getNickName()}</strong>
-					<!--@end-->
-				<!--@else-->
-					<a>{$oDocument->getNickName()}</a>
-				<!--@end-->			
-			</dd>
-		</dl>
-		<!--@end-->
-
-
-		<!--@if($oDocument->hasUploadedFiles())-->
-        <dl class="attachedFile">
-            <dt><img src="./img/iconFiles.gif" width="27" height="11" alt="{$lang->uploaded_file}" /> <button type="button" class="fileToggle" onclick="jQuery(this).parents('dl.attachedFile').toggleClass('open');return false;">{$lang->uploaded_file} ({$oDocument->get('uploaded_count')})</button></dt>
-            <dd>
-                <ul class="files">
-                    {@ $uploaded_list = $oDocument->getUploadedFiles() }
-                    <!--@foreach($uploaded_list as $key => $file)-->
-                    <li><a href="{getUrl('')}{$file->download_url}">{$file->source_filename} <span class="bubble">[File Size:{FileHandler::filesize($file->file_size)}/Download:{number_format($file->download_count)}]</span></a></li>
-                    <!--@end-->
-                </ul>
-            </dd>
-        </dl>
-		<!--@end-->
+    <!--@if($module_info->markup_type != 'xe_wiki_markup')-->
+        <load target="../../lib/google-code-prettify/prettify.css" />
+        <load target="../../lib/google-code-prettify/prettify.js" />
         
-	</div>
+        <script>
+            jQuery(document).ready(function($){
+                prettyPrint();
+                
+            });
+
+
+        </script>
+    <!--@end-->
+    <div class="wikiRead p-3">
+        <div class="row">    
+            <div class="wkReadBody mb-2 markdown-body col order-sm-last ">
+                <!--@if($oDocument->isSecret() && !$oDocument->isGranted())-->
+                    <form action="./" method="get" ruleset="input_password" class="secretMessage">
+                        <input type="hidden" name="act" value="procWikiVerificationPassword" />
+                        <input type="hidden" name="success_return_url" value="{getUrl('act','dispWikiContent','mid',$mid,'entry',$entry, 'document_srl', '')}" />
+                        <input type="hidden" name="mid" value="{$mid}" />
+                        <input type="hidden" name="page" value="{$page}" />
+                        <input type="hidden" name="document_srl" value="{$oDocument->document_srl}" />
+                        <input type="hidden" name="xe_validator_id" value="modules/wiki/skins/xe_wiki" />
+                
+                        <span><label for="cpw">{$lang->msg_is_secret} {$lang->msg_input_password}</label></span>
+                        <div class="input-group col col-md-5 px-0">
+                            <input type="password" name="password" id="cpw" class="form-control" />
+                            <div class="input-group-append">
+                                <button type="submit" class="btn btn-primary">{$lang->cmd_input}</button>
+                            </div>
+                        </div>									
+                    </form>
+                <!--@else-->
+
+                    <!--@if($history)-->
+                        {$history->content}
+                    <!--@else-->
+                        <div class="xe_content">                    
+                            {$oDocument->variables[content]}
+                        </div>
+                        <!--// {$oDocument->getContent()} -->
+                    <!--@endif-->
+                <!--@end-->
+                
+                <!--@if($oDocument->hasUploadedFiles())-->
+                <dl class="attachedFile border-top pt-3">
+                    <dt>
+                        <button type="button" class="fileToggle" onclick="jQuery(this).parents('dl.attachedFile').toggleClass('open'); return false;">
+                            <i class="xi-angle-down"></i>
+                            <i class="xi-angle-right"></i>
+                            <span>{$lang->uploaded_file}</span>
+                            <span class="badge badge-secondary">{$oDocument->get('uploaded_count')}</span>
+                        </button>
+                    </dt>
+                    <dd class="mt-3">
+                        <ul class="files list-group">
+                            {@ $uploaded_list = $oDocument->getUploadedFiles() }
+                            <!--@foreach($uploaded_list as $key => $file)-->
+                            <li class="list-group-item px-2 py-1 d-flex align-items-center justify-content-between">
+                                <span>
+                                    <i class="xi-file-zip"></i>
+                                    <a href="{getUrl('')}{$file->download_url}">{$file->source_filename} [Download:{number_format($file->download_count)}]
+                                    </a>
+                                </span>                    
+                                <small class="text-muted">{FileHandler::filesize($file->file_size)}</small>                    
+                            </li>
+                            <!--@end-->
+                        </ul>
+                    </dd>
+                </dl>
+                <!--@end-->        
+            </div>
+    
+            <div class="col-md-auto col-sm-12 order-sm-first order-md-last">
+                <include target="left_side_tree_list.html" />
+            </div>   
+        </div>
+                
+        <div class="wkNav clearfix mb-1" cond="$oDocumentPrev||$oDocumentNext">
+            <a cond="$oDocumentPrev" href="{$oDocumentPrev->getPermanentUrl()}" class="wikiPrev float-left text-reset">&laquo; {$oDocumentPrev->getTitle()}</a>
+            <a cond="$oDocumentNext" href="{$oDocumentNext->getPermanentUrl()}" class="wikiNext float-right text-reset">{$oDocumentNext->getTitle()} &raquo;</a>
+        </div>
+
+        <div class="wkReadFooter border-top mt-2">
+            <!--@if($contributors)-->
+            <dl class="contributors mt-1 mb-0">
+                <dt>{$lang->contributors} : </dt>
+                <dd>
+                    <!--@foreach($contributors as $key => $val)-->
+                        <a>{$val->nick_name}</a>
+                        <!--@if($key<count($contributors)-1)-->, <!--@end-->
+                    <!--@end-->
+                </dd>
+            </dl>
+            <!--@else-->
+            <dl class="contributors mt-1 mb-0">
+                <dt>{$lang->contributors} : </dt>
+                <dd>
+                    <!--@if(!$oDocument->getMemberSrl())-->
+                        <!--@if($oDocument->isExistsHomepage())-->
+                        <a href="{$oDocument->getHomepageUrl()}" target="_blank" class="author">{$oDocument->getNickName()}</a>
+                        <!--@else-->
+                            <strong class="author">{$oDocument->getNickName()}</strong>
+                        <!--@end-->
+                    <!--@else-->
+                        <a>{$oDocument->getNickName()}</a>
+                    <!--@end-->			
+                </dd>
+            </dl>
+            <!--@end-->
+
+
+
+            
+        </div>
+
+    </div>
 
 </div>
-
-</div>
-
-
 <!--@if($oDocument->allowComment())-->
 	<a name="comment"></a>
 	<include target="./comment.html" />
@@ -172,6 +189,4 @@
 	</div>
 	<!--@end-->
 <!--@end-->
-
-
 <include target="footer.html" />

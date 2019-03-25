@@ -141,7 +141,7 @@
 	<!--@end-->
 <!--@end-->
 
-<ul class="nav-control border-top border-left" style="background-color: {$module_info->nav_bgcolor};">
+<ul class="nav-control border-right-0" style="background-color: {$module_info->nav_bgcolor}; display: none;" id="goBtn">
     <li class="float-left text-light px-2">
         <a class="text-reset cursor-pointer" id="goTopBtn">
             <i class="xi-angle-up xi-2x"></i>
@@ -153,5 +153,29 @@
         </a>
     </li>
 </ul>
+
+<script>
+    $(window).scroll(
+        function(){  
+            if($(window).scrollTop() > 450){  
+                $('#goBtn').fadeIn('slow');
+            } else {
+                $('#goBtn').fadeOut( 'slow' );
+            }
+        }
+    );
+
+    $('#goTopBtn').click(() => {
+        $('html, body').animate({
+            scrollTop: 0
+        }, 1000);
+    });
+
+    $('#goBottomBtn').click(() => {
+        $('html, body').animate({
+            scrollTop: $(document).height()
+        }, 1000);
+    });
+</script>
 
 <include target="footer.html" />

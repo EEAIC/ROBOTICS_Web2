@@ -1,21 +1,7 @@
 <include target="header.html" />
-
-    <!--@if($module_info->markup_type != 'xe_wiki_markup')-->
-        <load target="../../lib/google-code-prettify/prettify.css" />
-        <load target="../../lib/google-code-prettify/prettify.js" />
-        
-        <script>
-            jQuery(document).ready(function($){
-                prettyPrint();
-                
-            });
-
-
-        </script>
-    <!--@end-->
-    <div class="wikiRead p-3">
+    <div class="wikiRead overflow-hidden">
         <div class="row">    
-            <div class="wkReadBody mb-2 markdown-body col order-sm-last ">
+            <div class="wkReadBody mb-2 markdown-body col">
                 <!--@if($oDocument->isSecret() && !$oDocument->isGranted())-->
                     <form action="./" method="get" ruleset="input_password" class="secretMessage">
                         <input type="hidden" name="act" value="procWikiVerificationPassword" />
@@ -74,7 +60,7 @@
                 <!--@end-->        
             </div>
     
-            <div class="col-md-auto col-sm-12 order-sm-first order-md-last">
+            <div class="col-md-12 col-lg-4 col-xl-3 order-first order-lg-last">
                 <include target="left_side_tree_list.html" />
             </div>   
         </div>
@@ -83,49 +69,15 @@
             <a cond="$oDocumentPrev" href="{$oDocumentPrev->getPermanentUrl()}" class="wikiPrev float-left text-reset">&laquo; {$oDocumentPrev->getTitle()}</a>
             <a cond="$oDocumentNext" href="{$oDocumentNext->getPermanentUrl()}" class="wikiNext float-right text-reset">{$oDocumentNext->getTitle()} &raquo;</a>
         </div>
-
-        <div class="wkReadFooter border-top mt-2">
-            <!--@if($contributors)-->
-            <dl class="contributors mt-1 mb-0">
-                <dt>{$lang->contributors} : </dt>
-                <dd>
-                    <!--@foreach($contributors as $key => $val)-->
-                        <a>{$val->nick_name}</a>
-                        <!--@if($key<count($contributors)-1)-->, <!--@end-->
-                    <!--@end-->
-                </dd>
-            </dl>
-            <!--@else-->
-            <dl class="contributors mt-1 mb-0">
-                <dt>{$lang->contributors} : </dt>
-                <dd>
-                    <!--@if(!$oDocument->getMemberSrl())-->
-                        <!--@if($oDocument->isExistsHomepage())-->
-                        <a href="{$oDocument->getHomepageUrl()}" target="_blank" class="author">{$oDocument->getNickName()}</a>
-                        <!--@else-->
-                            <strong class="author">{$oDocument->getNickName()}</strong>
-                        <!--@end-->
-                    <!--@else-->
-                        <a>{$oDocument->getNickName()}</a>
-                    <!--@end-->			
-                </dd>
-            </dl>
-            <!--@end-->
-
-
-
-            
-        </div>
-
     </div>
-
 </div>
-<!--@if($oDocument->allowComment())-->
+
+<!--@if($oDocument->variables['allow_comment'] == 'Y')-->
 	<a name="comment"></a>
 	<include target="./comment.html" />
 	
 	<!--@if($grant->write_comment && $oDocument->isEnableComment() )-->
-	<div class="mb-2 area p-2">
+	<div class="area p-2 mt-2">
 		<!--@if(!$is_logged)-->
 			{@ $ruleset = "insert_comment_not_logged"}
 			{@ $act_insert = "procWikiInsertCommentNotLogged"}
@@ -183,10 +135,23 @@
 						<button type="submit" class="btn btn-success btn-sm"><i class="xi-message"></i> {$lang->cmd_comment_registration}</button>
 					</div>
 				</div>
-			
 			</di>
 		</form>
 	</div>
 	<!--@end-->
 <!--@end-->
+
+<ul class="nav-control border-top border-left" style="background-color: {$module_info->nav_bgcolor};">
+    <li class="float-left text-light px-2">
+        <a class="text-reset cursor-pointer" id="goTopBtn">
+            <i class="xi-angle-up xi-2x"></i>
+        </a>
+    </li>
+    <li class="float-left text-light px-2 border-left">
+        <a class="text-reset cursor-pointer" id="goBottomBtn">
+            <i class="xi-angle-down xi-2x"></i>
+        </a>
+    </li>
+</ul>
+
 <include target="footer.html" />

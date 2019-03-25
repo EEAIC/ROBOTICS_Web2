@@ -218,14 +218,18 @@
 
 			$item->member_srl = $oDocument->getMemberSrl();
 			$item->nick_name = $oDocument->getNickName();
-			$contributors[] = $item;
+			// Display guest IP
+			if ($item->member_srl == '0') $item->nick_name .= "(" . $oDocument->getIpAddress() . ")";
 
-			return $list;
+			$contributors[] = $item;
+			
+		
 			for($i=0,$c=count($list);$i<$c;$i++) {
 				unset($item);
 				$item->member_srl = $list[$i]->member_srl;
 				$item->nick_name = $list[$i]->nick_name;
-				if($item->member_srl == $oDocument->getMemberSrl()) continue;
+				if ($item->member_srl == '0') $item->nick_name .= "(" . $list[$i]->ip_address .")";
+				if($item->member_srl != '0' && $item->member_srl == $oDocument->getMemberSrl()) continue;
 				$contributors[] = $item;
 			}
 

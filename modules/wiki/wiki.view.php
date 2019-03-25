@@ -42,23 +42,6 @@ class WikiView extends Wiki
 		Context::set('grant', $this->grant);
 		Context::set('langs', Context::loadLangSupported());
 
-		// Force simple textarea if markup is Markdown, Google Code or MediaWiki
-		$editor_config = $oModuleModel->getModulePartConfig('editor', $this->module_info->module_srl);
-		if($this->module_info->markup_type != 'xe_wiki_markup'
-				&& (!$editor_config))
-		{
-			$editor_config->editor_skin = 'xpresseditor';
-			$editor_config->sel_editor_colorset = 'white_text_usehtml';
-			$editor_config->content_style = 'default';
-			$oModuleController = &getController('module');
-			$oModuleController->insertModulePartConfig('editor', $this->module_info->module_srl, $editor_config);
-		} else if ($editor_config) 
-		{
-			$oModuleController = &getController('module');
-			$oModuleController->insertModulePartConfig('editor', $this->module_info->module_srl, $editor_config);
-
-		}
-
 		// Load wiki title
 		if(!isset($this->module_info->title))
 		{
@@ -68,7 +51,6 @@ class WikiView extends Wiki
 		// Load left side tree	
 		$this->getLeftMenu();
 		
-
 		$security = new Security($this->module_info);
 		$security->encodeHTML('title');
 	}
@@ -420,6 +402,8 @@ class WikiView extends Wiki
 		return new Object(0, 'success');
 	}
 
+
+
 	/**
 	 * @brief View update history
 	 * @developer NHN (developers@xpressengine.com)
@@ -465,6 +449,7 @@ class WikiView extends Wiki
 	{
 		$oWikiModel = &getModel('wiki');
 		$oDocumentModel = &getModel('document');
+
 
 		// The requested order parameter values
 		$document_srl = Context::get('document_srl');
@@ -562,6 +547,8 @@ class WikiView extends Wiki
 			if($this->module_info->use_comment != 'N')
 			{
 				$oDocument->add('allow_comment', 'Y');
+			} else {
+				$oDocument->add('allow_comment', 'N');
 			}
 
 			// Set up alias

@@ -35,8 +35,8 @@
 		<label for="use_comment" class="x_control-label">{$lang->use_comment}</label>
 		<div class="x_controls">
 			<select name="use_comment" id="use_comment">
-				<option value="N" selected="selected"|cond="$module_info->use_comment=='N'">{$lang->notuse}</option>
-				<option value="Y" selected="selected"|cond="$module_info->use_comment!='N'">{$lang->use}</option>
+				<option value="N" selected="selected"|cond="$module_info->use_comment!='Y'" >{$lang->notuse}</option>
+				<option value="Y" selected="selected"|cond="$module_info->use_comment=='Y'">{$lang->use}</option>
 			</select>
 			<a href="#about_use_comment" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
 			<p class="x_help-block" id="about_use_comment" hidden>{$lang->about_use_comment}</p>
@@ -60,16 +60,6 @@
 		</div>
 	</div>	
 	<div class="x_control-group">
-		<label for="markup_type" class="x_control-label">{$lang->markup_type}</label>
-		<div class="x_controls">
-			<select name="markup_type" id="markup_type" disabled="disabled"|cond="$module_info->module_srl">
-				<option loop="$wiki_markup_list=>$markup" value="{$markup}" selected="selected"|cond="$module_info->markup_type==$markup"><!--@ echo $lang->{$markup}; --><!--@end--></option>
-			</select>
-			<a href="#about_markup_type" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
-			<p class="x_help-block" id="about_markup_type" hidden>{sprintf($lang->about_markup_type, '<a href="' . getUrl('','module', 'admin', 'act', 'dispWikiAdminMarkupExamples') . '" target="_blank">', '<a/>')}</p>
-		</div>
-	</div>	
-	<div class="x_control-group">
 		<label for="layout_srl" class="x_control-label">{$lang->layout}</label>
 		<div class="x_controls">
 			<select name="layout_srl" id="layout_srl">
@@ -84,7 +74,7 @@
 		<label for="skin" class="x_control-label">{$lang->skin}</label>
 		<div class="x_controls">
 			<select name="skin" id="skin">
-				<option loop="$skin_list=>$key,$val" value="{$key}" selected="selected"|cond="$module_info->skin==$key||(!$module_info->skin && $key=='xe_wiki')">{$val->title}</option>
+				<option loop="$skin_list=>$key,$val" value="{$key}" selected="selected"|cond="$module_info->skin==$key||(!$module_info->skin && $key=='LIFO_wiki')">{$val->title}</option>
 			</select>
 			<a href="#about_skin" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
 			<p class="x_help-block" id="about_skin" hidden>{$lang->about_skin}</p>

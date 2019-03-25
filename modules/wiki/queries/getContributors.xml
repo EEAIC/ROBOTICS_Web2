@@ -5,6 +5,7 @@
     <columns>
         <column name="member_srl" alias="member_srl" />
         <column name="nick_name" alias="nick_name" />
+        <column name="ipaddress" alias="ip_address" />
     </columns>
     <conditions>
         <condition operation="equal" column="document_srl" var="document_srl" />
@@ -12,5 +13,6 @@
     <groups>
         <group column="member_srl" />
         <group column="nick_name" />
+        <group column="ip_address"/>
     </groups>
 </query>

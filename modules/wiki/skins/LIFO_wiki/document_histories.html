@@ -31,7 +31,7 @@
         <li class="list-group-item">
             <input type="radio" name="no_value" value="" style="visibility: hidden"/>
             <input type="radio" name="history_srl" value="" checked="checked" />
-            {$oDocument->getRegdate('Y.m.d H:i:s')} 
+            {$oDocument->getUpdate('Y.m.d H:i:s')} 
             (<a href="{getUrl('act','dispWikiContent', 'module_srl', $module_info->module_srl,'document_srl',$oDocument->document_srl)}">{$lang->cmd_view}</a> |
             <a href="{getUrl('act','dispWikiEditPage','entry',$entry, 'document_srl', '')}">{$lang->cmd_edit}</a>
             )

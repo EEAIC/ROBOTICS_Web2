@@ -1,24 +1,21 @@
 <include target="header.html" />
 
-	<!--ul id="tabSystem">
+	<ul id="tabSystem">
 		<!--@foreach($module_list as $module)-->
 		<li>
 			<form action="{getUrl()}" method="get" >
 				<input type="hidden" name="vid" value="{$vid}" />
-
 				<input type="hidden" name="mid" value="{$module->mid}" />
-
 				<input type="hidden" name="category" value="" />
 				<input type="hidden" name="search_target" value="title_content" />
 				<input class="xeDocsInputText" type="hidden" name="search_keyword" value="{$search_keyword}"/>
-
 				<input type="hidden" name="act" value="dispWikiSearchResults" />
 
 				<input class="<!--@if($mid==$module->mid)-->on<!--@end-->" type="submit" value = "{$lang->ResultsFrom.$modul->browser_title}" />
 			</form>
 		</li>
 		<!--@end-->
-	</ul-->
+	</ul>
 
 	<div id="wikiTitleArea">
 		<h2 id="wikiTitle" class="font-weight-bold">"{$search_keyword}" {$lang->search_results}</h2>

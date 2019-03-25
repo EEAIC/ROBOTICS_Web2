@@ -6,7 +6,7 @@
 */
 class WikiAdminView extends Wiki
 {
-	var $wiki_markup_list = array("markdown", "mediawiki_markup", "googlecode_markup", "xe_wiki_markup" );
+	var $wiki_markup_list = array("markdown");
 
 	/**
 	 * @brief Admin view initialisation

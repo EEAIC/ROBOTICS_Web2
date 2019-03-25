@@ -86,32 +86,30 @@ class WikiController extends Wiki
 		// Check that already exist
 		$oDocument = $oDocumentModel->getDocument($obj->document_srl, $this->grant->manager);
 		// Get linked docs (by alias)
-		$wiki_text_parser = $this->getWikiTextParser(); 
-		$linked_documents_aliases = $wiki_text_parser->getLinkedDocuments($obj->content);
+		// $wiki_text_parser = $this->getWikiTextParser(); 
+		// $linked_documents_aliases = $wiki_text_parser->getLinkedDocuments($obj->content);
 		
 		// Modified if it already exists
 		if($oDocument->isExists() && $oDocument->document_srl == $obj->document_srl) 
 		{
 			// If we have section, update content: retrieve full text and insert new section in it
 			$section = Context::get('section');
-			if (isset($section))
-			{
-				$full_content = $oDocument->get('content');
-				$section_content = $obj->content;
+			// if (isset($section))
+			// {
+			// 	$full_content = $oDocument->get('content');
+			// 	$section_content = $obj->content;
 
-                $lang = $this->module_info->markup_type;
-                if ($lang == 'mediawiki_markup') $lang = 'wikitext';
-                elseif ($lang == 'googlecode_markup') $lang = 'googlecode';
-                elseif ($lang == 'xe_wiki_markup') $lang = 'xewiki';
-                $wt = new WTParser($full_content, $lang);
-				$wt->setText($section_content, (int)$section);
-				// $new_content = $wt->getText();
+            //     $lang = $this->module_info->markup_type;
+            //     // $wt = new WTParser($full_content, $lang);
+			// 	// $wt->setText($section_content, (int)$section);
+			// 	// $new_content = $wt->getText();
 
-				// $obj->content = $new_content;
-			}
+			// 	// $obj->content = $new_content;
+			// }
 
-			$output = $oDocumentController->updateDocument($oDocument, $obj);
-			
+			// $output = $oDocumentController->updateDocument($oDocument, $obj);
+			$output = $this->updateDocument($oDocument, $obj);	
+
 			// Have been successfully modified the hierarchy/ alias change
 			if($output->toBool()) 
 			{
@@ -194,6 +192,345 @@ class WikiController extends Wiki
 		$this->setRedirectUrl($url);
 	}
 
+
+
+	/**
+	 * Update the document
+	 * @param object $source_obj
+	 * @param object $obj
+	 * @param bool $manual_updated
+	 * @return object
+	 */
+	function updateDocument($source_obj, $obj, $manual_updated = FALSE)
+	{
+		$logged_info = Context::get('logged_info');
+
+		if(!$manual_updated && !checkCSRF())
+		{
+			return new BaseObject(-1, 'msg_invalid_request');
+		}
+
+		if(!$source_obj->document_srl || !$obj->document_srl) return new BaseObject(-1,'msg_invalied_request');
+		if(!$obj->status && $obj->is_secret == 'Y') $obj->status = 'SECRET';
+		if(!$obj->status) $obj->status = 'PUBLIC';
+
+		// Call a trigger (before)
+		$output = ModuleHandler::triggerCall('document.updateDocument', 'before', $obj);
+		if(!$output->toBool()) return $output;
+
+		// begin transaction
+		$oDB = &DB::getInstance();
+		$oDB->begin();
+
+		$oModuleModel = getModel('module');
+		if(!$obj->module_srl) $obj->module_srl = $source_obj->get('module_srl');
+		$module_srl = $obj->module_srl;
+		$document_config = $oModuleModel->getModulePartConfig('document', $module_srl);
+
+		if(!$document_config)
+		{
+			$document_config = new stdClass();
+		}
+
+		if(!isset($document_config->use_history)) $document_config->use_history = 'N';
+		$bUseHistory = $document_config->use_history == 'Y' || $document_config->use_history == 'Trace';
+
+		if($bUseHistory)
+		{
+			$args = new stdClass;
+			$args->history_srl = getNextSequence();
+			$args->document_srl = $obj->document_srl;
+			$args->module_srl = $module_srl;
+			if($document_config->use_history == 'Y') $args->content = $source_obj->get('content');
+			$args->nick_name = $source_obj->get('nick_name');
+			$args->member_srl = $source_obj->get('member_srl');
+			$args->regdate = $source_obj->get('last_update');
+			$args->ipaddress = $source_obj->get('ipaddress');
+			$output = executeQuery("document.insertHistory", $args);
+		}
+		else
+		{
+			$obj->ipaddress = $_SERVER['REMOTE_ADDR'];
+		}
+
+		// List variables
+		if($obj->comment_status) $obj->commentStatus = $obj->comment_status;
+		if(!$obj->commentStatus) $obj->commentStatus = 'DENY';
+		if($obj->commentStatus == 'DENY') $this->_checkCommentStatusForOldVersion($obj);
+		if($obj->allow_trackback!='Y') $obj->allow_trackback = 'N';
+		if($obj->homepage)
+		{
+			$obj->homepage = removeHackTag($obj->homepage);
+			if(!preg_match('/^[a-z]+:\/\//i',$obj->homepage))
+			{
+				$obj->homepage = 'http://'.$obj->homepage;
+			}
+		}
+		
+		if($obj->notify_message != 'Y') $obj->notify_message = 'N';
+		
+		// can modify regdate only manager
+        $grant = Context::get('grant');
+		if(!$grant->manager)
+		{
+			unset($obj->regdate);
+		}
+		
+		// Serialize the $extra_vars
+		if(!is_string($obj->extra_vars)) $obj->extra_vars = serialize($obj->extra_vars);
+		// Remove the columns for automatic saving
+		unset($obj->_saved_doc_srl);
+		unset($obj->_saved_doc_title);
+		unset($obj->_saved_doc_content);
+		unset($obj->_saved_doc_message);
+
+		$oDocumentModel = getModel('document');
+		// Set the category_srl to 0 if the changed category is not exsiting.
+		if($source_obj->get('category_srl')!=$obj->category_srl)
+		{
+			$category_list = $oDocumentModel->getCategoryList($obj->module_srl);
+			if(!$category_list[$obj->category_srl]) $obj->category_srl = 0;
+		}
+
+		// Change the update order
+		$obj->update_order = getNextSequence() * -1;
+		// Hash the password if it exists
+		if($obj->password)
+		{
+			$obj->password = getModel('member')->hashPassword($obj->password);
+		}
+
+		// If an author is identical to the modifier or history is used, use the logged-in user's information.
+		if(Context::get('is_logged') && !$manual_updated)
+		{
+			if($source_obj->get('member_srl')==$logged_info->member_srl)
+			{
+				$obj->member_srl = $logged_info->member_srl;
+				$obj->user_name = htmlspecialchars_decode($logged_info->user_name);
+				$obj->nick_name = htmlspecialchars_decode($logged_info->nick_name);
+				$obj->email_address = $logged_info->email_address;
+				$obj->homepage = $logged_info->homepage;
+			}
+		}
+
+		// For the document written by logged-in user however no nick_name exists
+		if($source_obj->get('member_srl')&& !$obj->nick_name)
+		{
+			$obj->member_srl = $source_obj->get('member_srl');
+			$obj->user_name = $source_obj->get('user_name');
+			$obj->nick_name = $source_obj->get('nick_name');
+			$obj->email_address = $source_obj->get('email_address');
+			$obj->homepage = $source_obj->get('homepage');
+		}
+		// If the tile is empty, extract string from the contents.
+		$obj->title = htmlspecialchars($obj->title, ENT_COMPAT | ENT_HTML401, 'UTF-8', false);
+		settype($obj->title, "string");
+		if($obj->title == '') $obj->title = cut_str(strip_tags($obj->content),20,'...');
+		// If no tile extracted from the contents, leave it untitled.
+		if($obj->title == '') $obj->title = 'Untitled';
+		// Remove XE's own tags from the contents.
+		$obj->content = preg_replace('!<\!--(Before|After)(Document|Comment)\(([0-9]+),([0-9]+)\)-->!is', '', $obj->content);
+		if(Mobile::isFromMobilePhone() && $obj->use_editor != 'Y')
+		{
+			if($obj->use_html != 'Y')
+			{
+				$obj->content = htmlspecialchars($obj->content, ENT_COMPAT | ENT_HTML401, 'UTF-8', false);
+			}
+			$obj->content = nl2br($obj->content);
+		}
+		// Change not extra vars but language code of the original document if document's lang_code is different from author's setting.
+		if($source_obj->get('lang_code') != Context::getLangType())
+		{
+			// Change not extra vars but language code of the original document if document's lang_code doesn't exist.
+			if(!$source_obj->get('lang_code'))
+			{
+				$lang_code_args->document_srl = $source_obj->get('document_srl');
+				$lang_code_args->lang_code = Context::getLangType();
+				$output = executeQuery('document.updateDocumentsLangCode', $lang_code_args);
+			}
+			else
+			{
+				$extra_content = new stdClass;
+				$extra_content->title = $obj->title;
+				$extra_content->content = $obj->content;
+
+				$document_args = new stdClass;
+				$document_args->document_srl = $source_obj->get('document_srl');
+				$document_output = executeQuery('document.getDocument', $document_args);
+				$obj->title = $document_output->data->title;
+				$obj->content = $document_output->data->content;
+			}
+		}
+		// Remove iframe and script if not a top adminisrator in the session.
+		if($logged_info->is_admin != 'Y')
+		{
+			$obj->content = removeHackTag($obj->content);
+		}
+		// if temporary document, regdate is now setting
+		if($source_obj->get('status') == $this->getConfigStatus('temp')) $obj->regdate = date('YmdHis');
+
+		// Insert data into the DB
+		$output = executeQuery('document.updateDocument', $obj);
+		if(!$output->toBool())
+		{
+			$oDB->rollback();
+			return $output;
+		}
+
+		// Remove all extra variables
+		if(Context::get('act')!='procFileDelete')
+		{
+			$this->deleteDocumentExtraVars($source_obj->get('module_srl'), $obj->document_srl, null, Context::getLangType());
+			// Insert extra variables if the document successfully inserted.
+			$extra_keys = $oDocumentModel->getExtraKeys($obj->module_srl);
+			if(count($extra_keys))
+			{
+				foreach($extra_keys as $idx => $extra_item)
+				{
+					$value = NULL;
+					if(isset($obj->{'extra_vars'.$idx}))
+					{
+						$tmp = $obj->{'extra_vars'.$idx};
+						if(is_array($tmp))
+							$value = implode('|@|', $tmp);
+						else
+							$value = trim($tmp);
+					}
+					else if(isset($obj->{$extra_item->name})) $value = trim($obj->{$extra_item->name});
+					if($value == NULL) continue;
+					$this->insertDocumentExtraVar($obj->module_srl, $obj->document_srl, $idx, $value, $extra_item->eid);
+				}
+			}
+			// Inert extra vars for multi-language support of title and contents.
+			if($extra_content->title) $this->insertDocumentExtraVar($obj->module_srl, $obj->document_srl, -1, $extra_content->title, 'title_'.Context::getLangType());
+			if($extra_content->content) $this->insertDocumentExtraVar($obj->module_srl, $obj->document_srl, -2, $extra_content->content, 'content_'.Context::getLangType());
+		}
+
+		// Call a trigger (after)
+		if($output->toBool())
+		{
+			$trigger_output = ModuleHandler::triggerCall('document.updateDocument', 'after', $obj);
+			if(!$trigger_output->toBool())
+			{
+				$oDB->rollback();
+				return $trigger_output;
+			}
+		}
+
+		// commit
+		$oDB->commit();
+		// Remove the thumbnail file
+		FileHandler::removeDir(sprintf('files/thumbnails/%s',getNumberingPath($obj->document_srl, 3)));
+
+		$output->add('document_srl',$obj->document_srl);
+		//remove from cache
+		$oCacheHandler = CacheHandler::getInstance('object');
+		if($oCacheHandler->isSupport())
+		{
+			//remove document item from cache
+			$cache_key = 'document_item:'. getNumberingPath($obj->document_srl) . $obj->document_srl;
+			$oCacheHandler->delete($cache_key);
+		}
+
+		return $output;
+	}
+
+	/**
+	 * For old version, comment allow status check.
+	 * @param object $obj
+	 * @return void
+	 */
+	function _checkCommentStatusForOldVersion(&$obj)
+	{
+		if(!isset($obj->allow_comment)) $obj->allow_comment = 'N';
+		if(!isset($obj->lock_comment)) $obj->lock_comment = 'N';
+
+		if($obj->allow_comment == 'Y' && $obj->lock_comment == 'N') $obj->commentStatus = 'ALLOW';
+		else $obj->commentStatus = 'DENY';
+	}
+
+
+	/**
+	 * Return default status
+	 * @return string
+	 */
+	function getDefaultStatus()
+	{
+		return $this->statusList['public'];
+	}
+
+
+	/**
+	 * Return status by key
+	 * @return string
+	 */
+	function getConfigStatus($key)
+	{
+		if(array_key_exists(strtolower($key), $this->statusList)) return $this->statusList[$key];
+		else $this->getDefaultStatus();
+	}
+
+		/**
+	 * Remove values of extra variable from the document
+	 * @param int $module_srl
+	 * @param int $document_srl
+	 * @param int $var_idx
+	 * @param string $lang_code
+	 * @param int $eid
+	 * @return $output
+	 */
+	function deleteDocumentExtraVars($module_srl, $document_srl = null, $var_idx = null, $lang_code = null, $eid = null)
+	{
+		$obj = new stdClass();
+		$obj->module_srl = $module_srl;
+		if(!is_null($document_srl)) $obj->document_srl = $document_srl;
+		if(!is_null($var_idx)) $obj->var_idx = $var_idx;
+		if(!is_null($lang_code)) $obj->lang_code = $lang_code;
+		if(!is_null($eid)) $obj->eid = $eid;
+		$output = executeQuery('document.deleteDocumentExtraVars', $obj);
+		return $output;
+	}
+
+
+		/**
+	 * Insert extra vaiable to the documents table
+	 * @param int $module_srl
+	 * @param int $document_srl
+	 * @param int $var_idx
+	 * @param mixed $value
+	 * @param int $eid
+	 * @param string $lang_code
+	 * @return BaseObject|void
+	 */
+	function insertDocumentExtraVar($module_srl, $document_srl, $var_idx, $value, $eid = null, $lang_code = '')
+	{
+		if(!$module_srl || !$document_srl || !$var_idx || !isset($value)) return new BaseObject(-1,'msg_invalid_request');
+		if(!$lang_code) $lang_code = Context::getLangType();
+
+		$obj = new stdClass;
+		$obj->module_srl = $module_srl;
+		$obj->document_srl = $document_srl;
+		$obj->var_idx = $var_idx;
+		$obj->value = $value;
+		$obj->lang_code = $lang_code;
+		$obj->eid = $eid;
+
+		executeQuery('document.insertDocumentExtraVar', $obj);
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	/**
      * @brief Preview for wikitext
      * @developer Florin Ercus (xe_dev@arnia.ro)
@@ -208,7 +545,7 @@ class WikiController extends Wiki
         $content = Context::get('content');
         $lang = Context::get('markup');
         $this->module_info->markup_type = $lang;
-        $parser = $this->getWikiTextParser();
+        // $parser = $this->getWikiTextParser();
         // $content = $parser->parse($content, false);
         $rez = array('content'=>$content);
         //@TODO: avoid this by using the default ajax mechanism

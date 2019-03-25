@@ -21,7 +21,7 @@
     </author>
     <license>LGPL</license>
     <extra_vars>
-        <var name="use_bootstrapCDN" type="select" default="N">
+        <var name="use_bootstrapCDN" type="select" default="Y">
             <title xml:lang="ko">BootstrapCDN 사용</title>
             <title xml:lang="en">Use BootstrapCDN  </title>
             <description xml:lang="ko">부트스트랩의 CSS 와 자바스크립트를 CDN 으로 지원합니다.</description>
@@ -35,20 +35,21 @@
                 <title xml:lang="en">N</title>
             </options>
         </var>
-        <var name="use_gfm" type="select" default="Y">
-            <title xml:lang="ko">github flavored markdown 사용</title>
-            <title xml:lang="en">Use github flavored markdown</title>
-            <description xml:lang="ko">깃허브의 마크다운 디자인을 일부 지원합니다.</description>
-            <description xml:lang="en">Support github-markdown partly</description>
+        <var name="show_user" type="select" default="Y">
+            <title xml:lang="ko">사용자 탭 표시</title>
+            <title xml:lang="en">Show user tab</title>
+            <description xml:lang="ko">메뉴에 사용자 탭이 추가됩니다.</description>
+            <description xml:lang="en">Add user tab.</description>
             <options value="Y">
-                <title xml:lang="ko">사용함</title>
+                <title xml:lang="ko">표시함</title>
                 <title xml:lang="en">Y</title>
             </options>
             <options value="N">
-                <title xml:lang="ko">사용 안 함</title>
+                <title xml:lang="ko">표시 안 함</title>
                 <title xml:lang="en">N</title>
             </options>
         </var>
+       
         <var name="nav_bgcolor" type="text" default="#008275">
             <title xml:lang="ko">메뉴바 색상</title>
             <title xml:lang="en">Navbar Color</title>
@@ -121,6 +122,21 @@
             <description xml:lang="zh-CN">게시판 제목 아래 표시될 설명을 입력하실 수 있습니다.</description>
             <description xml:lang="zh-TW">請輸入顯示在標題下方的說明。</description>
             <description xml:lang="tr">Başlığın altında görüntülenecek bir tanım girebilirsiniz.</description>
+        </var>
+
+         <var name="use_gfm" type="select" default="N">
+            <title xml:lang="ko">gfm 사용(실험실)</title>
+            <title xml:lang="en">Use gfm(labs)</title>
+            <description xml:lang="ko">깃허브의 마크다운 디자인을 일부 지원합니다.</description>
+            <description xml:lang="en">Support github flavored markdown partly</description>
+            <options value="Y">
+                <title xml:lang="ko">사용함</title>
+                <title xml:lang="en">Y</title>
+            </options>
+            <options value="N">
+                <title xml:lang="ko">사용 안 함</title>
+                <title xml:lang="en">N</title>
+            </options>
         </var>
     
 	</extra_vars>

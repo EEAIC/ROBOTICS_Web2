@@ -1,5 +1,5 @@
 <!--// bootstrapCDN 사용 -->
-<block cond="$module_info->use_bootstrapCDN == 'Y'">
+<block cond="$module_info->use_bootstrapCDN != 'N'">
     <load target="///stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"  index="-1"/>
     <load target="///cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"  index="-1"/>
     <load target="///stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"  index="-1"/>
@@ -9,7 +9,6 @@
 <block cond="$module_info->use_gfm == 'Y'">
     <load target="css/github-markdown-css/github-markdown.css"/>
 </block>
-
 
 <load target="css/common.css" />
 <load target="/common/xeicon/xeicon.min.css" />
@@ -53,7 +52,6 @@
 <!--// 사용자 입력 헤더  -->
 {$module_info->header_text}
 
-
 <div class="wiki">
     <div class="">
     <div class="wkTitle">
@@ -76,7 +74,6 @@
                     <a class="nav-item nav-link" href="{getUrl('act','dispWikiTreeIndex','entry','','document_srl','')}">{$lang->cmd_view_document_tree}</a>
                     <a class="nav-item nav-link" href="{getUrl('','act','dispWikiEditPage','entry','','document_srl','','mid',$mid,'vid',$vid)}">{$lang->new_document}</a>
                 </span>
-                
                 <form action="{getUrl()}" method="get" class="wkSearch form-inline" no-error-return-url="true">
                     <input type="hidden" name="mid" value="{$mid}" />
                     <input type="hidden" name="vid" value="{$vid}" />                   
@@ -84,6 +81,24 @@
                     <input type="text" class="form-control mr-sm-2" name="entry" id="wkMove"/>
                     <div class="btn-group col col-sm-auto px-0" role="group">
                         <input class="btn btn-outline-light mt-2 my-sm-0 w-100" type="submit" value="{$lang->cmd_move}" />
+                        <div class="btn-group" role="group" cond="$module_info->show_user != 'N'">
+                            <button id="btnGroupDrop1" type="button" class="btn btn-outline-light mt-2 my-sm-0 dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="xi-user"></i>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="btnGroupDrop1">
+                                <block cond="$is_logged">
+                                    <a href="{getUrl('act','dispMemberInfo')}" class="dropdown-item">{$lang->cmd_view_member_info}</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a href="{getUrl('act','dispMemberLogout')}" class="dropdown-item">{$lang->cmd_logout}</a>
+                                </block>
+                                <block cond="!$is_logged">
+                                    <a class="dropdown-item disabled text-right font-weight-bold">{getenv('REMOTE_ADDR')}</a>
+                                    <div class="dropdown-divider"></div> 
+                                    <a class="dropdown-item" href="{getUrl('act','dispMemberLoginForm')}">{$lang->cmd_login}</a>
+                                    <a class="dropdown-item" href="{getUrl('act','dispMemberSignUpForm')}">{$lang->cmd_signup}</a>
+                                </block>
+                            </div>
+                        </div>
                         <a class="btn btn-outline-light mt-2 my-sm-0 w-100" cond="$grant->manager" href="{getUrl('act','dispWikiAdminInsertWiki')}">{$lang->cmd_setup}</a>
                     </div>
                 </form>
@@ -92,7 +107,7 @@
     </div>
                          
                 
-    <div class="area p-2 mb-2">
+    <div class="area p-2">
         <div cond="$XE_VALIDATOR_MESSAGE && $XE_VALIDATOR_ID == 'modules/wiki/skins/xe_wiki'" 
         class="message {$XE_VALIDATOR_MESSAGE_TYPE} mb-2 alert alert-danger"|cond="$XE_VALIDATOR_MESSAGE_TYPE=='error'" 
         class="message {$XE_VALIDATOR_MESSAGE_TYPE} mb-2 alert alert-info"|cond="$XE_VALIDATOR_MESSAGE_TYPE =='info'"
@@ -102,7 +117,6 @@
         
         <!--// 문서가 존재할 경우  -->
         <!--@if($oDocument && $oDocument->isExists())-->
-        
         <div class="wikiRead">
             <div class="wkReadHeader">
                 <div class="titleArea">
@@ -134,8 +148,12 @@
                         </span>
                     </div>
                     <!--@else-->
+                    <block cond="$history">
+                            <div class="alert alert-warning">
+                                {$lang->notice_old_revision}
+                            </div>
+                    </block>
                     <div class="command">
-                        <block cond="$history">{$lang->notice_old_revision}</block>
                         <a href="{getUrl('act','','history_srl','')}" class="btn btn-outline-secondary btn-sm">{$lang->cmd_back}</a>
                     </div>
                     <!--@end-->
@@ -161,7 +179,6 @@
                         </span>                  
                     </div>
                 </div>
-
                 
 
                 <!--// 사이트 분류 표시 -->

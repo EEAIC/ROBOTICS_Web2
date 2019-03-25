@@ -1,5 +1,5 @@
 <!--@if($oDocument->getCommentCount())-->
-<div class="area p-2 mb-2">
+<div class="area p-2 mt-2">
 	<div class="fbList" id="reply">
 		<div cond="$grant->write_comment && $oDocument->allowComment()">
 			<i class="xi-comment"></i> {$lang->comment} <span class="badge badge-info">{$oDocument->getCommentCount()}</span>
@@ -7,8 +7,10 @@
 		<div class="replyList">
 				{@ $_comment_list = $oDocument->getComments() }
 			<ul class="list-group list-group-flush mt-1 feedback border-top" cond="$oDocument->getCommentcount()">
-				
 				<li loop="$_comment_list=>$key,$comment" class="list-group-item fbItem"|cond="!$comment->get('depth')" class="list-group-item fbItem indent indent2"|cond="$comment->get('depth')" id="comment_{$comment->comment_srl}">
+					
+					
+					
 					<div class="clearfix">
 						<div class="float-left">
 							<strong cond="!$comment->member_srl">{$comment->getNickName()}</strong>

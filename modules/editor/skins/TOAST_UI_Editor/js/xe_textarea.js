@@ -25,7 +25,7 @@ function editorTextarea(cfg) {
         minHeight: cfg.editor_height,
         height: 'auto',
         language: cfg.editor_language,
-        exts: []
+        exts: ['chart', 'uml', 'table', 'youtube']
     });
 
     // Set initial content

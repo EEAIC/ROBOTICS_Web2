@@ -3,15 +3,15 @@ $(document).ready(function() {
 
     var editor = tui.Editor.factory({
         viewer: true,
-        exts: ['chart']
+        exts: ['chart', 'uml', 'table', 'youtube']
     })
 
    
     $('.xe_content').each(function(){
-        console.log(this.innerHTML);
-        var converted = editor.convertor.toHTMLWithCodeHightlight(this.innerHTML);
+        console.log($(this).text());
+        var converted = editor.convertor.toHTMLWithCodeHightlight($(this).text());
         console.log(converted);
-        this.innerHTML = converted;
+        $(this).html(converted);
     });
     
 });

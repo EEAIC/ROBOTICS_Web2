@@ -20,9 +20,8 @@ function completeInsertPoll(ret_obj) {
     alert(ret_obj['message']);
 
 	opener.editorFocus(opener.editorPrevSrl);
-
 	var iframe_obj = opener.editorGetIFrame(opener.editorPrevSrl)
-
+    
 	opener.editorReplaceHTML(iframe_obj, text);
 	opener.editorFocus(opener.editorPrevSrl);
     window.close();

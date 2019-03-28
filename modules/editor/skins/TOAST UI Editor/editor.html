@@ -23,11 +23,10 @@
 
 <load target="bower_components/tui-chart/dist/tui-chart.min.css"/>
 
-<!--// 기본 JS 로드 -->
-<load target="../../tpl/js/editor_common.js" cond="__DEBUG__" />
-<load target="../../tpl/js/editor_common.min.js" cond="!__DEBUG__" />
+
 
 <!--// 에디터 JS 로드 -->
+
 <load target="js/xe_textarea.js" />
 
 <!--// 업로더 JS 로드  -->
@@ -41,6 +40,7 @@
 
 <load target="css/service.css" />
 <load target="css/tui-example-style.css" />
+<load target="css/xe-tui-editor.css" />
 
 <!--// 에디터 언어 설정 -->
 <load target="lang/lang.xml"/>
@@ -85,6 +85,24 @@
         </div>
     </div>
 </div>
+<style>
+    /* class for our button */
+    .our-button-class{
+      float: left;
+      box-sizing: border-box;
+      outline: none;
+      cursor: pointer;
+      background-color: #fff;
+      width: 22px;
+      height: 22px;
+      border-radius: 0;
+      margin: 5px 3px;
+      border: 1px solid #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  </style>
 
 <script>
     var js_array = {@ echo json_encode($component_list)}; 
@@ -113,3 +131,13 @@
         editor_sequence : "{$editor_sequence}"     
     });
 </script>
+
+
+
+<!--// 기본 JS 로드 -->
+<load target="../../tpl/js/editor_common.js" cond="__DEBUG__" />
+<load target="../../tpl/js/editor_common.min.js" cond="!__DEBUG__" />
+
+<load target="js/xe_interface.js" />
+
+

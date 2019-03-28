@@ -71,18 +71,22 @@ function editorTextarea(cfg) {
 
     var editor = tui.Editor.factory(editorParam);
 
-    // ADD button method 2
-    var toolbar = editor.getUI().getToolbar();
+    // Add component buttons
+    var toolbar = editor.getUI().getToolbar(); 
+    toolbar.addDivider();
     Object.keys(cfg.component).forEach(key => {
         var element = cfg.component[key];
-        console.log(element);
-        // var url = '../../components/' + element.component_name + '/component_icon.gif';
-        // var div = '<div class="our-button-class" style="background-image: url('" + url + "')"></div>';
-        // toolbar.addButton({
-        //     name: element.title,
-        //     $el: $(div)
-        // });
+        console.log(element);       
+        var imgUrl = `/modules/editor/components/${element.component_name}/component_icon.gif`;
+        var elButton = `<button class="editor-component-btn" onclick="return false;" id="component_${seq}_${element.component_name}"  type="button" style="background: url(${imgUrl}) no-repeat content-box; background-size: contain"></button>`;
+        toolbar.addButton({
+            name: element.title,           
+            tooltip: element.description,            
+            $el: $(elButton)
+        });
     });
+
+
 
 
 
@@ -105,4 +109,6 @@ function editorTextarea(cfg) {
         }
     });
 }
+
+
 

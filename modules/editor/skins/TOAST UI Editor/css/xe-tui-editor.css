@@ -1,0 +1,6 @@
+.editor-component-btn {
+   
+    /* background-size: contain; */
+    display: inline-block;
+    background-origin: content-box;
+}

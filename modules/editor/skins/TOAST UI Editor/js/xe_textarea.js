@@ -12,7 +12,11 @@ function editorTextarea(cfg) {
     editorRelKeys[seq].primary = insert_form.find("input[name='" + primary_key + "']");
 	editorRelKeys[seq].content = content_input;
     editorRelKeys[seq].cfg = cfg;
-  
+    editorRelKeys[seq].pasteHTML = function(html) {
+        editor.insertText(html);
+
+    };
+
     insert_form[0].setAttribute('editor_sequence', seq);
     
     // Set default language
@@ -66,6 +70,21 @@ function editorTextarea(cfg) {
     }
 
     var editor = tui.Editor.factory(editorParam);
+
+    // ADD button method 2
+    var toolbar = editor.getUI().getToolbar();
+    Object.keys(cfg.component).forEach(key => {
+        var element = cfg.component[key];
+        console.log(element);
+        // var url = '../../components/' + element.component_name + '/component_icon.gif';
+        // var div = '<div class="our-button-class" style="background-image: url('" + url + "')"></div>';
+        // toolbar.addButton({
+        //     name: element.title,
+        //     $el: $(div)
+        // });
+    });
+
+
 
     // Set initial content
     if(content_input.val()){

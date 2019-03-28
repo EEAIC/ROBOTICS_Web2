@@ -58,6 +58,21 @@
 <!--@endif-->
 
 <div class="_tui-editor {$editor_class}">
+            <!--@if($enable_component)-->
+            
+                    <!-- 확장 컴포넌트 출력 -->
+                    <li class="extensions xpress_xeditor_ui_extension">
+                        <span class="exButton"><button type="button" title="{$lang->edit->extension}">{$lang->edit->extension}</button></span>
+                        <div class="layer extension2 xpress_xeditor_extension_layer" id="editorExtension_{$editor_sequence}">
+                            <ul id="editor_component_{$editor_sequence}" class="editorComponent">
+                                <!--@foreach($component_list as $component_name => $component)-->
+                                    <li><img src="../../components/{$component_name}/component_icon.gif" style="width:13px !important;height:12px !important;padding-right:5px;" alt="" onError="this.onerror=null;this.src='./common/img/blank.gif';" /><a href="#" onclick="return false;" id="component_{$editor_sequence}_{$component_name}" style="vertical-align: top;">{$component->title}</a></li>
+                                <!--@end-->
+                            </ul>
+                        </div>
+                    </li>
+                <!--@end-->
+
     <div id="tuieditor_instance_{$editor_sequence}" data-editor-sequence="{$editor_sequence}" data-editor-primary-key-name="{$editor_primary_key_name}" data-editor-content-key-name="{$editor_content_key_name}">
     </div>
     <div id="fileUploader_{$editor_sequence}" class="fileUploader" cond="$allow_fileupload"><!--File upload zone-->
@@ -72,6 +87,8 @@
 </div>
 
 <script>
+    var js_array = {@ echo json_encode($component_list)}; 
+
     editorTextarea({
         editor_sequence : "{$editor_sequence}", 
         editor_height : "{$editor_height}px", 
@@ -88,7 +105,9 @@
         previewAreaID : "preview_uploaded_{$editor_sequence}",
         uploaderStatusID : "uploader_status_{$editor_sequence}",
         fileUploadView : "{$fileUploadView}",
-        allow_fileupload : "{$allow_fileupload}"
+        allow_fileupload : "{$allow_fileupload}",
+        enable_component : "{$enable_component}",
+        component : js_array
     });
     editorUploadInit({
         editor_sequence : "{$editor_sequence}"     

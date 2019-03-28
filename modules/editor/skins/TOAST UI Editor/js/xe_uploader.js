@@ -145,7 +145,6 @@
 
             function on_complete(ret, response_tags) {
                 var files_data =  ret.files.item;               
-                console.log(files_data);
                 if (files_data) {                    
                     if (Array.isArray(files_data)){ // remove multiple file 
                         for (var i = 0; i < files_data.length; i++) {

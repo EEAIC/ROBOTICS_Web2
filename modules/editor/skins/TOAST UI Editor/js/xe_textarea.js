@@ -13,8 +13,8 @@ function editorTextarea(cfg) {
 	editorRelKeys[seq].content = content_input;
     editorRelKeys[seq].cfg = cfg;
     editorRelKeys[seq].pasteHTML = function(html) {
+        editor.layout.switchToMarkdown();
         editor.insertText(html);
-
     };
 
     insert_form[0].setAttribute('editor_sequence', seq);
@@ -31,7 +31,7 @@ function editorTextarea(cfg) {
         minHeight: cfg.editor_height,
         height: 'auto',
         language: editorRelKeys[seq].cfg.editor_language,
-        exts: ['chart', 'uml', 'table', 'youtube']
+        exts: ['chart', 'uml', 'table', 'youtube', 'component']
     }
 
     if (editorRelKeys[seq].cfg.allow_fileupload) {
@@ -69,14 +69,18 @@ function editorTextarea(cfg) {
         }
     }
 
+    
+
+    console.log(tui.Editor);
+
     var editor = tui.Editor.factory(editorParam);
+
 
     // Add component buttons
     var toolbar = editor.getUI().getToolbar(); 
     toolbar.addDivider();
     Object.keys(cfg.component).forEach(key => {
-        var element = cfg.component[key];
-        console.log(element);       
+        var element = cfg.component[key];     
         var imgUrl = `/modules/editor/components/${element.component_name}/component_icon.gif`;
         var elButton = `<button class="editor-component-btn" onclick="return false;" id="component_${seq}_${element.component_name}"  type="button" style="background: url(${imgUrl}) no-repeat content-box; background-size: contain"></button>`;
         toolbar.addButton({

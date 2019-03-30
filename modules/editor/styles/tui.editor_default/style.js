@@ -3,7 +3,7 @@ $(document).ready(function() {
 
     var editor = tui.Editor.factory({
         viewer: true,
-        exts: ['chart', 'uml', 'table', 'youtube']
+        exts: ['chart', 'uml', 'table', 'youtube', 'component']
     })
 
     $('.xe_content').each(function(){

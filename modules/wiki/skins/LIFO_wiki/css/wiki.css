@@ -172,12 +172,7 @@ html, body {
 .time dt{background:#fff}
 /* Attached File */
 .attachedFile *{vertical-align:middle}
-.attachedFile dt .fileToggle{border:0;padding:0;overflow:visible;cursor:pointer;background:none}
-
-.attachedFile.open dd{display:none;}
-.attachedFile.open .xi-angle-down{display:none;}
-.attachedFile .xi-angle-right{display:none;}
-.attachedFile.open .xi-angle-right{display:inline-block;}
+.attachedFile dt .fileToggle{border:0;padding:0;overflow:visible;background:none}
 
 
 .attachedFile ul.files a{position:relative;background-repeat:no-repeat;background-position:left center;}

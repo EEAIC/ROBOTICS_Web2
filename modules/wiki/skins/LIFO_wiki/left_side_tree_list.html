@@ -19,9 +19,30 @@
 	</ul>
     {@ $oDocumentModel = &getModel("document");}
     <!--@if($module_info->menu_style == 'classic')-->
+        <ul class="list-group list-group-flush">
+            <!--@foreach($list as $key => $val)-->
+            <li class="list-group-item" cond="!$val->depth">
+                <!--@if(isset($oDocument) && ($val->document_srl == $oDocument->document_srl || $val->title == $oDocument->get('title') || $entry == $oDocumentModel->getAlias($val->document_srl) || $alias == $oDocumentModel->getAlias($val->document_srl)))-->
+                    <a href="{getSiteUrl($site_module_info->domain, '','mid',$mid,'entry',$oDocumentModel->getAlias($val->document_srl), 'document_srl', '')}"><b>{$val->title}</b></a>
+                <!--@else-->
+                    <a href="{getSiteUrl($site_module_info->domain, '','mid',$mid,'entry',$oDocumentModel->getAlias($val->document_srl), 'document_srl', '')}">{$val->title}</a>
+                <!--@end-->
+            </li>
+
+
+            <div class="list-group-item border-left ml-{$val->depth}" cond="$val->depth">
+                <!--@if(isset($oDocument) && ($val->document_srl == $oDocument->document_srl || $val->title == $oDocument->get('title') || $entry == $oDocumentModel->getAlias($val->document_srl) || $alias == $oDocumentModel->getAlias($val->document_srl)))-->
+                    <a href="{getSiteUrl($site_module_info->domain, '','mid',$mid,'entry',$oDocumentModel->getAlias($val->document_srl), 'document_srl', '')}"><b>{$val->title}</b></a>
+                <!--@else-->
+                    <a href="{getSiteUrl($site_module_info->domain, '','mid',$mid,'entry',$oDocumentModel->getAlias($val->document_srl), 'document_srl', '')}">{$val->title}</a>
+                <!--@end-->
+            </div>
+            <!--@end-->
+        </ul>
+
 		{@ $_pDepth = 0;}
 		<ul id="navigation">
-		<!--@foreach($list as $key => $val)-->
+        <!--@foreach($list as $key => $val)-->
 		<!--@if($_pDepth > $val->depth)-->
 		<!--@for($i=$val->depth; $i<$_pDepth; $i++)-->
 		</ul>

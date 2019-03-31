@@ -8,9 +8,101 @@ jQuery(document).ready(function(){
 	if (jQuery("input[name=title]").length && jQuery("input[name=title]").hasClass("iText"))
 	{
 		jQuery("input[name=title]").focus();
-	}
+    }
+    
+    // File List Toggle Button
+    $('.fileToggle').click(function(){
+        var toggleIcon = $('.fileToggle').children('i');
+        toggleIcon.toggleClass('xi-angle-down');
+        toggleIcon.toggleClass('xi-angle-right');
+        $('.fileList').fadeToggle();
+    });
+    
+    $('.fileName').each(function() {
+        var fileExt = getExtFilename($(this).text());
+        
+        switch(fileExt) {
+            // image Exts
+            case 'png':
+            case 'jpg':
+            case 'jpeg':
+            case 'bmp':
+            case 'gif':
+                $(this).siblings("i").attr('class', 'xi-file-image');
+                break;
+
+            // zip Exts
+            case 'zip':
+            case 'rar':
+            case '7z':
+            case 'tar':
+            case 'tgz':  
+            case 'gz':           
+                $(this).siblings("i").attr('class', 'xi-file-zip');
+                break;
+
+            // excel Exts
+            case 'xlsx':
+            case 'xlsm':
+            case 'xlsb':
+            case 'xltm':
+            case 'xlam':  
+            case 'xltx':           
+                $(this).siblings("i").attr('class', 'xi-file-excel');
+                break;
+
+            // word Exts
+            case 'doc':
+            case 'docm':
+            case 'docx':
+            case 'dot':
+            case 'dotm':  
+            case 'dotx':           
+                $(this).siblings("i").attr('class', 'xi-file-word');
+                break;
+
+            // powerpoint Exts
+            case 'ppt':
+            case 'pptm':
+            case 'pptx':
+            case 'pot':
+            case 'potm':  
+            case 'potx':           
+                $(this).siblings("i").attr('class', 'xi-file-powerpoint');
+                break;
+                
+            // music Exts
+            case 'mp3':
+            case 'ogg':
+            case 'wma':
+            case 'wav':
+            case 'au':  
+            case 'mid':           
+                $(this).siblings("i").attr('class', 'xi-file-music');
+                break;
+                
+            // video Exts
+            case 'avi':
+            case 'mp4':
+            case 'mkv':
+            case 'wmv':
+            case 'mov':  
+            case 'flv':           
+                $(this).siblings("i").attr('class', 'xi-file-movie');
+                break;            
+        }
+    });
 });	
 
+
+function getExtFilename(fileName) {
+    var _fileLen = fileName.length;
+    var _lastDot = fileName.lastIndexOf('.');
+ 
+    var _fileExt = fileName.substring(_lastDot + 1, _fileLen).toLowerCase();
+ 
+    return _fileExt;
+}
 
 function resizeDiv(docHeight)
 {
@@ -169,3 +261,6 @@ function Tree(){
         });
     },"xml");
 }
+
+
+

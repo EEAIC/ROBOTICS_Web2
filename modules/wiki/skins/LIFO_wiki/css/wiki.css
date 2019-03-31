@@ -31,7 +31,6 @@ html, body {
 }
 /* Wiki Reset */
 
-.wiki img{border:0}
 .wiki .document_popup_menu,
 .wiki .comment_popup_menu{text-align:right;font-size:11px}
 .wiki .document_popup_menu{margin:1em 0}
@@ -226,4 +225,17 @@ span.edit_link{ float:right;font-size:12px;font-weight:normal;line-height:1.5em}
     list-style-type: none;
     opacity: .8;
     z-index: 90005
+}
+
+
+.comment-list::before {
+    background-color: #e6ebf1;
+    bottom: 0;
+    content: "";
+    display: block;
+    left: 100px;
+    position: absolute;
+    top: 0;
+    width: 2px;
+    z-index: 0;
 }

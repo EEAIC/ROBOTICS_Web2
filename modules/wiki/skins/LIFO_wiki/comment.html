@@ -1,5 +1,38 @@
 <!--@if($oDocument->getCommentCount())-->
 <div class="area p-2 mt-2">
+    {@ $_comment_list = $oDocument->getComments() }
+    <div class="comment-list" style="position:relative">
+
+   
+        <!--@foreach($_comment_list as $key => $comment)-->
+        <div class="mb-3">
+            <div class="float-left mr-3">
+                <img width="60px" cond="$comment->getProfileImage()" src="{$comment->getProfileImage()}" alt="Profile" class="img-thumbnail rounded-circle float-left" />
+                <div style="width: 60px; height: 60px; font-size: 32px; background: #F3F3F3;" class="profile img img-thumbnail rounded-circle text-center align-middle font-weight-bold" cond="!$comment->getProfileImage()">?</div>
+            </div>
+            <div class="card">            
+                <div class="card-header">
+                    <strong>{$comment->getNickName()}</strong>
+                    <span class="text-muted">
+                        {$comment->getRegdate('Y.m.d H:i')}
+                    </span>
+                </div>
+                <div class="card-body">
+                    <div class="xe_content">
+                        {$comment->content}
+                    </div>
+                    <a class="btn btn-outline-secondary btn-sm" cond="$is_logged" href="#" onclick="doCallModuleAction('comment','procCommentVoteUp','{$comment->comment_srl}'); return false;">+ <i class="xi-smiley-face"></i> {$votedUp}</a>
+                    
+                </div>               
+            </div>
+        </div>
+            
+        <!--@end-->
+    </div>
+
+
+
+
 	<div class="fbList" id="reply">
 		<div cond="$grant->write_comment && $oDocument->allowComment()">
 			<i class="xi-comment"></i> {$lang->comment} <span class="badge badge-info">{$oDocument->getCommentCount()}</span>
@@ -7,8 +40,7 @@
 		<div class="replyList">
 				{@ $_comment_list = $oDocument->getComments() }
 			<ul class="list-group list-group-flush mt-1 feedback border-top" cond="$oDocument->getCommentcount()">
-				<li loop="$_comment_list=>$key,$comment" class="list-group-item fbItem"|cond="!$comment->get('depth')" class="list-group-item fbItem indent indent2"|cond="$comment->get('depth')" id="comment_{$comment->comment_srl}">
-					
+				<li loop="$_comment_list=>$key,$comment" class="list-group-item fbItem"|cond="!$comment->get('depth')" class="list-group-item fbItem indent indent2"|cond="$comment->get('depth')" id="comment_{$comment->comment_srl}">					
 					
 					
 					<div class="clearfix">

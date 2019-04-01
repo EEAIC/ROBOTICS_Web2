@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<addon version="0.2">
+    <title xml:lang="ko">네이버 오픈 API 이미지 Captcha 애드온</title>
+    <description xml:lang="ko">
+        프로그램 글 등록기를 막기 위해 게시판/ issueTracker에서 글/ 댓글을 입력하려 할 때 알파벳을 입력해야 글/댓글이 입력되는 애드온 입니다.
+    </description>
+    <version>0.1</version>
+    <date>2019-04-01</date>
+    <author email_address="artherlim@gmail.com">
+        <name xml:lang="ko">LIFOsitory</name>
+    </author>
+</addon>

@@ -189,7 +189,7 @@ var calledArgs = null;
 					});
 
 			}
-			return captchaXE;
+            return captchaXE;
 		}
 
 		$(window).ready(function(){

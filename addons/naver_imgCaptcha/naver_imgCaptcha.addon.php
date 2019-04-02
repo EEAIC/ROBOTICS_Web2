@@ -61,14 +61,14 @@
                 }
 
                 $type = Context::get('captchaType');
-
+                $value = Context:: get('captcha_value');
                 $this->target_acts = array('procBoardInsertDocument', 'procBoardInsertComment', 'procIssuetrackerInsertIssue', 'procIssuetrackerInsertHistory', 'procTextyleInsertComment');
 
                 if(Context::getRequestMethod() != 'XMLRPC' && Context::getRequestMethod() !== 'JSON')
                 {
                     if($type == 'image')
                     {
-                        if(!$this->compareCaptcha())
+                        if(!$this->compareCaptcha($_SESSION['captcha_keyword'], $value))
                         {
                             Context::loadLang(_XE_PATH_ . 'addons/captcha/lang');
                             $_SESSION['XE_VALIDATOR_ERROR'] = -1;
@@ -96,7 +96,7 @@
                 // compare session when calling actions such as writing a post or a comment on the board/issue tracker module
                 if(!$_SESSION['captcha_authed'] && in_array(Context::get('act'), $this->target_acts))
                 {
-                    Context::loadLang(_XE_PATH_ . 'addons/captcha/lang');
+                    // Context::loadLang(_XE_PATH_ . 'addons/captcha/lang');
                     $ModuleHandler->error = "captcha_denied";
                 }
 
@@ -116,12 +116,64 @@
                 header("Cache-Control: no-store, no-cache, must-revalidate");
                 header("Cache-Control: post-check=0, pre-check=0", false);
                 header("Pragma: no-cache");
-        
-                printf(file_get_contents($this->addon_path . '/tpl/response.view.xml'), $this->loadHtml());
+                $this->getCaptchaKey();
+                // $this->getCaptchaImage($_SESSION['captcha_keyword']);
+
+                printf(file_get_contents($this->addon_path . '/tpl/response.view.xml'), $this->loadHtml(), $_SESSION['captcha_keyword']);
         
                 $this->context()->close();
                 exit();
             }
+
+            function before_module_init_captchaImage()
+            {
+                if($_SESSION['captcha_authed'])
+                {
+                    return false;
+                }
+
+                // if(Context::get('renew'))
+                // {
+                //     $this->createKeyword();
+                // }
+    
+                $keyword = $_SESSION['captcha_keyword'];
+                
+                $im = $this->getCaptchaImage($keyword);
+    
+                echo $im;    
+                Context::close();
+                exit();
+            }
+
+            function before_module_init_setCaptchaSession() {
+                if($_SESSION['captcha_authed'])
+                {
+                    return false;
+                }
+
+                $this->getCaptchaKey();
+                header("Content-Type: text/xml; charset=UTF-8");
+                header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
+                header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+                header("Cache-Control: no-store, no-cache, must-revalidate");
+                header("Cache-Control: post-check=0, pre-check=0", false);
+                header("Pragma: no-cache");
+                printf("<response>\r\n <error>0</error>\r\n <message>success</message>\r\n <about_captcha><![CDATA[%s]]></about_captcha>\r\n <captcha_reload><![CDATA[%s]]></captcha_reload>\r\n <captcha_play><![CDATA[%s]]></captcha_play>\r\n <cmd_input><![CDATA[%s]]></cmd_input>\r\n <cmd_cancel><![CDATA[%s]]></cmd_cancel>\r\n </response>"
+                        , Context::getLang('about_captcha')
+                        , Context::getLang('captcha_reload')
+                        , Context::getLang('captcha_play')
+                        , Context::getLang('cmd_input')
+                        , Context::getLang('cmd_cancel')
+                );
+                Context::close();
+                exit();
+
+
+            }
+
+
+
 
 
             function curlInit($url) {
@@ -142,14 +194,14 @@
                 curl_close ($ch);                
 
                 if($status_code == 200) {
-                    $this->key = json_decode($response, true)['key'];
+                    $_SESSION['captcha_keyword'] = json_decode($response, true)['key'];
                 } else {
                     echo "Error 내용:".$response;
                 }
             }
 
-            function getCaptchaImage() {
-                $url = "https://openapi.naver.com/v1/captcha/ncaptcha.bin?key=".$this->key;
+            function getCaptchaImage($key) {
+                $url = "https://openapi.naver.com/v1/captcha/ncaptcha.bin?key=".$key;
                 $ch = $this->curlInit($url);
                 $response = curl_exec ($ch);
                 $status_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -157,12 +209,13 @@
                 
                 if($status_code == 200) {
                     //echo $response;
-                    $fp = fopen("captcha.jpg", "w+");
-                    fwrite($fp, $response);
-                    fclose($fp);
+                    // $fp = fopen("captcha.jpg", "w+");
+                    // fwrite($fp, $response);
+                    // fclose($fp);
                     // imagepng($response);
                     // imagedestroy($response);
-                    echo "<img src='captcha.jpg'>";
+                    // echo "<img src='captcha.jpg'>";
+                    return $response;
                 } else {
                     echo "Error 내용:".$response;
                 }                
@@ -174,11 +227,25 @@
                 $ch = $this->curlInit($url);
                 $response = curl_exec ($ch);
                 $status_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-                echo "status_code:".$status_code."<br>";
+    
                 curl_close ($ch);
 
-                if($status_code == 200) {
-                    echo $response;
+                if($status_code == 200) 
+                {
+                    echo $value;      
+                    echo $response;     
+                    echo $_SESSION['captcha_keyword'];
+
+                    $result = json_decode($response, true)['result'];
+                    if ($result)
+                    {
+                        $_SESSION['captcha_authed'] = true;
+                        return true; 
+                    }
+                    else {
+                        unset($_SESSION['captcha_authed']);
+                        return false;
+                    }
                 } else {
                     echo "Error 내용:".$response;
                 }

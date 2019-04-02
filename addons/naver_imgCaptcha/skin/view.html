@@ -1,3 +1,54 @@
-<div>
-    zxc
-</div>
+<style>
+.naver_captcha-dialog {
+    display: block;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0, 0.6);
+    color: #343434;
+    font-weight: bolder;
+    z-index: 100;
+}
+.naver_captcha-frame {
+    left: 50%;
+    top: 50%;
+    position: absolute;
+    background: #fff;
+    
+    margin-left: -152px;
+    margin-top: -69px;
+}
+</style>
+
+<form method="post" action="">
+    <input type="hidden" name="captchaType" value="image" />
+   
+    <div class="naver_captcha-dialog">
+        <div class="naver_captcha-frame card">
+            <div class="card-header">
+                <span>
+                        NAVER IMAGE CAPTCHA
+                </span>
+                <button type="button" class="close" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            
+                <img class="" src="" id="captcha_image" alt="CAPTCHA">
+          
+            <div class="pt-2">
+
+                <div class="input-group d-inline-flex">
+                    <input class="form-control" type="text" name="captcha_value">
+                    <input id="captcha_key" hidden type="text" name="captcha_key" value="">
+                    <div class="input-group-append">
+                        <button type=submit id="secret_text" class="btn btn-dark">입력</button>
+                        <button type=button id="captcha2" class="btn btn-primary"><i class="xi-refresh"></i></button>                     
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

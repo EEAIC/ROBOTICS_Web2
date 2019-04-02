@@ -48,8 +48,8 @@ var naverImgCaptcha = {
             };
             
             if (!naverImgCaptcha.$html)
-            {
-                window.oldExecXml(module, act, params, naverImgCaptcha.onRecvHtml, ['view'], naverImgCaptcha.hookedDelegateArgs, formObject);
+            {               
+                window.oldExecXml(module, act, params, naverImgCaptcha.onRecvHtml, ['view', 'key'], naverImgCaptcha.hookedDelegateArgs, formObject);
             }
         } else {
             window.oldExecXml(module, act, params, delegate, responseTags, naverImgCaptcha.hookedDelegateArgs, formObject);
@@ -59,10 +59,13 @@ var naverImgCaptcha = {
     },
 
     onRecvHtml: function (returnObject, responseTags, delegateArgs) {
+       
         naverImgCaptcha.$html = $(returnObject.view);
         var $html             = naverImgCaptcha.$html;
-        $(document.body).append($html);
-        console.log(naverImgCaptcha);
+        $(document.body).append($html);      
+        $('#captcha_key').attr('value', returnObject.key);
+        $("#captcha_image").attr("src", current_url.setQuery('captcha_action','captchaImage').setQuery('rnd', (new Date).getTime()));
+        $(returnObject.view).append('<input type="hidden" name="error_return_url" value="'+current_url+'" />');
     },
 
     submit: function () {

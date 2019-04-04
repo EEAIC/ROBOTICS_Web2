@@ -21,9 +21,9 @@
     margin-top: -69px;
 }
 </style>
-<div class="naver_captcha-dialog">
+<div class="naver_captcha-dialog" id="captcha_layer">
 <form method="post" action="">
-    <input type="hidden" name="captchaType" value="image" />
+   
    
     
         <div class="naver_captcha-frame card">
@@ -39,12 +39,12 @@
                 
           
             <div class="card-body">
-                    <img class="img-thumbnail w-100" src="" id="captcha_image" alt="CAPTCHA">
+                    <img class="img-thumbnail w-100" src="about" id="captcha_image" alt="CAPTCHA">
                 <div class="input-group d-inline-flex mt-2">
-                    <input class="form-control" type="text" name="captcha_value">
-                    <input id="captcha_key" hidden type="text" name="captcha_key" value="">
+                    <input class="form-control" id="captcha_value" type="text" name="captcha_value">
+                    <input type="hidden" id="captchaType" name="captchaType" value="image" />
                     <div class="input-group-append">
-                        <button hidden type="submit" class="btn btn-dark">Input</button>
+                        <button type="submit" class="btn btn-dark">Input</button>
                         <button type="button" id="reload" class="btn btn-primary"><i class="xi-refresh"></i></button>                     
                     </div>
                    

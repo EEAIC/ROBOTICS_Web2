@@ -110,8 +110,9 @@ var calledArgs = null;
 					params['mid'] = current_mid;
 					params['secret_text'] = $('#secret_text').val();
 					window.oldExecXml(calledArgs.module,calledArgs.act,params, function() {
-						$("#captcha_layer").hide();
-						window.oldExecXml(calledArgs.module, calledArgs.act, calledArgs.params, calledArgs.callback_func, calledArgs.response_tags, calledArgs.callback_func_arg, calledArgs.fo_obj);
+                        $("#captcha_layer").hide();
+                        console.log(calledArgs);
+						// window.oldExecXml(calledArgs.module, calledArgs.act, calledArgs.params, calledArgs.callback_func, calledArgs.response_tags, calledArgs.callback_func_arg, calledArgs.fo_obj);
 					} );
 				};
 

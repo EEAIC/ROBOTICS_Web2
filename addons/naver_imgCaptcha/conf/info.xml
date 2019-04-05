@@ -10,6 +10,30 @@
         <name xml:lang="ko">LIFOsitory</name>
     </author>
     <extra_vars>
+		<var name="client_id" type="text">
+			<title xml:lang="ko">Client ID</title>
+			<title xml:lang="jp">Client ID</title>
+			<title xml:lang="en">Client ID</title>
+			<title xml:lang="ru">Client ID</title>
+			<title xml:lang="vi">Client ID</title>
+			<title xml:lang="zh-CN">Client ID</title>
+			<title xml:lang="zh-TW">Client ID</title>
+			
+			<description xml:lang="ko">클라이언트 HTML에 공개되는 키입니다. (https://developers.google.com/recaptcha/docs/display#js_api)</description>
+			<description xml:lang="en">The key that is exposed to the client HTML. (https://developers.google.com/recaptcha/docs/display#js_api)</description>
+		</var>
+		<var name="client_secret" type="text">
+			<title xml:lang="ko">Client Secret</title>
+			<title xml:lang="jp">Client Secret</title>
+			<title xml:lang="en">Client Secret</title>
+			<title xml:lang="ru">Client Secret</title>
+			<title xml:lang="vi">Client Secret</title>
+			<title xml:lang="zh-CN">Client Secret</title>
+			<title xml:lang="zh-TW">Client Secret</title>
+			
+			<description xml:lang="ko">사이트와 reCAPTCHA의 커뮤니케이션을 위해 이 비밀 키를 사용하세요. 이 키는 사용자아게 공되어서는 안됩니다. (https://developers.google.com/recaptcha/docs/verify#api-request)</description>			
+			<description xml:lang="en">Use this secret key to communicate with the site and reCAPTCHA. This key should not be used by the user (https://developers.google.com/recaptcha/docs/verify#api-request).</description>
+		</var>
 		<var name="target" type="select">
 			<title xml:lang="ko">Captcha 표시 대상</title>
 			<title xml:lang="zh-CN">应用对象</title>

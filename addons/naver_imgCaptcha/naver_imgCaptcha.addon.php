@@ -9,6 +9,9 @@
         {
             const CAPTCHA_AUTHED = 'google_captcha_authed';
             
+            const CLIENT_ID = $this->addon_info->client_id;
+            const CLIENT_SECRET = $this->addon_info->client_secret;
+
             var $client_id = "UGWzYGR_bPS1Bnu0W9MM";
             var $client_secret = "zw76lllcBu";
             var $target_acts = NULL;
@@ -30,8 +33,8 @@
 
             function setHeaders()
             {
-                $this->headers[] = "X-Naver-Client-Id: ".$this->client_id;
-                $this->headers[] = "X-Naver-Client-Secret: ".$this->client_secret;
+                $this->headers[] = "X-Naver-Client-Id: ".self::CLIENT_ID;
+                $this->headers[] = "X-Naver-Client-Secret: ".self::CLIENT_SECRET;
             }
            
 
@@ -68,49 +71,49 @@
                     return false;
                 }
                
+                $
                 $type = Context::get('captchaType');
                 $value = Context:: get('captcha_value');
                 $this->target_acts = array('procBoardInsertDocument', 'procBoardInsertComment', 'procIssuetrackerInsertIssue', 'procIssuetrackerInsertHistory', 'procTextyleInsertComment');
-            
-                if(Context::getRequestMethod() != 'XMLRPC' && Context::getRequestMethod() !== 'JSON')
-                {
-                   
                 
-                    if($type == 'image')
+                if(Context::get('captcha_action') != 'captchaImage'){
+                    if(Context::getRequestMethod() != 'XMLRPC' && Context::getRequestMethod() !== 'JSON')
                     {
+                    
                         
-                        if(!$this->compareCaptcha($_SESSION['captcha_keyword'], $value, '1'))
-                        {
-                            Context::loadLang(_XE_PATH_ . 'addons/naver_imgCaptcha/lang');
-                            $_SESSION['XE_VALIDATOR_ERROR'] = -1;
-                            $_SESSION['XE_VALIDATOR_MESSAGE'] = Context::getLang('captcha_denied');
-                            $_SESSION['XE_VALIDATOR_MESSAGE_TYPE'] = 'error';
-                            $_SESSION['XE_VALIDATOR_RETURN_URL'] = Context::get('error_return_url');
-                            $ModuleHandler->_setInputValueToSession();
+                        if($type == 'image')
+                        {   
+                            if(!$this->compareCaptcha($_SESSION['captcha_keyword'], $value, '1'))
+                            {
+                                Context::loadLang(_XE_PATH_ . 'addons/naver_imgCaptcha/lang');
+                                $_SESSION['XE_VALIDATOR_ERROR'] = -1;
+                                $_SESSION['XE_VALIDATOR_MESSAGE'] = Context::getLang('captcha_denied');
+                                $_SESSION['XE_VALIDATOR_MESSAGE_TYPE'] = 'error';
+                                $_SESSION['XE_VALIDATOR_RETURN_URL'] = Context::get('error_return_url');
+                                $ModuleHandler->_setInputValueToSession();
+                            }
                         }
-                    }
-                    else
-                    {
-                        Context::addHtmlHeader('<script>
-                            if(!captchaTargetAct) {var captchaTargetAct = [];}
-                            captchaTargetAct.push("' . implode('","', $this->target_acts) . '");
-                            </script>');
+                        else
+                        {
+                            Context::addHtmlHeader('<script>
+                                if(!captchaTargetAct) {var captchaTargetAct = [];}
+                                captchaTargetAct.push("' . implode('","', $this->target_acts) . '");
+                                </script>');
 
-                        Context::loadFile(array('./addons/naver_imgCaptcha/naver_imgCaptcha.js', 'body', '', null), true);
+                            Context::loadFile(array('./addons/naver_imgCaptcha/naver_imgCaptcha.js', 'body', '', null), true);
+                        }
                     }
                 }
 
              
 
 
-                // $this->getCaptchaKey();
-                // $this->getCaptchaImage();
-                // $this->compareCaptcha($this->key, "1234");
+               
 
                 // compare session when calling actions such as writing a post or a comment on the board/issue tracker module
-    
                 if(in_array(Context::get('act'), $this->target_acts) && !$_SESSION[self::CAPTCHA_AUTHED])
                 {
+                    
                     Context::loadLang(_XE_PATH_ . 'addons/naver_imgCaptcha/lang');
                     $ModuleHandler->error = "captcha_denied";
                 }
@@ -174,7 +177,10 @@
                 if(!$this->compareCaptcha($_SESSION['captcha_keyword'], Context:: get('captcha_value'),'2'))
                 {
                     // $this->getCaptchaKey();
-                    return false;
+                    print("<response>\r\n<error>0</error>\r\n<result>0</result>\r\n<message></message>\r\n</response>");
+                    Context::close();
+                    exit();
+                    
                 } 
                
     
@@ -184,7 +190,7 @@
                 header("Cache-Control: no-store, no-cache, must-revalidate");
                 header("Cache-Control: post-check=0, pre-check=0", false);
                 header("Pragma: no-cache");
-                print("<response>\r\n<error>0</error>\r\n<message>success</message>\r\n</response>");
+                print("<response>\r\n<error>0</error>\r\n<result>1</result>\r\n<message>success</message>\r\n</response>");
     
                 Context::close();
                 exit();
@@ -286,6 +292,12 @@
                     return false;
                     
                 } else {
+                    $errResponse = json_decode($response, true);                                 
+                    if ($errResponse['errorCode'] == 'CT001' || $errResponse['errorCode'] == 'CT002' ) {
+                        $this->getCaptchaKey();
+                        return false;
+                    }
+
                     echo "Error 내용:".$response;
                 }
             }

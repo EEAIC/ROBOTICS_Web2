@@ -43,13 +43,17 @@ var calledArgs = null;
                 params['mid'] = current_mid;
                 params['captcha_value'] = $('#captcha_value').val();
                 
-                window.oldExecXml(calledArgs.module,calledArgs.act,params, function() {       
-                                
-                    $("#captcha_layer").hide();
-                    window.oldExecXml(calledArgs.module, calledArgs.act, calledArgs.params, calledArgs.callback_func, calledArgs.response_tags, calledArgs.callback_func_arg, calledArgs.fo_obj);
-                });
-                // $('#captcha_image').attr("src", current_url.setQuery('captcha_action','captchaImage').setQuery('rnd', (new Date).getTime()));
-
+                window.oldExecXml(calledArgs.module,calledArgs.act,params, function(response) {
+					var isEqual = parseInt(response.result)
+					console.log(response.result);
+                    if (isEqual) {
+						$("#captcha_layer").hide();
+						window.oldExecXml(calledArgs.module, calledArgs.act, calledArgs.params, calledArgs.callback_func, calledArgs.response_tags, calledArgs.callback_func_arg, calledArgs.fo_obj);
+					} else {
+						$('#captcha_image').attr("src", current_url.setQuery('captcha_action','captchaImage').setQuery('rnd', (new Date).getTime()));
+					}
+                }, new Array('result'));
+          
             },
 
             exec : function(module, act, params, callback_func, response_tags, callback_func_arg, fo_obj) {
@@ -80,7 +84,8 @@ var calledArgs = null;
             }
 
 
-        };
+		};
+		
 		function xeCaptcha() {
 			$('form').each(function(i)
 			{

@@ -9,12 +9,9 @@ var calledArgs = null;
                 if (!captchaXE.html) {
                     captchaXE.html = $(ret_obj.view);
                     captchaXE.html.appendTo(document.body);
-                } else {
-
                 }
 
                 $('.naver_captcha-dialog').show();
-                
                 $('#captcha_image').attr("src", current_url.setQuery('captcha_action','captchaImage').setQuery('rnd', (new Date).getTime()));
                 $(captchaXE.html).append('<input type="hidden" name="error_return_url" value="'+current_url+'" />');
                 
@@ -51,6 +48,7 @@ var calledArgs = null;
 						window.oldExecXml(calledArgs.module, calledArgs.act, calledArgs.params, calledArgs.callback_func, calledArgs.response_tags, calledArgs.callback_func_arg, calledArgs.fo_obj);
 					} else {
 						$('#captcha_image').attr("src", current_url.setQuery('captcha_action','captchaImage').setQuery('rnd', (new Date).getTime()));
+						$('#captcha_value').select();
 					}
                 }, new Array('result'));
           

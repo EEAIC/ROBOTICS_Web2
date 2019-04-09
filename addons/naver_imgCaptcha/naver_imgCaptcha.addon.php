@@ -4,51 +4,49 @@
 
     if(!class_exists('NaverCaptcha', false)) 
     {
-
         class NaverCaptcha
         {
-            const CAPTCHA_AUTHED = 'google_captcha_authed';
-            
-            const CLIENT_ID = $this->addon_info->client_id;
-            const CLIENT_SECRET = $this->addon_info->client_secret;
-
-            var $client_id = "UGWzYGR_bPS1Bnu0W9MM";
-            var $client_secret = "zw76lllcBu";
+            const CAPTCHA_AUTHED = 'naver_captcha_authed';
+         
             var $target_acts = NULL;
             var $url;
             var $is_post = false;
             var $headers = array();
 
-            var $addon_info;
-
+            private $addon_info;
             private $key;
             private $addon_path;
             private $html;
+            private $skin;
+
+            private $CLIENT_ID;
+            private $CLIENT_SECRET;
 
             function setInfo(&$addon_info)
             {
                 $this->addon_info = $addon_info;
+                $this->CLIENT_ID =  $this->addon_info->client_id;
+                $this->CLIENT_SECRET = $this->addon_info->client_secret;
+                $this->skin = $this->addon_info->skin ?: 'default';
             }
         
 
             function setHeaders()
             {
-                $this->headers[] = "X-Naver-Client-Id: ".self::CLIENT_ID;
-                $this->headers[] = "X-Naver-Client-Secret: ".self::CLIENT_SECRET;
+                $this->headers[] = "X-Naver-Client-Id: ".$this->CLIENT_ID;
+                $this->headers[] = "X-Naver-Client-Secret: ".$this->CLIENT_SECRET;
             }
            
-
             public function setPath($addon_path) { $this->addon_path = $addon_path; }
-
+          
             function loadHtml() 
             {
                 if (!$this->html)
-                    $this->html = TemplateHandler::getInstance()->compile($this->addon_path . '/skin', 'view');
+                    $this->html = TemplateHandler::getInstance()->compile($this->addon_path . '/skin//' . $this->skin, 'view');
         
-                return $this->html;
+                return $this->html; 
             }
       
-
             function before_module_init(&$ModuleHandler)
             {
                 $logged_info = Context::get('logged_info');
@@ -71,9 +69,8 @@
                     return false;
                 }
                
-                $
                 $type = Context::get('captchaType');
-                $value = Context:: get('captcha_value');
+
                 $this->target_acts = array('procBoardInsertDocument', 'procBoardInsertComment', 'procIssuetrackerInsertIssue', 'procIssuetrackerInsertHistory', 'procTextyleInsertComment');
                 
                 if(Context::get('captcha_action') != 'captchaImage'){
@@ -83,7 +80,7 @@
                         
                         if($type == 'image')
                         {   
-                            if(!$this->compareCaptcha($_SESSION['captcha_keyword'], $value, '1'))
+                            if(!$this->compareCaptcha())
                             {
                                 Context::loadLang(_XE_PATH_ . 'addons/naver_imgCaptcha/lang');
                                 $_SESSION['XE_VALIDATOR_ERROR'] = -1;
@@ -100,24 +97,18 @@
                                 captchaTargetAct.push("' . implode('","', $this->target_acts) . '");
                                 </script>');
 
+                            Context::loadFile(array('./addons/naver_imgCaptcha/skin/' . $this->skin . '/view.css', '', '', null), true);
                             Context::loadFile(array('./addons/naver_imgCaptcha/naver_imgCaptcha.js', 'body', '', null), true);
                         }
                     }
                 }
 
-             
-
-
-               
-
                 // compare session when calling actions such as writing a post or a comment on the board/issue tracker module
                 if(in_array(Context::get('act'), $this->target_acts) && !$_SESSION[self::CAPTCHA_AUTHED])
                 {
-                    
                     Context::loadLang(_XE_PATH_ . 'addons/naver_imgCaptcha/lang');
                     $ModuleHandler->error = "captcha_denied";
                 }
-
                 return true;
             }
 
@@ -129,7 +120,6 @@
                 {
                     unset($_SESSION[self::CAPTCHA_AUTHED]);
                 }
-                
             }
 
             function after_module_proc($moduleObject) { }
@@ -139,13 +129,18 @@
                     return false;
                 }
         
-                // $this->loadLang();
-        
-           
-                $this->getCaptchaKey();
-                // $this->getCaptchaImage($_SESSION['captcha_keyword']);
+                $rst = $this->getCaptchaKey();
 
-                printf(file_get_contents($this->addon_path . '/tpl/response.view.xml'), $this->loadHtml(), $_SESSION['captcha_keyword']);
+                if ($rst['errorCode']) {
+                    $err = $rst['errorCode'];
+                    $message = $rst['errorMessage'];
+                } else {
+                    $err = 0;
+                    $message = 'success';
+                }
+
+                printf(file_get_contents($this->addon_path . '/tpl/response.view.xml'), $err, $message, $this->loadHtml(), $_SESSION['captcha_keyword']);
+
                 Context::close();               
                 exit();
             }
@@ -157,11 +152,6 @@
                     return false;
                 }
 
-                // if(Context::get('renew'))
-                // {
-                //     $this->createKeyword();
-                // }
-    
                 $keyword = $_SESSION['captcha_keyword'];
                 
                 $im = $this->getCaptchaImage($keyword);
@@ -174,22 +164,13 @@
             function before_module_init_captchaCompare()
             {                        
 
-                if(!$this->compareCaptcha($_SESSION['captcha_keyword'], Context:: get('captcha_value'),'2'))
+                if(!$this->compareCaptcha($_SESSION['captcha_keyword'], Context:: get('captcha_value')))
                 {
-                    // $this->getCaptchaKey();
                     print("<response>\r\n<error>0</error>\r\n<result>0</result>\r\n<message></message>\r\n</response>");
                     Context::close();
                     exit();
-                    
                 } 
                
-    
-                header("Content-Type: text/xml; charset=UTF-8");
-                header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
-                header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-                header("Cache-Control: no-store, no-cache, must-revalidate");
-                header("Cache-Control: post-check=0, pre-check=0", false);
-                header("Pragma: no-cache");
                 print("<response>\r\n<error>0</error>\r\n<result>1</result>\r\n<message>success</message>\r\n</response>");
     
                 Context::close();
@@ -220,9 +201,9 @@
 
                 if($status_code == 200) {
                     $_SESSION['captcha_keyword'] = json_decode($response, true)['key'];
-                } else {
-                    echo "Error 내용:".$response;
-                }
+                } 
+
+                return  json_decode($response, true);
             }
 
             function getCaptchaImage() {
@@ -235,18 +216,9 @@
                     $response = curl_exec ($ch);
                     $status_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
                     curl_close ($ch);
-               
 
 
                     if($status_code == 200) {
-                        
-                        //echo $response;
-                        // $fp = fopen("captcha.jpg", "w+");
-                        // fwrite($fp, $response);
-                        // fclose($fp);
-                        // imagepng($response);
-                        // imagedestroy($response);
-                        // echo "<img src='captcha.jpg'>";
                         $flag = 0;
                         return $response;
                     } else {                      
@@ -260,7 +232,7 @@
                 }               
             }
 
-            function compareCaptcha($key, $value, $w) {     
+            function compareCaptcha() {     
                 $key = $_SESSION['captcha_keyword'];
                 $value = Context:: get('captcha_value');       
                 if(!in_array(Context::get('act'), $this->target_acts)) return true;
@@ -287,7 +259,6 @@
                         return true; 
                     }
                     
-                        
                     unset($_SESSION[self::CAPTCHA_AUTHED]);
                     return false;
                     
@@ -303,11 +274,13 @@
             }
         }
 
-        $GLOBALS['__NaverCaptcha__'] = new NaverCaptcha;
-        $GLOBALS['__NaverCaptcha__']->setInfo($addon_info);
-        $GLOBALS['__NaverCaptcha__']->setHeaders();
-        $GLOBALS['__NaverCaptcha__']->setPath(_XE_PATH_.'addons/naver_imgCaptcha');
-        Context::set('oNaverCaptcha', $GLOBALS['__NaverCaptcha__']);
+        if (CLIENT_ID && CLIENT_SECRET) {
+            $GLOBALS['__NaverCaptcha__'] = new NaverCaptcha;
+            $GLOBALS['__NaverCaptcha__']->setInfo($addon_info);
+            $GLOBALS['__NaverCaptcha__']->setHeaders();
+            $GLOBALS['__NaverCaptcha__']->setPath(_XE_PATH_.'addons/naver_imgCaptcha');
+            Context::set('oNaverCaptcha', $GLOBALS['__NaverCaptcha__']);
+        }
     }
 
     $oAddonNaverCaptcha = &$GLOBALS['__NaverCaptcha__'];

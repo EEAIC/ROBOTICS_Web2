@@ -15,12 +15,11 @@
     left: 50%;
     top: 50%;
     position: absolute;
-    background: #fff;
+    background: #000;
     width: 90%;
     transform: translate(-50%, -50%);
     line-height: 1.5;
     font-size: 1rem;
-    
 }
 
 @media (min-width: 300px) {
@@ -277,9 +276,9 @@
 .naver_captcha-frame .card-header {
     padding: 0.75rem 1.25rem;
     margin-bottom: 0;
-    color: inherit;
-    background-color: rgba(0, 0, 0, 0.03);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+    color: white;
+    background-color: rgba(255, 255, 255, 0.13);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.125);
 }
 
 .naver_captcha-frame .close:not(:disabled):not(.disabled) {
@@ -300,8 +299,8 @@
     font-size: 1.5rem;
     font-weight: 700;
     line-height: 1;
-    color: #000;
-    text-shadow: 0 1px 0 #fff;
+    color: #fff;
+    text-shadow: 0 1px 0 #000;
     opacity: .5;
 }
 

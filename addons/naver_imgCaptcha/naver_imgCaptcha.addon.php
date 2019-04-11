@@ -29,7 +29,6 @@
                 $this->CLIENT_SECRET = $this->addon_info->client_secret;
                 $this->skin = $this->addon_info->skin ?: 'default';
             }
-        
 
             function setHeaders()
             {
@@ -303,5 +302,5 @@
         }
     }
 
-/* End of file captcha.addon.php */
-/* Location: ./addons/captcha/captcha.addon.php */
+/* End of file naver_imgCaptcha.addon.php */
+/* Location: ./addons/naver_imgCaptcha/naver_imgCaptcha.addon.php */

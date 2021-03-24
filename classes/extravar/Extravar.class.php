@@ -1,10 +1,10 @@
 <?php
-/* Copyright (C) NAVER <http://www.navercorp.com> */
+/* Copyright (C) XEHub <https://www.xehub.io> */
 
 /**
  * A class to handle extra variables used in posts, member and others
  *
- * @author NAVER (developers@xpressengine.com)
+ * @author XEHub (developers@xpressengine.com)
  */
 class ExtraVar
 {
@@ -78,7 +78,7 @@ class ExtraVar
 /**
  * Each value of the extra vars
  *
- * @author NAVER (developers@xpressengine.com)
+ * @author XEHub (developers@xpressengine.com)
  */
 class ExtraItem
 {
@@ -209,7 +209,7 @@ class ExtraItem
 				{
 					$value = 'http://' . $value;
 				}
-				return htmlspecialchars($value, ENT_COMPAT | ENT_HTML401, 'UTF-8', false);
+				return escape($value, false);
 
 			case 'tel' :
 				if(is_array($value))
@@ -228,7 +228,7 @@ class ExtraItem
 				$values = array_values($values);
 				for($i = 0, $c = count($values); $i < $c; $i++)
 				{
-					$values[$i] = trim(htmlspecialchars($values[$i], ENT_COMPAT | ENT_HTML401, 'UTF-8', false));
+					$values[$i] = trim(escape($values[$i], false));
 				}
 				return $values;
 
@@ -255,7 +255,7 @@ class ExtraItem
 				$values = array_values($values);
 				for($i = 0, $c = count($values); $i < $c; $i++)
 				{
-					$values[$i] = trim(htmlspecialchars($values[$i], ENT_COMPAT | ENT_HTML401, 'UTF-8', false));
+					$values[$i] = trim(escape($values[$i], false));
 				}
 				return $values;
 
@@ -276,7 +276,7 @@ class ExtraItem
 				$values = array_values($values);
 				for($i = 0, $c = count($values); $i < $c; $i++)
 				{
-					$values[$i] = trim(htmlspecialchars($values[$i], ENT_COMPAT | ENT_HTML401, 'UTF-8', false));
+					$values[$i] = trim(escape($values[$i], false));
 				}
 				return $values;
 
@@ -285,7 +285,7 @@ class ExtraItem
 			//case 'text' :
 			//case 'textarea' :
 			default :
-				return htmlspecialchars($value, ENT_COMPAT | ENT_HTML401, 'UTF-8', false);
+				return escape($value, false);
 		}
 	}
 
@@ -311,10 +311,10 @@ class ExtraItem
 		switch($this->type)
 		{
 			case 'homepage' :
-				return ($value) ? (sprintf('<a href="%s" target="_blank">%s</a>', $value, strlen($value) > 60 ? substr($value, 0, 40) . '...' . substr($value, -10) : $value)) : "";
+				return ($value) ? (sprintf('<a href="%s" target="_blank">%s</a>', escape($value, false), strlen($value) > 60 ? substr($value, 0, 40) . '...' . substr($value, -10) : $value)) : "";
 
 			case 'email_address' :
-				return ($value) ? sprintf('<a href="mailto:%s">%s</a>', $value, $value) : "";
+				return ($value) ? sprintf('<a href="mailto:%s">%s</a>', escape($value, false), $value) : "";
 
 			case 'tel' :
 				return sprintf('%s-%s-%s', $value[0], $value[1], $value[2]);

@@ -1,13 +1,13 @@
 <?php
-/* Copyright (C) NAVER <http://www.navercorp.com> */
+/* Copyright (C) XEHub <https://www.xehub.io> */
 
 /**
  * @class PageHandler
- * @author NAVER (developers@xpressengine.com)
+ * @author XEHub (developers@xpressengine.com)
  * handles page navigation
  * @version 0.1
  *
- * @remarks Getting total counts, number of pages, current page number, number of items per page,
+ * @remarks Getting total counts, number of pages, current page number, number of items per page, 
  *          this class implements methods and contains variables for page navigation
  */
 class PageHandler extends Handler
@@ -19,14 +19,14 @@ class PageHandler extends Handler
 	var $page_count = 10; ///< number of page links displayed at one time
 	var $first_page = 1; ///< first page number
 	var $last_page = 1; ///< last page number
-	var $point = 0; ///< increments per getNextPage()
+	var $point = 0; ///< increments per getNextPage() 
 
 	/**
 	 * constructor
 	 * @param int $total_count number of total items
 	 * @param int $total_page number of total pages
 	 * @param int $cur_page current page number
-	 * @param int $page_count number of page links displayed at one time
+	 * @param int $page_count number of page links displayed at one time 
 	 * @return void
 	 */
 
@@ -39,7 +39,7 @@ class PageHandler extends Handler
 		$this->point = 0;
 
 		$first_page = $cur_page - (int) ($page_count / 2);
-		if($first_page < 1 || $total_page <= $page_count)
+		if($first_page < 1)
 		{
 			$first_page = 1;
 		}

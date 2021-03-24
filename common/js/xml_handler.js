@@ -11,7 +11,7 @@ var show_waiting_message = true;
 
 	/**
 	* @brief exec_xml
-	* @author NAVER (developers@xpressengine.com)
+	* @author XEHub (developers@xpressengine.com)
 	**/
 	$.exec_xml = window.exec_xml = function(module, act, params, callback_func, response_tags, callback_func_arg, fo_obj) {
 		var xml_path = request_uri+"index.php";
@@ -358,16 +358,15 @@ var show_waiting_message = true;
 	};
 
 	function beforeUnloadHandler(){
-		return '';
 	}
 
 	$(function($){
 		$(document)
 			.ajaxStart(function(){
-				$(window).bind('beforeunload', beforeUnloadHandler);
+				$(window).on('beforeunload', beforeUnloadHandler);
 			})
 			.bind('ajaxStop cancel_confirm', function(){
-				$(window).unbind('beforeunload', beforeUnloadHandler);
+				$(window).off('beforeunload', beforeUnloadHandler);
 			});
 	});
 

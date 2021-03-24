@@ -1,8 +1,8 @@
 <?php
-/* Copyright (C) NAVER <http://www.navercorp.com> */
+/* Copyright (C) XEHub <https://www.xehub.io> */
 /**
  * @class  pollModel
- * @author NAVER (developers@xpressengine.com)
+ * @author XEHub (developers@xpressengine.com)
  * @brief The model class for the poll modules
  */
 class pollModel extends poll
@@ -76,7 +76,7 @@ class pollModel extends poll
 
 		$poll->poll_srl = $poll_srl;
 		// Only ongoing poll results
-		if($poll->stop_date >= zdate(date("YmdHi"), 'Ymd'))
+		if($poll->stop_date >= date("Ymd"))
 		{
 			if($this->isPolled($poll_srl)) $tpl_file = "result";
 			else $tpl_file = "form";

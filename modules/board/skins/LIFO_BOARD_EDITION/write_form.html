@@ -1,61 +1,100 @@
 <include target="_header.html" />
 <div class="area p-2 mb-2">
-<form action="./" method="post" onsubmit="return procFilter(this, window.insert)" class="board_write">
-	<input type="hidden" name="mid" value="{$mid}" />
-	<input type="hidden" name="content" value="{$oDocument->getContentText()}" />
-	<input type="hidden" name="document_srl" value="{$document_srl}" />
-	<div class="mb-2">
-		<select name="category_srl" cond="$module_info->use_category=='Y'">
-			<option value="">{$lang->category}</option>
-			<option loop="$category_list => $val" disabled="disabled"|cond="!$val->grant" value="{$val->category_srl}" selected="selected"|cond="$val->grant&&$val->selected||$val->category_srl==$oDocument->get('category_srl')">
-				{str_repeat("&nbsp;&nbsp;",$val->depth)} {$val->title} ({$val->document_count})
-			</option>
-		</select>
-		<input cond="$oDocument->getTitleText()" type="text" name="title" class="form-control" placeholder="{$lang->title}" value="{htmlspecialchars($oDocument->getTitleText())}" />
-		<input cond="!$oDocument->getTitleText()" type="text" name="title" class="form-control" placeholder="{$lang->title}" />
-	</div>
-    <div class=" pt-0" cond="count($extra_keys)">
-		<table class="table" cond="count($extra_keys)" summary="Extra Form">
-			<caption class="text-right p-0"><small><span><em class="text-danger">*</em> : {$lang->is_required}</small></caption>
-			<tr loop="$extra_keys=>$key,$val">
-				{@
-					$id_num = 1000;
-					$type = $val->type;
-					$name = $val->name;
-					$value = $val->getValue();
-					$default = $val->_getTypeValue($type, $val->default);
-					$column_name = 'extra_vars' . $val->idx;
-				}
+	<form action="./" method="post" onsubmit="return procFilter(this, window.insert)" class="board_write">
+		<input type="hidden" name="mid" value="{$mid}" />
+		<input type="hidden" name="content" value="{$oDocument->getContentText()}" />
+		<input type="hidden" name="document_srl" value="{$document_srl}" />
+		<div class="mb-2">
+			<select name="category_srl" cond="$module_info->use_category=='Y'">
+				<option value="">{$lang->category}</option>
+				<option loop="$category_list => $val" disabled="disabled"|cond="!$val->grant" value="{$val->category_srl}" selected="selected"|cond="$val->grant&&$val->selected||$val->category_srl==$oDocument->get('category_srl')">
+					{str_repeat("&nbsp;&nbsp;",$val->depth)} {$val->title} ({$val->document_count})
+				</option>
+			</select>
+			<input cond="$oDocument->getTitleText()" type="text" name="title" class="form-control" placeholder="{$lang->title}" value="{htmlspecialchars($oDocument->getTitleText())}" />
+			<input cond="!$oDocument->getTitleText()" type="text" name="title" class="form-control" placeholder="{$lang->title}" />
+		</div>
+		<div class=" pt-0" cond="count($extra_keys)">
+			<table class="table" cond="count($extra_keys)" summary="Extra Form">
+				<caption class="text-right p-0"><small><span><em class="text-danger">*</em> : {$lang->is_required}</small></caption>
+				<tr loop="$extra_keys=>$key,$val">
+					{@
+						$id_num = 1000;
+						$type = $val->type;
+						$name = $val->name;
+						$value = $val->getValue();
+						$default = $val->_getTypeValue($type, $val->default);
+						$column_name = 'extra_vars' . $val->idx;
+					}
 
-				<th class="text-left text-nowrap" scope="row"><em class="text-danger" cond="$val->is_required=='Y'">*</em> {$name}</th>
-				<td>
-					<block cond="$type == 'homepage'">
-						<div class="">
-							<input type="text" name="{$column_name}" value="{$value}" class="form-control form-control-sm">
-						</div>
-					</block>
-					<block cond="$type == 'email_address'">
-						<div class="">
-							<input type="email" name="{$column_name}" value="{$value}" class="form-control form-control-sm">
-						</div>
-					</block>
-					<block cond="$type == 'tel'">
-						<div class="form-row">
-							<div class="col-auto">
-								<input type="text" name="{$column_name}[]" value="{$value[0]}" size="4" maxlength="4" class="form-control form-control-sm" />
+					<th class="text-left text-nowrap" scope="row"><em class="text-danger" cond="$val->is_required=='Y'">*</em> {$name}</th>
+					<td>
+						<block cond="$type == 'homepage'">
+							<div class="">
+								<input type="text" name="{$column_name}" value="{$value}" class="form-control form-control-sm">
 							</div>
-							<div class="col-auto">
-								<input type="text" name="{$column_name}[]" value="{$value[1]}" size="4" maxlength="4" class="form-control form-control-sm" />
+						</block>
+						<block cond="$type == 'email_address'">
+							<div class="">
+								<input type="email" name="{$column_name}" value="{$value}" class="form-control form-control-sm">
 							</div>
-							<div class="col-auto">
-								<input type="text" name="{$column_name}[]" value="{$value[2]}" size="4" maxlength="4" class="form-control form-control-sm" />
+						</block>
+						<block cond="$type == 'tel'">
+							<div class="form-row">
+								<div class="col-auto">
+									<input type="text" name="{$column_name}[]" value="{$value[0]}" size="4" maxlength="4" class="form-control form-control-sm" />
+								</div>
+								<div class="col-auto">
+									<input type="text" name="{$column_name}[]" value="{$value[1]}" size="4" maxlength="4" class="form-control form-control-sm" />
+								</div>
+								<div class="col-auto">
+									<input type="text" name="{$column_name}[]" value="{$value[2]}" size="4" maxlength="4" class="form-control form-control-sm" />
+								</div>
 							</div>
-						</div>
-					</block>
-					<block cond="$type == 'textarea'">
-							<textarea name="{$column_name}" rows="3" class="form-control">{$value}</textarea>
-					</block>
-					<block cond="$type == 'checkbox'">
+						</block>
+						<block cond="$type == 'textarea'">
+								<textarea name="{$column_name}" rows="3" class="form-control">{$value}</textarea>
+						</block>
+						<block cond="$type == 'checkbox'">
+								<ul class="list-unstyled mb-0">
+									<!--@foreach($default as $v) -->
+									{@
+											$checked = '';
+
+											// Temporary ID for labeling
+											$tmp_id = $column_name . '-' . $id_num++;
+									}
+									<!--@if($value && in_array(trim($v), $value))-->
+											{@
+												$checked = ' checked="checked"';
+											}
+									<!--@end-->
+										<li class="custom-control custom-checkbox">
+											<input class="custom-control-input" type="checkbox" name="{$column_name}[]" id="{$tmp_id}" value="{htmlspecialchars($v, ENT_COMPAT | ENT_HTML401, 'UTF-8', false)}" {$checked} />
+											<label class="custom-control-label" for="{$tmp_id}">{$v}</label>
+										</li>
+									<!--@end-->
+								</ul>
+						</block>
+						<block cond="$type == 'select'">
+							<select name="{$column_name}" class="custom-select">
+								<!--@foreach($default as $v) -->
+								{@
+										$selected = '';
+
+										// Temporary ID for labeling
+										$tmp_id = $column_name . '-' . $id_num++;
+								}
+								<!--@if($value && in_array(trim($v), $value))-->
+										{@
+											$selected = ' selected="selected"';
+										}
+								<!--@end-->
+									<option value = "{$v}" {$selected}>{$v}</option>
+								<!--@end-->
+							</select>
+						</block>
+						<block cond="$type == 'radio'">
 							<ul class="list-unstyled mb-0">
 								<!--@foreach($default as $v) -->
 								{@
@@ -69,213 +108,179 @@
 											$checked = ' checked="checked"';
 										}
 								<!--@end-->
-									<li class="custom-control custom-checkbox">
-										<input class="custom-control-input" type="checkbox" name="{$column_name}[]" id="{$tmp_id}" value="{htmlspecialchars($v, ENT_COMPAT | ENT_HTML401, 'UTF-8', false)}" {$checked} />
+									<li class="custom-control custom-radio">
+										<input class="custom-control-input" type="radio" name="{$column_name}[]" id="{$tmp_id}" value="{$v}" {$checked} />
 										<label class="custom-control-label" for="{$tmp_id}">{$v}</label>
 									</li>
 								<!--@end-->
 							</ul>
-					</block>
-					<block cond="$type == 'select'">
-						<select name="{$column_name}" class="custom-select">
-							<!--@foreach($default as $v) -->
+						</block>
+						<block cond="$type == 'date'">
+							<div class="form-row">
+								<span class="col">
+									<input type="hidden" name="{$column_name}" value="{$value}" />
+									<input type="text" placeholder="YYYY-MM-DD" id="date_{$column_name}" value="{zdate($value, 'Y-m-d')}" class="date form-control" />
+								</span>
+								<span class="col-auto">
+									<input type="button" value="{$lang->cmd_delete}" class="col-auto btn btn-danger" id="dateRemover_{$column_name}">
+								</span>
+									<script type="text/javascript">
+									(function($){
+										$(function(){
+											var option = { dateFormat: "yy-mm-dd", changeMonth:true, changeYear:true, gotoCurrent:false, yearRange:'-100:+10', onSelect:function(){
+												$(this).prev('input[type="hidden"]').val(this.value.replace(/-/g,""))}
+											};
+											$.extend(option,$.datepicker.regional['{Context::getLangType()}']);
+											$("#date_{$column_name}").datepicker(option);
+											$("#date_{$column_name}").datepicker("option", "dateFormat", "yy-mm-dd");
+											$("#dateRemover_{$column_name}").click(function(){
+												$("#date_{$column_name}").siblings().andSelf().val("");
+													return false;
+											})
+										});
+									})(jQuery);
+								</script>
+							</div>
+						</block>
+						<block cond="$type == 'kr_zip'">
+
 							{@
-									$selected = '';
-
-									// Temporary ID for labeling
-									$tmp_id = $column_name . '-' . $id_num++;
+									$oKrzipModel = &getModel('krzip');
+									$val->getFormHTML(); <!--// Context::get('template_config') 를 가져오기 위헤 실행 -->
+									$template_config = Context::get('template_config');
+									<!--// var_dump($oKrzipModel::$api_list); -->
 							}
-							<!--@if($value && in_array(trim($v), $value))-->
-									{@
-										$selected = ' selected="selected"';
-									}
-							<!--@end-->
-								<option value = "{$v}" {$selected}>{$v}</option>
-							<!--@end-->
-						</select>
-					</block>
-					<block cond="$type == 'radio'">
-						<ul class="list-unstyled mb-0">
-							<!--@foreach($default as $v) -->
+							<script type="text/javascript">
+								jQuery("link[href*='/modules/krzip/tpl/css/default.css']").remove();
+								jQuery("link[href*='/modules/krzip/tpl/css/default.min.css']").remove();
+							</script>
+							<div class="krZip" id="krzip-{$template_config->sequence_id}" data-postcode-format="{$template_config->postcode_format}">
+								<!--// 다음 우편번호 API -->
+								<input type="hidden" name="{$template_config->column_name}[]" class="krzip-hidden-postcode" value="{$template_config->values[0]}" />
+								<input type="hidden" name="{$template_config->column_name}[]" class="krzip-hidden-roadAddress" value="{$template_config->values[1]}" />
+								<input type="hidden" name="{$template_config->column_name}[]" class="krzip-hidden-jibunAddress" value="{$template_config->values[2]}" />
+								<input type="hidden" name="{$template_config->column_name}[]" class="krzip-hidden-detailAddress" value="{$template_config->values[3]}" />
+								<input type="hidden" name="{$template_config->column_name}[]" class="krzip-hidden-extraAddress" value="{$template_config->values[4]}" />
+
+								<div class="krzip-postcode-wrap form-row">
+										<div class="col col-sm-auto mb-2">
+											<input type="text" class="krzip-postcode form-control" value="{$template_config->values[0]}" disabled="disabled" />
+										</div>
+										<div class="col-auto mb-2">
+										<input type="button" class="krzip-search btn btn-dark" value="{$lang->cmd_krzip_postcode} {$lang->cmd_search}" />
+										</div>
+								</div>
+								<div class="krzip-address-wrap form-row">
+									<div class="col-lg-4 mb-2">
+										<input type="text" class="form-control krzip-roadAddress<!--@if($template_config->show_box == 'only_road')--> krzip-input-expand<!--@end-->" value="{$template_config->values[1]}" disabled="disabled" />
+									</div>
+									<div class="col-lg-4 mb-2">
+										<input type="text"|cond="$template_config->show_box == 'all'" type="hidden"|cond="$template_config->show_box == 'only_road'" class="krzip-jibunAddress form-control" value="{$template_config->values[2]}" disabled="disabled" />
+									</div>
+									<div class="col-lg-4 mb-2">
+										<input type="text"|cond="$template_config->show_box == 'all'" type="hidden"|cond="$template_config->show_box == 'only_road'" type="text" class="krzip-extraAddress form-control" value="{$template_config->values[4]}" disabled="disabled" />
+									</div>
+								</div>
+								<div class="krzip-detailAddress-wrap">
+									<input type="text" class="form-control krzip-detailAddress<!--@if($template_config->show_box == 'only_road')--> krzip-input-expand<!--@end-->" value="{$template_config->values[3]}" placeholder="{$lang->cmd_krzip_detail_address}" />
+								</div>
+								<div class="krzip-guide"></div>
+								<!--// FOOTER -->
+								<script>
+								//<![CDATA[
+								jQuery("#krzip-{$template_config->sequence_id}").Krzip();
+								//]]>
+								</script>
+							</div>
+
+						</block>
+						<block cond="$type == 'text'">
+								<input type="text" name="{$column_name}" value="{$value ? $value : $default}" class="form-control form-control-sm">
+						</block>
+						<block cond="$val->desc">
 							{@
-									$checked = '';
-
-									// Temporary ID for labeling
-									$tmp_id = $column_name . '-' . $id_num++;
+								$oModuleController = getController('module');
+								$oModuleController->replaceDefinedLangCode($val->desc);
 							}
-							<!--@if($value && in_array(trim($v), $value))-->
-									{@
-										$checked = ' checked="checked"';
-									}
-							<!--@end-->
-								<li class="custom-control custom-radio">
-									<input class="custom-control-input" type="radio" name="{$column_name}[]" id="{$tmp_id}" value="{$v}" {$checked} />
-									<label class="custom-control-label" for="{$tmp_id}">{$v}</label>
-								</li>
-							<!--@end-->
-						</ul>
-					</block>
-					<block cond="$type == 'date'">
-						<div class="form-row">
-							<span class="col">
-								<input type="hidden" name="{$column_name}" value="{$value}" />
-								<input type="text" placeholder="YYYY-MM-DD" id="date_{$column_name}" value="{zdate($value, 'Y-m-d')}" class="date form-control" />
-							</span>
-							<span class="col-auto">
-								<input type="button" value="{$lang->cmd_delete}" class="col-auto btn btn-danger" id="dateRemover_{$column_name}">
-							</span>
-								<script type="text/javascript">
-								(function($){
-									$(function(){
-										var option = { dateFormat: "yy-mm-dd", changeMonth:true, changeYear:true, gotoCurrent:false, yearRange:'-100:+10', onSelect:function(){
-											$(this).prev('input[type="hidden"]').val(this.value.replace(/-/g,""))}
-										};
-										$.extend(option,$.datepicker.regional['{Context::getLangType()}']);
-										$("#date_{$column_name}").datepicker(option);
-										$("#date_{$column_name}").datepicker("option", "dateFormat", "yy-mm-dd");
-										$("#dateRemover_{$column_name}").click(function(){
-											$("#date_{$column_name}").siblings().andSelf().val("");
-												return false;
-										})
-									});
-								})(jQuery);
-							</script>
-						</div>
-					</block>
-					<block cond="$type == 'kr_zip'">
-
-						{@
-								$oKrzipModel = &getModel('krzip');
-								$val->getFormHTML(); <!--// Context::get('template_config') 를 가져오기 위헤 실행 -->
-								$template_config = Context::get('template_config');
-								<!--// var_dump($oKrzipModel::$api_list); -->
-						}
-						<script type="text/javascript">
-							jQuery("link[href*='/modules/krzip/tpl/css/default.css']").remove();
-							jQuery("link[href*='/modules/krzip/tpl/css/default.min.css']").remove();
-						</script>
-						<div class="krZip" id="krzip-{$template_config->sequence_id}" data-postcode-format="{$template_config->postcode_format}">
-							<!--// 다음 우편번호 API -->
-							<input type="hidden" name="{$template_config->column_name}[]" class="krzip-hidden-postcode" value="{$template_config->values[0]}" />
-							<input type="hidden" name="{$template_config->column_name}[]" class="krzip-hidden-roadAddress" value="{$template_config->values[1]}" />
-							<input type="hidden" name="{$template_config->column_name}[]" class="krzip-hidden-jibunAddress" value="{$template_config->values[2]}" />
-							<input type="hidden" name="{$template_config->column_name}[]" class="krzip-hidden-detailAddress" value="{$template_config->values[3]}" />
-							<input type="hidden" name="{$template_config->column_name}[]" class="krzip-hidden-extraAddress" value="{$template_config->values[4]}" />
-
-							<div class="krzip-postcode-wrap form-row">
-									<div class="col col-sm-auto mb-2">
-										<input type="text" class="krzip-postcode form-control" value="{$template_config->values[0]}" disabled="disabled" />
-									</div>
-									<div class="col-auto mb-2">
-									<input type="button" class="krzip-search btn btn-dark" value="{$lang->cmd_krzip_postcode} {$lang->cmd_search}" />
-									</div>
-							</div>
-							<div class="krzip-address-wrap form-row">
-								<div class="col-lg-4 mb-2">
-									<input type="text" class="form-control krzip-roadAddress<!--@if($template_config->show_box == 'only_road')--> krzip-input-expand<!--@end-->" value="{$template_config->values[1]}" disabled="disabled" />
-								</div>
-								<div class="col-lg-4 mb-2">
-									<input type="text"|cond="$template_config->show_box == 'all'" type="hidden"|cond="$template_config->show_box == 'only_road'" class="krzip-jibunAddress form-control" value="{$template_config->values[2]}" disabled="disabled" />
-								</div>
-								<div class="col-lg-4 mb-2">
-									<input type="text"|cond="$template_config->show_box == 'all'" type="hidden"|cond="$template_config->show_box == 'only_road'" type="text" class="krzip-extraAddress form-control" value="{$template_config->values[4]}" disabled="disabled" />
-								</div>
-							</div>
-							<div class="krzip-detailAddress-wrap">
-								<input type="text" class="form-control krzip-detailAddress<!--@if($template_config->show_box == 'only_road')--> krzip-input-expand<!--@end-->" value="{$template_config->values[3]}" placeholder="{$lang->cmd_krzip_detail_address}" />
-							</div>
-							<div class="krzip-guide"></div>
-							<!--// FOOTER -->
-							<script>
-							//<![CDATA[
-							jQuery("#krzip-{$template_config->sequence_id}").Krzip();
-							//]]>
-							</script>
-						</div>
-
-					</block>
-					<block cond="$type == 'text'">
-							<input type="text" name="{$column_name}" value="{$value ? $value : $default}" class="form-control form-control-sm">
-					</block>
-					<block cond="$val->desc">
-						{@
-							$oModuleController = getController('module');
-							$oModuleController->replaceDefinedLangCode($val->desc);
-						}
-						<small>{htmlspecialchars($val->desc, ENT_COMPAT | ENT_HTML401, 'UTF-8', false)}</small>
-					</block>
-				</td>
-			</tr>
-		</table>
-	</div>
-    <div class="write_editor">
-		{$oDocument->getEditor()|noescape}
-	</div>
-	<div class="">
-		<div class="write_option">
-			<div class="form-row pl-3 mb-1">
-			<block cond="$grant->manager">
-				<div class="custom-control custom-checkbox custom-control-inline">
-					<input class="custom-control-input" type="checkbox" name="is_notice" value="Y" class="iCheck" checked="checked"|cond="$oDocument->isNotice()" id="is_notice" />
-					<label class="custom-control-label" for="is_notice">{$lang->notice}</label>
-				</div>
-				<div class="custom-control custom-checkbox custom-control-inline">
-					<input type="checkbox" name="title_bold" id="title_bold" class="custom-control-input" value="Y" checked="checked"|cond="$oDocument->get('title_bold')=='Y'" />
-					<label class="custom-control-label" for="title_bold">{$lang->title_bold}</label>
-				</div>
-			</block>
-			<div class="custom-control custom-checkbox custom-control-inline">
-        <input type="checkbox" name="comment_status" class="custom-control-input" value="ALLOW" checked="checked"|cond="$oDocument->allowComment()" id="comment_status" />
-        <label class="custom-control-label" for="comment_status">{$lang->allow_comment}</label>
-			</div>
-			<block cond="$is_logged">
-				<div class="custom-control custom-checkbox custom-control-inline">
-				  <input type="checkbox" name="notify_message"  class="custom-control-input" value="Y"  checked="checked"|cond="$oDocument->useNotify()" id="notify_message">
-				  <label class="custom-control-label" for="notify_message">{$lang->notify}</label>
-				</div>
-			</block>
-			<!--@if(is_array($status_list))-->
-				<div class="">
-					<!--@foreach($status_list AS $key=>$value)-->
-					<div class="custom-control custom-radio custom-control-inline">
-						<input class="custom-control-input" type="radio" name="status" value="{$key}" id="{$key}" <!--@if($oDocument->get('status') == $key || ($key == 'PUBLIC' && !$document_srl))-->checked="checked"<!--@end--> />
-						<label class="custom-control-label" for="{$key}">{$value}</label>
+							<small>{htmlspecialchars($val->desc, ENT_COMPAT | ENT_HTML401, 'UTF-8', false)}</small>
+						</block>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div class="write_editor">
+			{$oDocument->getEditor()|noescape}
+		</div>
+		<div class="">
+			<div class="write_option">
+				<div class="form-row pl-3 mb-1">
+				<block cond="$grant->manager">
+					<div class="custom-control custom-checkbox custom-control-inline">
+						<input class="custom-control-input" type="checkbox" name="is_notice" value="Y" class="iCheck" checked="checked"|cond="$oDocument->isNotice()" id="is_notice" />
+						<label class="custom-control-label" for="is_notice">{$lang->notice}</label>
 					</div>
-					<!--@end-->
+					<div class="custom-control custom-checkbox custom-control-inline">
+						<input type="checkbox" name="title_bold" id="title_bold" class="custom-control-input" value="Y" checked="checked"|cond="$oDocument->get('title_bold')=='Y'" />
+						<label class="custom-control-label" for="title_bold">{$lang->title_bold}</label>
+					</div>
+				</block>
+				<div class="custom-control custom-checkbox custom-control-inline">
+					<input type="checkbox" name="comment_status" class="custom-control-input" value="ALLOW" checked="checked"|cond="$oDocument->allowComment()" id="comment_status" />
+					<label class="custom-control-label" for="comment_status">{$lang->allow_comment}</label>
 				</div>
-			<!--@end-->
+				<block cond="$is_logged">
+					<div class="custom-control custom-checkbox custom-control-inline">
+						<input type="checkbox" name="notify_message"  class="custom-control-input" value="Y"  checked="checked"|cond="$oDocument->useNotify()" id="notify_message">
+						<label class="custom-control-label" for="notify_message">{$lang->notify}</label>
+					</div>
+				</block>
+				<!--@if(is_array($status_list))-->
+					<div class="">
+						<!--@foreach($status_list AS $key=>$value)-->
+						<div class="custom-control custom-radio custom-control-inline">
+							<input class="custom-control-input" type="radio" name="status" value="{$key}" id="{$key}" <!--@if($oDocument->get('status') == $key || ($key == 'PUBLIC' && !$document_srl))-->checked="checked"<!--@end--> />
+							<label class="custom-control-label" for="{$key}">{$value}</label>
+						</div>
+						<!--@end-->
+					</div>
+				<!--@end-->
+				</div>
+			</div>
+			<div class="form-row" style="display: none;"|cond="$is_logged">
+				<div class="form-group mb-2 col-sm-3" cond="!$is_logged">
+					<span class="item">
+						<input type="text" name="nick_name" id="userName" class="userName form-control form-control-sm" value="{htmlspecialchars($oDocument->get('nick_name'))}" placeholder="{$lang->writer}"/>
+					</span>
+				</div>
+				<div class="form-group mb-2 col-sm-3">
+					<span id="toggle_password_view">
+						<span class="item">
+							<input cond="!$is_logged" type="password" name="password" id="userPw" class="userPw form-control form-control-sm" placeholder="{$lang->password}"/>
+						</span>
+					</span>
+				</div>
+			</div>
+			<div class="row no-gutters">
+				<div class="col pr-2">
+					<script>
+						$(function () {
+							$('[data-toggle="popover"]').popover()
+						})
+					</script>
+					{@
+						$tag_str = join(", ", $oDocument->get('tag_list'));
+					}
+					<input class="form-control form-control-sm w-100" type="text" name="tags" id="tags" data-toggle="popover" data-trigger="focus" data-placement="top" data-content="{$lang->about_tag}" placeholder="{$lang->tag}" value="{$tag_str}"/>
+				</div>
+				<div class="col-auto">
+						<block cond="!$oDocument->isExists() || $oDocument->get('status') == 'TEMP'">
+						<button cond="$is_logged" class="btn btn-primary btn-sm" type="button" onclick="doDocumentSave(this);">{$lang->cmd_temp_save}</button>
+						<button cond="$is_logged" class="btn btn-info btn-sm" type="button" onclick="doDocumentLoad(this);">{$lang->cmd_load}</button>
+						</block>
+						<button type="submit" class="btn btn-success btn-sm"><i class="xi-pen"></i> {$lang->cmd_registration}</button>
+				</div>
 			</div>
 		</div>
-		<div class="form-inline">
-			<span class="mr-2 mb-2" cond="!$is_logged">
-				<input type="text" name="nick_name" id="userName" class="form-control form-control-sm" value="{htmlspecialchars($oDocument->get('nick_name'))}" placeholder="{$lang->writer}" />
-			</span>
-			<span class="mr-2 mb-2" cond="!$is_logged">
-				<input type="password" name="password" id="userPw" class="form-control form-control-sm" placeholder="{$lang->password}" />
-			</span>
-		</div>
-		<div class="row no-gutters">
-			<div class="col pr-2">
-				<script>
-					$(function () {
-					  $('[data-toggle="popover"]').popover()
-					})
-
-				</script>
-				{@
-					$tag_str = join(", ", $oDocument->get('tag_list'));
-				}
-				<input class="form-control form-control-sm w-100" type="text" name="tags" id="tags" data-toggle="popover" data-trigger="focus" data-placement="top" data-content="{$lang->about_tag}" placeholder="{$lang->tag}" value="{$tag_str}"/>
-			</div>
-			<div class="col-auto">
-					<block cond="!$oDocument->isExists() || $oDocument->get('status') == 'TEMP'">
-					<button cond="$is_logged" class="btn btn-primary btn-sm" type="button" onclick="doDocumentSave(this);">{$lang->cmd_temp_save}</button>
-					<button cond="$is_logged" class="btn btn-info btn-sm" type="button" onclick="doDocumentLoad(this);">{$lang->cmd_load}</button>
-					</block>
-					<button type="submit" class="btn btn-success btn-sm"><i class="xi-pen"></i> {$lang->cmd_registration}</button>
-			</div>
-			</div>
-	</div>
-</form>
+	</form>
 </div>
 <include target="_footer.html" />

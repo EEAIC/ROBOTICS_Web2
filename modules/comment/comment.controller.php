@@ -1,11 +1,11 @@
 <?php
-/* Copyright (C) NAVER <http://www.navercorp.com> */
+/* Copyright (C) XEHub <https://www.xehub.io> */
 
 /**
  * commentController class
  * controller class of the comment module
  *
- * @author NAVER (developers@xpressengine.com)
+ * @author XEHub (developers@xpressengine.com)
  * @package /modules/comment
  * @version 0.1
  */
@@ -279,7 +279,7 @@ class commentController extends comment
 
 			if($obj->homepage)
 			{
-				$obj->homepage = removeHackTag($obj->homepage);
+				$obj->homepage = escape($obj->homepage, false);
 				if(!preg_match('/^[a-z]+:\/\//i',$obj->homepage))
 				{
 					$obj->homepage = 'http://'.$obj->homepage;
@@ -692,7 +692,7 @@ class commentController extends comment
 
 		if($obj->homepage) 
 		{
-			$obj->homepage = removeHackTag($obj->homepage);
+			$obj->homepage = escape($obj->homepage);
 			if(!preg_match('/^[a-z]+:\/\//i',$obj->homepage))
 			{
 				$obj->homepage = 'http://'.$obj->homepage;

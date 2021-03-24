@@ -1,8 +1,8 @@
 <?php
-/* Copyright (C) NAVER <http://www.navercorp.com> */
+/* Copyright (C) XEHub <https://www.xehub.io> */
 /**
  * @class mcontent
- * @author NAVER (developers@xpressengine.com)
+ * @author XEHub (developers@xpressengine.com)
  * @brief widget to display mcontent
  * @version 0.1
  */
@@ -754,7 +754,7 @@ class mcontentItem extends BaseObject
 
 	function getLink()
 	{
-		return $this->get('url');
+		return escape($this->get('url'), false);
 	}
 	function getModuleSrl()
 	{

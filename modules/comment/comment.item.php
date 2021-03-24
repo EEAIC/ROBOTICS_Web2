@@ -1,11 +1,11 @@
 <?php
-/* Copyright (C) NAVER <http://www.navercorp.com> */
+/* Copyright (C) XEHub <https://www.xehub.io> */
 
 /**
  * commentItem class
  * comment BaseObject
  *
- * @author NAVER (developers@xpressengine.com)
+ * @author XEHub (developers@xpressengine.com)
  * @package /modules/comment
  * @version 0.1
  */
@@ -255,7 +255,7 @@ class commentItem extends BaseObject
 			$url = "http://" . $url;
 		}
 
-		return htmlspecialchars($url, ENT_COMPAT | ENT_HTML401, 'UTF-8', false);
+		return escape($url, false);
 	}
 
 	function getMemberSrl()
@@ -265,17 +265,17 @@ class commentItem extends BaseObject
 
 	function getUserID()
 	{
-		return htmlspecialchars($this->get('user_id'), ENT_COMPAT | ENT_HTML401, 'UTF-8', false);
+		return escape($this->get('user_id'), false);
 	}
 
 	function getUserName()
 	{
-		return htmlspecialchars($this->get('user_name'), ENT_COMPAT | ENT_HTML401, 'UTF-8', false);
+		return escape($this->get('user_name'), false);
 	}
 
 	function getNickName()
 	{
-		return htmlspecialchars($this->get('nick_name'), ENT_COMPAT | ENT_HTML401, 'UTF-8', false);
+		return escape($this->get('nick_name'), false);
 	}
 
 	/**
@@ -296,7 +296,7 @@ class commentItem extends BaseObject
 			return cut_str(strip_tags($content), $strlen, '...');
 		}
 
-		return htmlspecialchars($content, ENT_COMPAT | ENT_HTML401, 'UTF-8', false);
+		return escape($content, false);
 	}
 
 	/**

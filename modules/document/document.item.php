@@ -1,10 +1,10 @@
 <?php
-/* Copyright (C) NAVER <http://www.navercorp.com> */
+/* Copyright (C) XEHub <https://www.xehub.io> */
 /**
  * documentItem class
  * document object
  *
- * @author NAVER (developers@xpressengine.com)
+ * @author XEHub (developers@xpressengine.com)
  * @package /modules/document
  * @version 0.1
  */
@@ -345,7 +345,7 @@ class documentItem extends BaseObject
 
 		if(strncasecmp('http://', $url, 7) !== 0 && strncasecmp('https://', $url, 8) !== 0)  $url = 'http://' . $url;
 
-		return $url;
+		return escape($url, false);
 	}
 
 	function getMemberSrl()
